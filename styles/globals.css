@@ -1,27 +1,283 @@
+@import url("https://fonts.googleapis.com/css2?family=League+Spartan:wght@300;400;500;600;700;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Arapey:wght@300;400;500;600;700;900&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+.special_button {
+  border-radius: 28px;
+  background: linear-gradient(90deg, #48016D 0%, #2483CE 149.29%);
+  color: #fff;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+.navbar {
+  padding: 16px 0;
+}
+.navbar header {
+  max-width: 100%;
+  gap: 0;
+  padding: 0 24px;
+}
+.navbar__menu--link {
+  border-radius: 20px;
+  padding: 4px 8px;
+  margin-right: 56px;
+  color: #000;
+  font-family: League Spartan;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 32px;
+  transition: all 0.5s;
+}
+.navbar__menu--link[data-active=true] {
+  background-color: #48016D;
+  color: #fff;
+}
+.navbar__menu--link:hover {
+  background-color: #48016D;
+  color: #fff;
+}
+.navbar__login {
+  color: #48016D;
+  padding: 8px 48px;
+  background-color: transparent;
+  font-family: League Spartan;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 24px;
+  border-radius: 28px;
+  border: 1px solid #48016D;
+}
+.navbar__login:hover {
+  background-color: #48016D;
+  color: #fff;
 }
 
-body {
-  color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+.main__container {
+  max-width: calc(100% - 200px);
+  margin: 0 auto;
 }
+
+.homecover {
+  margin-top: 36px;
+}
+.homecover__content--header {
+  color: #000;
+  font-family: League Spartan;
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 60px; /* 93.75% */
+}
+.homecover__content--paragraph {
+  color: #000;
+  font-family: Arapey;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 122.222% */
+}
+.homecover__content--button {
+  width: 50%;
+}
+
+.what__content {
+  position: relative;
+}
+.what__content--shape {
+  position: absolute;
+  left: -24px;
+  top: -60px;
+}
+.what__content--header {
+  color: #000;
+  font-family: League Spartan;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.what__content--paragraph {
+  color: #000;
+  font-family: Arapey;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 122.222% */
+}
+
+.our_keys {
+  padding-bottom: 110px;
+  background-image: url("/assets/images/half_circle.svg");
+  background-size: cover;
+  background-position: top center;
+}
+.our_keys__content {
+  max-width: calc(100% - 270px);
+  margin: 0 auto;
+  text-align: center;
+}
+.our_keys__content--header {
+  color: #000;
+  font-family: League Spartan;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  margin: 0 98px;
+  margin-bottom: 16px;
+}
+.our_keys__content--paragraph {
+  color: #000;
+  font-family: Arapey;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px; /* 111.111% */
+  margin: 0 98px;
+  margin-bottom: 64px;
+}
+.our_keys__content--card-header {
+  color: #48016D;
+  font-family: League Spartan;
+  font-size: 64px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 64px; /* 100% */
+}
+.our_keys__content--card-paragraph {
+  color: #000;
+  font-family: Arapey;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 16px;
+}
+
+.privacy h3 {
+  color: #000;
+  font-family: League Spartan;
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  text-align: left;
+}
+.privacy h4 {
+  color: #000;
+  font-family: League Spartan;
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 22px; /* 91.667% */
+  margin-bottom: 12px;
+  text-align: left;
+}
+.privacy p {
+  color: #000;
+  font-family: Arapey;
+  font-size: 18px;
+  font-weight: 400;
+  line-height: 22px; /* 122.222% */
+}
+
+.login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.login__remember {
+  display: flex;
+  justify-content: space-between;
+}
+.login__remember--forget {
+  color: #48016D;
+  font-family: League Spartan;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 28px; /* 155.556% */
+}
+.login .logo {
+  padding: 15px;
+}
+
+.form__group--input {
+  border-radius: 28px;
+  border: 1px solid #E2E8F0;
+  background-color: #FFF;
+  color: #000;
+  font-family: League Spartan;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  height: 48px;
+  padding: 0;
+}
+.form__group--input::-moz-placeholder {
+  color: #A0AEC0;
+}
+.form__group--input::placeholder {
+  color: #A0AEC0;
+}
+.form__group--input:focus {
+  border: 1.5px solid #48016D;
+}
+.form__group--input-password {
+  padding: 15px;
+}
+
+.card__auth {
+  text-align: center;
+}
+.card__auth--header {
+  color: #000;
+  font-family: League Spartan;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-top: 24px;
+}
+.card__auth--paragraph {
+  color: #000;
+  text-align: center;
+  font-family: Arapey;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 110% */
+  margin-bottom: 40px;
+}
+
+.footer {
+  background-color: #48016D;
+  padding: 12px 0;
+}
+.footer__copyrights {
+  font-family: League Spartan;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 28px;
+  color: #fff;
+  text-align: center;
+}
+.footer__links {
+  margin-top: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+}
+.footer__links--a {
+  color: #FFF;
+  font-family: Arapey;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 122.222% */
+  text-decoration-line: underline;
+}/*# sourceMappingURL=globals.css.map */
