@@ -8,6 +8,11 @@
   background: linear-gradient(90deg, #48016D 0%, #2483CE 149.29%);
   color: #fff;
 }
+.special_button[disabled] {
+  background: #F2F2F2;
+  color: #000;
+  cursor: no-drop;
+}
 
 .min-h90vh {
   min-height: 90vh;
@@ -250,6 +255,66 @@
   height: 24px;
 }
 
+.manage__account {
+  padding: 48px 0;
+}
+.manage__account--header {
+  color: #000;
+  font-family: League Spartan;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.manage__account--paragraph {
+  color: #000;
+  font-family: Arapey;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 122.222% */
+  margin-bottom: 24px;
+}
+.manage__account--button {
+  width: 300px;
+}
+@media screen and (max-width: 414px) {
+  .manage__account--button {
+    width: 100%;
+  }
+}
+.manage__account--dropimage {
+  border-radius: 24px;
+  border: 2px dashed #E2E6EA;
+  padding: 22px 0;
+  width: 350px;
+  margin-bottom: 24px;
+}
+.manage__account--dropimage .content {
+  max-width: 50%;
+  margin: 0 auto;
+  text-align: center;
+}
+.manage__account--dropimage h4 {
+  color: #A0AEC0;
+  leading-trim: both;
+  text-edge: cap;
+  font-family: League Spartan;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.manage__account--dropimage span {
+  color: var(--Grey-05, #242634);
+  text-align: center;
+  font-family: Arapey;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 .form__group--input {
   cursor: pointer !important;
   border-radius: 28px;
@@ -343,6 +408,14 @@
 }
 .form__group--textarea:focus {
   border: 1.5px solid #48016D;
+}
+.form__group--links a {
+  color: #48016D;
+  font-family: League Spartan;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 28px;
 }
 
 .plans {
@@ -591,4 +664,35 @@
 }
 .card__plan--bottom {
   margin-top: 10px;
+}
+.card__meeting--date {
+  color: #000;
+  font-family: League Spartan;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin: 12px 0;
+}
+.card__meeting--span {
+  color: #000;
+  font-family: League Spartan;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 16px;
+}
+.card__meeting--title {
+  color: #000;
+  font-family: League Spartan;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: 24px;
+}
+.card__meeting--button {
+  margin-top: 24px;
+  width: 100%;
 }/*# sourceMappingURL=globals.css.map */

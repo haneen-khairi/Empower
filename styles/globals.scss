@@ -16,6 +16,11 @@ $size40 : 40px;
     border-radius: 28px;
     background: linear-gradient(90deg, #48016D 0%, #2483CE 149.29%);
     color: #fff;
+    &[disabled]{
+        background: #F2F2F2;
+        color: #000;
+        cursor: no-drop;
+    }
 }
 
 .min-h90vh{
@@ -270,6 +275,66 @@ $size40 : 40px;
     }
 }
 
+.manage{
+    &__account{
+        padding: 48px 0;
+        &--header{
+            color: #000;
+            font-family: League Spartan;
+            font-size: 32px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+        }
+        &--paragraph{
+            color: #000;
+            font-family: Arapey;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 22px; /* 122.222% */
+            margin-bottom: 24px;
+        }
+        &--button{
+            width: 300px;
+            @media screen and (max-width: 414px) {
+                width: 100%;
+            }
+        }
+        &--dropimage{
+            border-radius: 24px;
+            border: 2px dashed  #E2E6EA;
+            padding: 22px 0;
+            width: 350px;
+            margin-bottom: $size24;
+            .content{
+                max-width: 50%;
+                margin: 0 auto;
+                text-align: center;
+            }
+            h4{
+                color: #A0AEC0;
+                leading-trim: both;
+                text-edge: cap;
+                font-family: League Spartan;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+            }
+            span{
+                color: var(--Grey-05, #242634);
+                text-align: center;
+                font-family: Arapey;
+                font-size: 14px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: normal;
+            }
+        }
+    }
+}
+
 .form{
     &__group{
         &--input{
@@ -366,7 +431,19 @@ $size40 : 40px;
                 border: 1.5px solid $primaryColor;
             }
         }
+        &--links{
+            a{
+                color: #48016D;
+                font-family: League Spartan;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 28px;
+
+            }
+        }
     }
+
 }
 .plans{
     padding: 60px 0;
@@ -628,6 +705,39 @@ $size40 : 40px;
         }
         &--bottom{
             margin-top: 10px;
+        }
+    }
+    &__meeting{
+        &--date{
+            color: #000;
+            font-family: League Spartan;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            margin: 12px 0;
+        }
+        &--span{
+            color: #000;
+            font-family: League Spartan;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            margin-top: 16px;
+        }
+        &--title{
+            color: #000;
+            font-family: League Spartan;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: normal;
+            margin-top: $size24;
+        }
+        &--button{
+            margin-top: 24px;
+            width: 100%;
         }
     }
     // &__test{

@@ -104,7 +104,10 @@ export default function Header() {
                 <SiteImage src={'assets/images/setting.svg'}/>
               }
             >
-              Account Information
+              <Link href="/account-information"
+>
+                Account Information
+              </Link>
             </DropdownItem>
             <DropdownItem
               key="Logout"
