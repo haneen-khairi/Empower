@@ -10,19 +10,16 @@ import React from 'react'
 export default function index() {
   return <MainLayout>
     <Head>
-      <title>{`${process.env.NEXT_PUBLIC_TITLE}Login`}</title>
+      <title>{`${process.env.NEXT_PUBLIC_TITLE}Reset password`}</title>
     </Head>
     <section className='login'>
-      <AuthCard title='Login to your account' text='Please enter your credentials to login to your account'>
+      <AuthCard title='Set a new Password' text='Please set a new password to update it to your account' logo={false}>
         <form onSubmit={e => e.preventDefault}>
           <div className="grid grid-cols-1 gap-y-[24px]">
-            <InputField name='email' label={''} placeholder={'adeeb@mail.com'} id={'email'} type={'email'} maxLength={200} />
-            <InputField name='password' label={''} placeholder={`••••••••`} id={'password'} type={'password'} maxLength={200} />
-            <div className="login__remember">
-              <Checkbox >Remember Me</Checkbox>
-              <Link href={'/forget-password'} className='login__remember--forget'>Forgot Password?</Link>
-            </div>
-            <Button className='special_button'>Login</Button>
+            <InputField name='password' label={''} placeholder={`Password (Required)`} id={'password'} type={'password'} maxLength={200} />
+            <InputField name='confirmPassword' label={''} placeholder={`Confirm Password (Required)`} id={'confirmPassword'} type={'password'} maxLength={200} />
+            
+            <Button className='special_button'>Save</Button>
           </div>
 
         </form>

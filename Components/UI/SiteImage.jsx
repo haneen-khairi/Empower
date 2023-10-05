@@ -5,5 +5,5 @@ export default function SiteImage({
     src,
     className = ""
 }) {
-  return <Image className={className} removeWrapper={true} src={src}  />
+  return <Image className={`${className} rounded-none`} removeWrapper={true} src={src}  />
 }

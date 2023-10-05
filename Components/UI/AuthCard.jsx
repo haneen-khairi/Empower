@@ -9,7 +9,7 @@ export default function AuthCard({
     logo = true
 }) {
     return <div className={`card card__auth ${className}`}>
-        {logo && <Logo  />}
+        {logo && <Logo className='logo' />}
         <h3 className="card__auth--header">{title}</h3>
         <p className="card__auth--paragraph">{text}</p>
         {children}

@@ -1,11 +1,26 @@
 import SiteImage from '@/Components/UI/SiteImage'
+import { UserContext } from '@/Context/AuthContext'
 import MainLayout from '@/Layouts/MainLayout'
 import { Button, Image } from '@nextui-org/react'
 import Head from 'next/head'
 import Link from 'next/link'
-import React from 'react'
+import { useRouter } from 'next/router'
+import React, { useContext, useEffect } from 'react'
 
 export default function index() {
+  const route = useRouter()
+  const {token , getToken} = useContext(UserContext)
+  useEffect(() => {
+    if(!route.isReady){
+      return
+    }
+    getToken()
+    console.log('token',token)
+    return () => {
+      
+    }
+  }, [route , token])
+  
   return <MainLayout>
     <Head>
       <title>{`${process.env.NEXT_PUBLIC_TITLE}Home`}</title>
