@@ -14,7 +14,7 @@ export default function index() {
       <title>{`${process.env.NEXT_PUBLIC_TITLE}Tests`}</title>
     </Head>
     <section className='section__single'>
-      <EmptyStateCard imageSrc='assets/images/under_review.svg'  title="Your Application is Under Review" text="Our experts will review your information and get back to you in 48 hours" />
+      <EmptyStateCard imageSrc='/assets/images/under_review.svg'  title="Your Application is Under Review" text="Our experts will review your information and get back to you in 48 hours" />
     </section>
   </MainLayout>
   

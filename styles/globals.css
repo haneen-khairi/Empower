@@ -3,6 +3,12 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+:root {
+  --background-color: #eeeeee;
+  --light-grey: #c4c1c1;
+  --accent-color: #b036e0;
+}
+
 .special_button {
   border-radius: 28px;
   background: linear-gradient(90deg, #48016D 0%, #2483CE 149.29%);
@@ -12,6 +18,16 @@
   background: #F2F2F2;
   color: #000;
   cursor: no-drop;
+}
+
+.text-error {
+  color: #E14942;
+  font-size: 15px;
+}
+
+.error_message {
+  position: absolute;
+  bottom: 4px;
 }
 
 .min-h90vh {
@@ -87,7 +103,8 @@
   font-size: 64px;
   font-style: normal;
   font-weight: 600;
-  line-height: 60px; /* 93.75% */
+  line-height: 60px;
+  /* 93.75% */
 }
 .homecover__content--paragraph {
   color: #000;
@@ -95,7 +112,8 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: 22px; /* 122.222% */
+  line-height: 22px;
+  /* 122.222% */
 }
 .homecover__content--button {
   width: 50%;
@@ -123,7 +141,8 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: 22px; /* 122.222% */
+  line-height: 22px;
+  /* 122.222% */
 }
 
 .our_keys {
@@ -153,7 +172,8 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: 20px; /* 111.111% */
+  line-height: 20px;
+  /* 111.111% */
   margin: 0 98px;
   margin-bottom: 64px;
 }
@@ -163,7 +183,8 @@
   font-size: 64px;
   font-style: normal;
   font-weight: 500;
-  line-height: 64px; /* 100% */
+  line-height: 64px;
+  /* 100% */
 }
 .our_keys__content--card-paragraph {
   color: #000;
@@ -188,7 +209,8 @@
   font-family: League Spartan;
   font-size: 24px;
   font-weight: 400;
-  line-height: 22px; /* 91.667% */
+  line-height: 22px;
+  /* 91.667% */
   margin-bottom: 12px;
   text-align: left;
 }
@@ -197,7 +219,8 @@
   font-family: Arapey;
   font-size: 18px;
   font-weight: 400;
-  line-height: 22px; /* 122.222% */
+  line-height: 22px;
+  /* 122.222% */
 }
 
 .login {
@@ -216,7 +239,8 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
-  line-height: 28px; /* 155.556% */
+  line-height: 28px;
+  /* 155.556% */
 }
 .login .logo {
   margin: 0 auto;
@@ -236,9 +260,11 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: 28px; /* 155.556% */
+  line-height: 28px;
+  /* 155.556% */
 }
-.dont_have_acoount a, .dont_have_acoount button {
+.dont_have_acoount a,
+.dont_have_acoount button {
   background-color: transparent;
   padding: 0;
   color: #48016D;
@@ -246,11 +272,13 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 600;
-  line-height: 28px; /* 155.556% */
+  line-height: 28px;
+  /* 155.556% */
   display: flex;
   align-items: center;
 }
-.dont_have_acoount a img, .dont_have_acoount button img {
+.dont_have_acoount a img,
+.dont_have_acoount button img {
   width: 24px;
   height: 24px;
 }
@@ -272,7 +300,8 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: 22px; /* 122.222% */
+  line-height: 22px;
+  /* 122.222% */
   margin-bottom: 24px;
 }
 .manage__account--button {
@@ -284,11 +313,11 @@
   }
 }
 .manage__account--dropimage {
+  cursor: pointer;
   border-radius: 24px;
   border: 2px dashed #E2E6EA;
   padding: 22px 0;
   width: 350px;
-  margin-bottom: 24px;
 }
 .manage__account--dropimage .content {
   max-width: 50%;
@@ -315,12 +344,63 @@
   line-height: normal;
 }
 
+.signup {
+  padding: 40px 0;
+  text-align: center;
+  max-width: 40vw;
+  margin: 0 auto;
+  min-height: 80vh;
+}
+.signup__header {
+  color: #000;
+  text-align: center;
+  font-family: League Spartan;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 12px;
+}
+.signup__paragraph {
+  color: #000;
+  text-align: center;
+  font-family: Arapey;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  /* 122.222% */
+  margin-bottom: 24px;
+}
+.signup__button {
+  width: 100%;
+}
+.signup__content--header {
+  color: #000;
+  text-align: center;
+  font-family: League Spartan;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  /* 91.667% */
+  margin: 54px 0 24px;
+}
+.signup .form__group--input {
+  margin-bottom: 5px;
+}
+
+.field > .group {
+  padding-bottom: 24px;
+}
+
 .form__group--input {
   cursor: pointer !important;
   border-radius: 28px;
   border: 1px solid #E2E8F0;
   background-color: #FFF;
   color: #000;
+  box-shadow: none;
   font-family: League Spartan;
   font-size: 18px;
   font-style: normal;
@@ -435,7 +515,8 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
-  line-height: 20px; /* 111.111% */
+  line-height: 20px;
+  /* 111.111% */
 }
 .plans__cards_section--header {
   color: #000;
@@ -446,7 +527,8 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 500;
-  line-height: 20px; /* 111.111% */
+  line-height: 20px;
+  /* 111.111% */
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -465,7 +547,8 @@
   font-size: 16px;
   font-style: normal;
   font-weight: 500;
-  line-height: 20px; /* 125% */
+  line-height: 20px;
+  /* 125% */
   border-radius: 16px;
 }
 .plans__cards_section--header .badge.done {
@@ -496,7 +579,8 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: 22px; /* 122.222% */
+  line-height: 22px;
+  /* 122.222% */
   margin-bottom: 40px;
 }
 .contact__content--button {
@@ -529,13 +613,74 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: 22px; /* 122.222% */
+  line-height: 22px;
+  /* 122.222% */
   text-decoration-line: underline;
+}
+
+.tests {
+  padding: 40px 0;
+  max-width: calc(100% - 360px);
+  margin: 0 auto;
+}
+.tests__content--header {
+  color: #000;
+  text-align: center;
+  font-family: League Spartan;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 12px;
+}
+.tests__content--paragraph {
+  color: #000;
+  text-align: center;
+  font-family: Arapey;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  /* 122.222% */
+  margin-bottom: 40px;
+}
+.tests__cards--full {
+  background-color: #48016D;
+  padding: 40px 24px;
+  text-align: center;
+  border-radius: 24px;
+  margin-bottom: 40px;
+}
+.tests__cards--full-header {
+  color: #FFF;
+  font-family: League Spartan;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  margin-bottom: 12px;
+}
+.tests__cards--full-paragraph {
+  color: #FFF;
+  font-family: Arapey;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  /* 122.222% */
+  margin-bottom: 40px;
+}
+.tests__cards--full-button {
+  border-radius: 28px;
+  padding: 18px 84px;
+  margin: 0 auto;
+  background-color: #fff;
 }
 
 .card__auth {
   text-align: center;
   width: 35vw;
+  margin: 0 auto;
 }
 .card__auth--header {
   color: #000;
@@ -553,7 +698,8 @@
   font-size: 20px;
   font-style: normal;
   font-weight: 400;
-  line-height: 22px; /* 110% */
+  line-height: 22px;
+  /* 110% */
   margin-top: 12px;
   margin-bottom: 40px;
 }
@@ -579,7 +725,8 @@
   font-size: 18px;
   font-style: normal;
   font-weight: 400;
-  line-height: 22px; /* 122.222% */
+  line-height: 22px;
+  /* 122.222% */
   margin-top: 8px;
 }
 .card__empty--image {
@@ -601,8 +748,12 @@
 }
 .card__plan--status {
   min-height: 40px;
+  display: flex;
+  align-items: center;
 }
 .card__plan--status p {
+  display: flex;
+  align-items: center;
   leading-trim: both;
   text-edge: cap;
   font-feature-settings: "clig" off, "liga" off;
@@ -610,7 +761,8 @@
   font-size: 13px;
   font-style: normal;
   font-weight: 500;
-  line-height: 20px; /* 153.846% */
+  line-height: 20px;
+  /* 153.846% */
   display: flex;
   align-items: center;
   gap: 4px;
@@ -628,7 +780,8 @@
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  line-height: 20px; /* 125% */
+  line-height: 20px;
+  /* 125% */
 }
 .card__plan--date {
   color: #1C1B1F;
@@ -639,7 +792,8 @@
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
-  line-height: 20px; /* 166.667% */
+  line-height: 20px;
+  /* 166.667% */
 }
 .card__plan--paragraph {
   color: #1C1B1F;
@@ -649,7 +803,8 @@
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
-  line-height: 20px; /* 166.667% */
+  line-height: 20px;
+  /* 166.667% */
 }
 .card__plan--top {
   display: flex;
@@ -695,4 +850,137 @@
 .card__meeting--button {
   margin-top: 24px;
   width: 100%;
+}
+.card__tests--body {
+  padding: 16px;
+  gap: 16px;
+  border-radius: 0px 0px 16px 16px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+}
+.card__tests--body--title {
+  color: #000;
+  text-align: center;
+  font-family: League Spartan;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px;
+  /* 91.667% */
+}
+
+.Toastify__toast {
+  border-radius: 50px !important;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.04);
+  width: 500px;
+  padding: 16px !important;
+  top: 110px !important;
+}
+.Toastify__toast-body {
+  padding: 0 !important;
+}
+.Toastify__toast-body button {
+  display: flex;
+  align-items: center;
+  gap: 4.5px;
+  color: #D891FD !important;
+}
+.Toastify__toast--default {
+  background-color: #383838 !important;
+  align-items: center !important;
+  justify-content: space-between;
+}
+.Toastify__toast--default h3 {
+  color: #fff;
+  display: flex;
+  gap: 16px;
+  align-items: center;
+}
+.Toastify__toast-button {
+  align-self: center !important;
+}
+
+.steps {
+  position: relative;
+}
+
+.progress {
+  background: var(--colour-primary-100, #4F46E5);
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  height: 4px;
+  width: 0%;
+  z-index: -1;
+  transition: 0.4s ease;
+}
+.progress-container {
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin-bottom: 73px;
+  max-width: 100%;
+  width: 100%;
+}
+.progress-container::before {
+  content: "";
+  background-color: #D1D5DB;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  height: 4px;
+  width: 100%;
+  z-index: -1;
+}
+
+.circle {
+  height: 32px;
+  width: 33px;
+  background-image: url("/assets/images/next-step.svg");
+  background-color: #fff;
+  background-size: contain;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: 0.4s ease;
+}
+.circle.icon-active {
+  background-image: url("/assets/images/circle-active.svg");
+}
+
+.circle.current {
+  border-color: var(--accent-color);
+  background-image: url("/assets/images/steps-no-active.svg");
+  color: var(--accent-color);
+  scale: 1.1;
+}
+
+.circle .icon {
+  position: absolute;
+  font-size: 25px;
+  bottom: 25px;
+}
+
+.circle .caption {
+  position: absolute;
+  font-size: 14px;
+  font-weight: bolder;
+  bottom: -30px;
+  white-space: nowrap;
+  color: #000;
+  font-family: League Spartan;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+.circle.current .caption {
+  color: #48016D;
+  font-family: League Spartan;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }/*# sourceMappingURL=globals.css.map */

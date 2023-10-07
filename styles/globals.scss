@@ -12,50 +12,73 @@ $successColor: #32B91C;
 $errorColor: #E14942;
 $size24 : 24px;
 $size40 : 40px;
-.special_button{
+:root {
+    --background-color: #eeeeee;
+    --light-grey: #c4c1c1;
+    --accent-color: #b036e0;
+  }
+.special_button {
     border-radius: 28px;
     background: linear-gradient(90deg, #48016D 0%, #2483CE 149.29%);
     color: #fff;
-    &[disabled]{
+
+    &[disabled] {
         background: #F2F2F2;
         color: #000;
         cursor: no-drop;
     }
 }
 
-.min-h90vh{
+.text-error {
+    color: $errorColor;
+    font-size: 15px;
+}
+
+.error_message {
+    position: absolute;
+    bottom: 4px;
+}
+
+.min-h90vh {
     min-height: 90vh;
 }
-.section{
-    &__single{
+
+.section {
+    &__single {
         min-height: 90vh;
         display: flex;
         align-items: center;
         justify-content: center;
     }
 }
-.navbar{
-    padding: 16px 0; 
-    header{
+
+.navbar {
+    padding: 16px 0;
+
+    header {
         max-width: 100%;
         gap: 0;
         padding: 0 24px;
     }
-    .dropdown{
-        .min-h{
+
+    .dropdown {
+        .min-h {
             height: auto;
         }
     }
-    &__menu{
-        &--link{
-            &[data-active="true"]{
+
+    &__menu {
+        &--link {
+            &[data-active="true"] {
                 background-color: $primaryColor;
                 color: #fff;
             }
-            &:hover{
+
+            &:hover {
                 background-color: $primaryColor;
                 color: #fff;
             }
+
             border-radius: 20px;
 
             padding: 4px 8px;
@@ -69,7 +92,8 @@ $size40 : 40px;
             transition: all .5s;
         }
     }
-    &__login{
+
+    &__login {
         color: #48016D;
         padding: 8px 48px;
         background-color: transparent;
@@ -80,50 +104,61 @@ $size40 : 40px;
         line-height: 24px;
         border-radius: 28px;
         border: 1px solid #48016D;
-        &:hover{
+
+        &:hover {
             background-color: $primaryColor;
             color: #fff;
 
         }
     }
 }
-.main__container{
+
+.main__container {
     max-width: calc(100% - 200px);
     margin: 0 auto;
 }
-.homecover{
+
+.homecover {
     margin-top: 36px;
-    &__content{
-        &--header{
+
+    &__content {
+        &--header {
             color: #000;
             font-family: League Spartan;
             font-size: 64px;
             font-style: normal;
             font-weight: 600;
-            line-height: 60px; /* 93.75% */
+            line-height: 60px;
+            /* 93.75% */
         }
-        &--paragraph{
+
+        &--paragraph {
             color: #000;
             font-family: Arapey;
             font-size: 18px;
             font-style: normal;
             font-weight: 400;
-            line-height: 22px; /* 122.222% */
+            line-height: 22px;
+            /* 122.222% */
         }
-        &--button{
+
+        &--button {
             width: 50%;
         }
     }
 }
-.what{
-    &__content{
+
+.what {
+    &__content {
         position: relative;
-        &--shape{
+
+        &--shape {
             position: absolute;
             left: -24px;
             top: -60px;
         }
-        &--header{
+
+        &--header {
             color: #000;
             font-family: League Spartan;
             font-size: 40px;
@@ -131,27 +166,31 @@ $size40 : 40px;
             font-weight: 500;
             line-height: normal;
         }
-        &--paragraph{
+
+        &--paragraph {
             color: #000;
             font-family: Arapey;
             font-size: 18px;
             font-style: normal;
             font-weight: 400;
-            line-height: 22px; /* 122.222% */
+            line-height: 22px;
+            /* 122.222% */
         }
     }
 }
 
-.our_keys{
+.our_keys {
     padding-bottom: 110px;
     background-image: url('/assets/images/half_circle.svg');
     background-size: cover;
     background-position: top center;
-    &__content{
+
+    &__content {
         max-width: calc(100% - 270px);
         margin: 0 auto;
         text-align: center;
-        &--header{
+
+        &--header {
             color: #000;
             font-family: League Spartan;
             font-size: 40px;
@@ -161,26 +200,31 @@ $size40 : 40px;
             margin: 0 98px;
             margin-bottom: 16px;
         }
-        &--paragraph{
+
+        &--paragraph {
             color: #000;
             font-family: Arapey;
             font-size: 18px;
             font-style: normal;
             font-weight: 400;
-            line-height: 20px; /* 111.111% */
+            line-height: 20px;
+            /* 111.111% */
             margin: 0 98px;
             margin-bottom: 64px;
         }
-        &--card{
-            &-header{
+
+        &--card {
+            &-header {
                 color: $primaryColor;
                 font-family: League Spartan;
                 font-size: 64px;
                 font-style: normal;
                 font-weight: 500;
-                line-height: 64px; /* 100% */
+                line-height: 64px;
+                /* 100% */
             }
-            &-paragraph{
+
+            &-paragraph {
                 color: #000;
                 font-family: Arapey;
                 font-size: 20px;
@@ -193,8 +237,8 @@ $size40 : 40px;
     }
 }
 
-.privacy{
-    h3{
+.privacy {
+    h3 {
         color: #000;
         font-family: League Spartan;
         font-size: 32px;
@@ -202,62 +246,75 @@ $size40 : 40px;
         margin-bottom: 12px;
         text-align: left;
     }
-    h4{
+
+    h4 {
         color: #000;
         font-family: League Spartan;
         font-size: 24px;
         font-weight: 400;
-        line-height: 22px; /* 91.667% */
+        line-height: 22px;
+        /* 91.667% */
         margin-bottom: 12px;
         text-align: left;
     }
-    p{
+
+    p {
         color: #000;
         font-family: Arapey;
         font-size: 18px;
         font-weight: 400;
-        line-height: 22px; /* 122.222% */
+        line-height: 22px;
+        /* 122.222% */
     }
 }
 
-.login{
+.login {
     min-height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
-    &__remember{
+
+    &__remember {
         display: flex;
         justify-content: space-between;
-        &--forget{
+
+        &--forget {
             color: $primaryColor;
             font-family: League Spartan;
             font-size: 18px;
             font-style: normal;
             font-weight: 600;
-            line-height: 28px; /* 155.556% */
+            line-height: 28px;
+            /* 155.556% */
         }
     }
-    .logo{
+
+    .logo {
         margin: 0 auto;
     }
-    .icon{
+
+    .icon {
         padding: 15px;
     }
 }
 
-.dont_have_acoount{
+.dont_have_acoount {
     gap: 10px;
     margin-top: $size24;
     align-items: center;
-    p{
+
+    p {
         color: #000;
         font-family: Arapey;
         font-size: 18px;
         font-style: normal;
         font-weight: 400;
-        line-height: 28px; /* 155.556% */
+        line-height: 28px;
+        /* 155.556% */
     }
-    a , button{
+
+    a,
+    button {
         background-color: transparent;
         padding: 0;
         color: $primaryColor;
@@ -265,20 +322,23 @@ $size40 : 40px;
         font-size: 18px;
         font-style: normal;
         font-weight: 600;
-        line-height: 28px; /* 155.556% */
+        line-height: 28px;
+        /* 155.556% */
         display: flex;
         align-items: center;
-        img{
+
+        img {
             width: $size24;
             height: $size24;
         }
     }
 }
 
-.manage{
-    &__account{
+.manage {
+    &__account {
         padding: 48px 0;
-        &--header{
+
+        &--header {
             color: #000;
             font-family: League Spartan;
             font-size: 32px;
@@ -286,33 +346,41 @@ $size40 : 40px;
             font-weight: 700;
             line-height: normal;
         }
-        &--paragraph{
+
+        &--paragraph {
             color: #000;
             font-family: Arapey;
             font-size: 18px;
             font-style: normal;
             font-weight: 400;
-            line-height: 22px; /* 122.222% */
+            line-height: 22px;
+            /* 122.222% */
             margin-bottom: 24px;
         }
-        &--button{
+
+        &--button {
             width: 300px;
+
             @media screen and (max-width: 414px) {
                 width: 100%;
             }
         }
-        &--dropimage{
+
+        &--dropimage {
+            cursor: pointer;
             border-radius: 24px;
-            border: 2px dashed  #E2E6EA;
+            border: 2px dashed #E2E6EA;
             padding: 22px 0;
             width: 350px;
-            margin-bottom: $size24;
-            .content{
+
+            // margin-bottom: $size24;
+            .content {
                 max-width: 50%;
                 margin: 0 auto;
                 text-align: center;
             }
-            h4{
+
+            h4 {
                 color: #A0AEC0;
                 leading-trim: both;
                 text-edge: cap;
@@ -322,7 +390,8 @@ $size40 : 40px;
                 font-weight: 400;
                 line-height: normal;
             }
-            span{
+
+            span {
                 color: var(--Grey-05, #242634);
                 text-align: center;
                 font-family: Arapey;
@@ -335,83 +404,151 @@ $size40 : 40px;
     }
 }
 
-.form{
-    &__group{
-        &--input{
+.signup {
+    padding: 40px 0;
+    text-align: center;
+    max-width: 40vw;
+    margin: 0 auto;
+    min-height: 80vh;
+    &__header {
+        color: #000;
+        text-align: center;
+        font-family: League Spartan;
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        margin-bottom: 12px;
+    }
+
+    &__paragraph {
+        color: #000;
+        text-align: center;
+        font-family: Arapey;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 22px;
+        /* 122.222% */
+        margin-bottom: 24px;
+    }
+
+    &__button {
+        width: 100%;
+    }
+
+    &__content {
+        &--header {
+            color: #000;
+            text-align: center;
+            font-family: League Spartan;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 22px;
+            /* 91.667% */
+            margin: 54px 0 24px;
+        }
+    }
+
+    .form__group--input {
+        margin-bottom: 5px;
+    }
+}
+
+.field {
+    >.group {
+        padding-bottom: 24px;
+    }
+}
+
+.form {
+    &__group {
+        &--input {
             cursor: pointer !important;
             border-radius: 28px;
             border: 1px solid $gray200;
-            background-color:#FFF;
+            background-color: #FFF;
             color: #000;
-
+            box-shadow: none;
             font-family: League Spartan;
             font-size: 18px;
             font-style: normal;
             font-weight: 400;
             line-height: normal;
             height: 48px;
-            padding:  0 16px;
+            padding: 0 16px;
             margin-bottom: 16px;
-            &::placeholder{
+
+            &::placeholder {
                 color: $gray400;
             }
-            &:focus{
+
+            &:focus {
                 border: 1.5px solid $primaryColor;
             }
-            &-password{
+
+            &-password {
                 padding: 15px;
             }
 
         }
-        &--verify{
+
+        &--verify {
             cursor: pointer !important;
             border-radius: 12px;
-            border: 2px solid rgba(0, 0, 0, 0.12);            
-            background-color:#FFF;
-            
+            border: 2px solid rgba(0, 0, 0, 0.12);
+            background-color: #FFF;
+
             height: 80px;
             width: 80px;
-            
-            input{
+
+            input {
                 text-align: center;
                 font-family: League Spartan;
                 font-size: 24px;
                 font-style: normal;
                 font-weight: 700;
                 line-height: normal;
+
                 &::-webkit-outer-spin-button,
                 &::-webkit-inner-spin-button {
-                -webkit-appearance: none;
-                margin: 0;
+                    -webkit-appearance: none;
+                    margin: 0;
                 }
 
                 /* Firefox */
                 &[type=number] {
-                -moz-appearance: textfield;
+                    -moz-appearance: textfield;
                 }
             }
-            padding:  0 16px;
+
+            padding: 0 16px;
             margin-bottom: 16px;
-            &::placeholder{
+
+            &::placeholder {
                 color: #f5f5f5;
                 opacity: .5;
             }
-            &[data-focus="true"]{
+
+            &[data-focus="true"] {
                 border: 4px solid $primaryColor;
                 color: $primaryColor;
                 text-align: center;
-                
+
             }
-            &-password{
+
+            &-password {
                 padding: 15px;
             }
 
         }
-        &--textarea{
+
+        &--textarea {
             cursor: pointer !important;
             border-radius: 28px;
             border: 1px solid $gray200;
-            background-color:#FFF;
+            background-color: #FFF;
             color: #000;
 
             font-family: League Spartan;
@@ -424,15 +561,17 @@ $size40 : 40px;
             width: 100%;
             margin-bottom: 16px;
 
-            &::placeholder{
+            &::placeholder {
                 color: $gray400;
             }
-            &:focus{
+
+            &:focus {
                 border: 1.5px solid $primaryColor;
             }
         }
-        &--links{
-            a{
+
+        &--links {
+            a {
                 color: #48016D;
                 font-family: League Spartan;
                 font-size: 18px;
@@ -445,27 +584,32 @@ $size40 : 40px;
     }
 
 }
-.plans{
+
+.plans {
     padding: 60px 0;
-    &__progress{
+
+    &__progress {
         display: flex;
         align-items: center;
         justify-content: flex-end;
         gap: 10px;
         margin-bottom: 70px;
-        &--text{
+
+        &--text {
             color: #000;
             font-feature-settings: 'clig' off, 'liga' off;
             font-family: League Spartan;
             font-size: 18px;
             font-style: normal;
             font-weight: 500;
-            line-height: 20px; /* 111.111% */
+            line-height: 20px;
+            /* 111.111% */
         }
     }
-    &__cards{
-        &_section{
-            &--header{
+
+    &__cards {
+        &_section {
+            &--header {
                 color: #000;
                 leading-trim: both;
                 text-edge: cap;
@@ -474,12 +618,14 @@ $size40 : 40px;
                 font-size: 18px;
                 font-style: normal;
                 font-weight: 500;
-                line-height: 20px; /* 111.111% */
+                line-height: 20px;
+                /* 111.111% */
                 display: flex;
                 justify-content: space-between;
                 align-items: center;
                 margin-bottom: 28px;
-                .badge{
+
+                .badge {
                     color: #FFF;
                     text-align: center;
                     width: fit-content;
@@ -491,17 +637,21 @@ $size40 : 40px;
                     font-size: 16px;
                     font-style: normal;
                     font-weight: 500;
-                    line-height: 20px; /* 125% */
+                    line-height: 20px;
+                    /* 125% */
                     border-radius: 16px;
-                    &.done{
+
+                    &.done {
                         background-color: $successColor;
 
                     }
-                    &.past{
+
+                    &.past {
                         background-color: $errorColor;
 
                     }
-                    &.to_do{
+
+                    &.to_do {
                         background-color: $primaryColor;
 
                     }
@@ -510,10 +660,12 @@ $size40 : 40px;
         }
     }
 }
-.contact{
+
+.contact {
     padding: 80px 0;
-    &__content{
-        &--header{
+
+    &__content {
+        &--header {
             color: #000;
             font-family: League Spartan;
             font-size: 40px;
@@ -522,25 +674,30 @@ $size40 : 40px;
             line-height: normal;
             margin-bottom: 12px;
         }
-        &--paragraph{
+
+        &--paragraph {
             color: #000;
             font-family: Arapey;
             font-size: 18px;
             font-style: normal;
             font-weight: 400;
-            line-height: 22px; /* 122.222% */
+            line-height: 22px;
+            /* 122.222% */
             margin-bottom: $size40;
         }
-        &--button{
+
+        &--button {
             // margin-top: 16px;
             width: 100%;
         }
     }
 }
-.footer{
+
+.footer {
     background-color: $primaryColor;
     padding: 12px 0;
-    &__copyrights{
+
+    &__copyrights {
         font-family: League Spartan;
         font-size: 16px;
         font-style: normal;
@@ -549,32 +706,105 @@ $size40 : 40px;
         color: #fff;
         text-align: center;
     }
-    &__links{
+
+    &__links {
         margin-top: 10px;
         display: flex;
         justify-content: center;
         align-items: center;
         gap: 24px;
-        &--a{
+
+        &--a {
             color: #FFF;
             font-family: Arapey;
             font-size: 18px;
             font-style: normal;
             font-weight: 400;
-            line-height: 22px; /* 122.222% */
+            line-height: 22px;
+            /* 122.222% */
             text-decoration-line: underline;
         }
     }
 }
 
-.card{
-    &__auth{
+.tests {
+    padding: 40px 0;
+    max-width: calc(100% - 360px);
+    margin: 0 auto;
+
+    &__content {
+        &--header {
+            color: #000;
+            text-align: center;
+            font-family: League Spartan;
+            font-size: 32px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            margin-bottom: 12px;
+        }
+
+        &--paragraph {
+            color: #000;
+            text-align: center;
+            font-family: Arapey;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 22px;
+            /* 122.222% */
+            margin-bottom: 40px;
+        }
+    }
+
+    &__cards {
+        &--full {
+            background-color: $primaryColor;
+            padding: 40px 24px;
+            text-align: center;
+            border-radius: 24px;
+            margin-bottom: 40px;
+
+            &-header {
+                color: #FFF;
+                font-family: League Spartan;
+                font-size: 32px;
+                font-style: normal;
+                font-weight: 700;
+                line-height: normal;
+                margin-bottom: 12px;
+            }
+
+            &-paragraph {
+                color: #FFF;
+                font-family: Arapey;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 22px;
+                /* 122.222% */
+                margin-bottom: 40px;
+            }
+
+            &-button {
+                border-radius: 28px;
+
+                padding: 18px 84px;
+                margin: 0 auto;
+                background-color: #fff;
+            }
+        }
+    }
+}
+
+.card {
+    &__auth {
         text-align: center;
         width: 35vw;
-        &--logo{
+        margin: 0 auto;
+        &--logo {}
 
-        }
-        &--header{
+        &--header {
             color: #000;
             font-family: League Spartan;
             font-size: 32px;
@@ -583,23 +813,28 @@ $size40 : 40px;
             line-height: normal;
             margin-top: 24px;
         }
-        &--paragraph{
+
+        &--paragraph {
             color: #000;
             text-align: center;
             font-family: Arapey;
             font-size: 20px;
             font-style: normal;
             font-weight: 400;
-            line-height: 22px; /* 110% */
+            line-height: 22px;
+            /* 110% */
             margin-top: 12px;
             margin-bottom: 40px;
         }
     }
-    &__empty{
+
+    &__empty {
         width: 35vw;
-        &--content{
+
+        &--content {
             text-align: center;
-            &-header{
+
+            &-header {
                 margin-top: 24px;
                 color: #000;
                 font-family: League Spartan;
@@ -608,69 +843,90 @@ $size40 : 40px;
                 font-weight: 700;
                 line-height: normal;
             }
-            &-paragraph{
+
+            &-paragraph {
                 color: #000;
                 text-align: center;
                 font-family: Arapey;
                 font-size: 18px;
                 font-style: normal;
                 font-weight: 400;
-                line-height: 22px; /* 122.222% */
+                line-height: 22px;
+                /* 122.222% */
                 margin-top: 8px;
             }
         }
-        &--image{
+
+        &--image {
             margin: 0 auto;
         }
     }
-    &__plan{
+
+    &__plan {
         padding: 24px;
         border-radius: 16px;
         background: #FFF;
-        &.to_do{
+
+        &.to_do {
             border: 1.5px solid $primaryColor;
         }
-        &.past{
+
+        &.past {
             border: 1.5px solid $errorColor;
 
         }
-        &.done{
+
+        &.done {
             border: 1.5px solid $successColor;
 
         }
-        &--status{
+
+        &--status {
             min-height: $size40;
-            p{
-                &.past{
+            display: flex;
+            align-items: center;
+
+            p {
+                display: flex;
+                align-items: center;
+
+                &.past {
                     color: $errorColor;
                 }
-                &.done{
+
+                &.done {
                     color: $successColor;
                 }
+
                 leading-trim: both;
                 text-edge: cap;
-                font-feature-settings: 'clig' off, 'liga' off;
+                font-feature-settings: 'clig' off,
+                'liga' off;
                 font-family: League Spartan;
                 font-size: 13px;
                 font-style: normal;
                 font-weight: 500;
-                line-height: 20px; /* 153.846% */
+                line-height: 20px;
+                /* 153.846% */
                 display: flex;
                 align-items: center;
                 gap: 4px;
             }
-            
+
         }
-        &--header{
+
+        &--header {
             color: #1C1B1F;
             font-feature-settings: 'clig' off, 'liga' off;
             font-family: League Spartan;
             font-size: 16px;
             font-style: normal;
             font-weight: 400;
-            line-height: 20px; /* 125% */
+            line-height: 20px;
+            /* 125% */
         }
-        &--date{
+
+        &--date {
             color: #1C1B1F;
             leading-trim: both;
             text-edge: cap;
@@ -679,9 +935,11 @@ $size40 : 40px;
             font-size: 12px;
             font-style: normal;
             font-weight: 400;
-            line-height: 20px; /* 166.667% */
+            line-height: 20px;
+            /* 166.667% */
         }
-        &--paragraph{
+
+        &--paragraph {
             color: #1C1B1F;
             text-align: justify;
             font-feature-settings: 'clig' off, 'liga' off;
@@ -689,26 +947,31 @@ $size40 : 40px;
             font-size: 12px;
             font-style: normal;
             font-weight: 400;
-            line-height: 20px; /* 166.667% */
+            line-height: 20px;
+            /* 166.667% */
         }
-        &--top{
+
+        &--top {
             display: flex;
             align-items: center;
             justify-content: space-between;
             margin-bottom: 10px;
-            span{
+
+            span {
                 gap: 4px;
 
                 display: flex;
                 align-items: center;
             }
         }
-        &--bottom{
+
+        &--bottom {
             margin-top: 10px;
         }
     }
-    &__meeting{
-        &--date{
+
+    &__meeting {
+        &--date {
             color: #000;
             font-family: League Spartan;
             font-size: 24px;
@@ -717,7 +980,8 @@ $size40 : 40px;
             line-height: normal;
             margin: 12px 0;
         }
-        &--span{
+
+        &--span {
             color: #000;
             font-family: League Spartan;
             font-size: 14px;
@@ -726,7 +990,8 @@ $size40 : 40px;
             line-height: normal;
             margin-top: 16px;
         }
-        &--title{
+
+        &--title {
             color: #000;
             font-family: League Spartan;
             font-size: 18px;
@@ -735,11 +1000,33 @@ $size40 : 40px;
             line-height: normal;
             margin-top: $size24;
         }
-        &--button{
+
+        &--button {
             margin-top: 24px;
             width: 100%;
         }
     }
+
+    &__tests {
+        &--body {
+            padding: 16px;
+            gap: 16px;
+            border-radius: 0px 0px 16px 16px;
+            border: 1px solid rgba(0, 0, 0, 0.12);
+
+            &--title {
+                color: #000;
+                text-align: center;
+                font-family: League Spartan;
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 400;
+                line-height: 22px;
+                /* 91.667% */
+            }
+        }
+    }
+
     // &__test{
     //     img{
     //     }
@@ -749,4 +1036,134 @@ $size40 : 40px;
     //         margin: 0 auto;
     //     }
     // }
+}
+
+.Toastify__toast {
+    border-radius: 50px !important;
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.04);
+    width: 500px;
+    padding: 16px !important;
+    top: 110px !important;
+
+    &-body {
+        padding: 0 !important;
+
+        button {
+            display: flex;
+            align-items: center;
+            gap: 4.5px;
+            color: #D891FD !important;
+        }
+    }
+    &--default {
+        background-color: #383838 !important;
+        align-items: center !important;
+        justify-content: space-between;
+    
+        h3 {
+            color: #fff;
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+    }
+    &-button {
+        align-self: center !important;
+    }
+}
+
+.steps{
+ position: relative;
+}
+
+.progress{
+    background: var(--colour-primary-100, #4F46E5);    
+    position: absolute;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    height: 4px;
+    width: 0%;
+    z-index: -1;
+    transition: 0.4s ease;
+    &-container {
+        display: flex;
+        justify-content: space-between;
+        position: relative;
+        margin-bottom: 73px;
+        max-width: 100%;
+        width: 100%;
+        &::before {
+            content: "";
+            background-color: #D1D5DB;
+            position: absolute;
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+            height: 4px;
+            width: 100%;
+            z-index: -1;
+        }
+    }
+}
+
+
+
+.circle {
+    // background: var(--light-grey);
+    // color: var(--light-grey);
+    // border-radius: 50%;
+    // border: 3px solid var(--light-grey);
+    height: 32px;
+    width: 33px;
+    background-image: url('/assets/images/next-step.svg');
+    background-color: #fff;
+    background-size: contain;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.4s ease;
+    &.icon-active{
+        background-image: url('/assets/images/circle-active.svg');
+    }
+}
+
+.circle.current {
+    border-color: var(--accent-color);
+    background-image: url('/assets/images/steps-no-active.svg');
+    color: var(--accent-color);
+    scale: 1.1;
+}
+
+.circle .icon {
+    position: absolute;
+    font-size: 25px;
+    bottom: 25px;
+}
+
+.circle  {
+    .caption{
+        position: absolute;
+        font-size: 14px;
+        font-weight: bolder;
+        bottom: -30px;
+        white-space: nowrap;
+        color: #000;
+        font-family: League Spartan;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+    }
+    &.current{
+        .caption{
+            color: $primaryColor;
+            font-family: League Spartan;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+    }
 }

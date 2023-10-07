@@ -7,7 +7,10 @@ export default function PlansCard({
     status ,
     title,
     text,
-    date
+    date,
+    onMarkComplete = () => {
+        console.log('=== clicked ===')
+    }
 }) {
   return <div className={`card card__plan ${type}`}>
     <div className="card__plan--top">
@@ -17,14 +20,14 @@ export default function PlansCard({
     <p className="card__plan--paragraph">{text}</p>
     <div className="card__plan--bottom">
         {type === 'past' ? <div className='flex justify-between items-center'>
-        <Button className='special_button' endContent={
+        <Button onClick={onMarkComplete} className='special_button' endContent={
             <SiteImage src={'/assets/images/check.svg'} />
         }>Mark as Completed </Button>
         <div className="card__plan--status">
             <p className='past'>Past Due <SiteImage src={'/assets/images/danger_check.svg'} /></p>
         </div> 
-        </div> : type === 'to_do' ? <Button className='special_button' endContent={
-            <SiteImage src={'assets/images/check.svg'} />
+        </div> : type === 'to_do' ? <Button onClick={onMarkComplete} className='special_button' endContent={
+            <SiteImage src={'/assets/images/check.svg'} />
         }>Mark as Completed </Button> : <div className="card__plan--status">
             <p className='done'>Done <SiteImage src={'/assets/images/success_check.svg'} /></p>
         </div> }
