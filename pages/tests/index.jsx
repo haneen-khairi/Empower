@@ -44,7 +44,7 @@ export default function index() {
             </Button>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-x-[40px]">
+        <div className="grid lg:grid-cols-2 lg:grid-cols-1 lg:gap-x-[40px] sm:mb-[24px]  ">
           <TestsCard imageSrc={'/assets/images/test1.svg'} title={'The Brain Profile Assessement'} />
           <TestsCard imageSrc={'/assets/images/test2.svg'} title={'TOEFL Exam'} />
         </div>

@@ -77,7 +77,7 @@ export default function Header() {
                 
 
                 disableRipple
-                className="p-0 bg-transparent data-[hover=true]:bg-transparent min-h"
+                className="p-0 bg-transparent data-[hover=true]:bg-transparent min-h  "
                 startContent={
                   <SiteImage src={'assets/images/Profile_photo.svg'} />
                 }
@@ -87,8 +87,9 @@ export default function Header() {
                 radius="sm"
                 variant="light"
               >
-                Adeeb Shaban
+                <p className="hidden sm:flex">Adeeb Shaban</p>
               </Button>
+              
             </DropdownTrigger>
           </NavbarItem>
           <DropdownMenu
@@ -104,8 +105,7 @@ export default function Header() {
                 <SiteImage src={'assets/images/setting.svg'}/>
               }
             >
-              <Link href="/account-information"
->
+              <Link href="/account-information">
                 Account Information
               </Link>
             </DropdownItem>

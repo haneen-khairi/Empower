@@ -102,7 +102,7 @@ export default function index() {
         </form>
         <div className="dont_have_acoount flex justify-center">
           <p>Not Registered Yet?</p>
-          <Link href={'/createAccount'}>Create Account <SiteImage src={'/assets/images/chevron_right.svg'} /></Link>
+          <Link href={'/create-account'}>Create Account <SiteImage src={'/assets/images/chevron_right.svg'} /></Link>
         </div>
       </AuthCard>
     </section>

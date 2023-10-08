@@ -2,8 +2,12 @@
 import AuthCard from "@/Components/UI/AuthCard";
 import SiteImage from "@/Components/UI/SiteImage";
 import InputField from "@/Components/fields/InputField";
+import SelectMenuField from "@/Components/fields/SelectField";
+import { AxiosInstance } from "@/Functions/AxiosInstance";
+import { emailRegex, passwordRegex } from "@/Functions/RegexFunction";
 import MainLayout from "@/Layouts/MainLayout";
 import { Button, Radio, RadioGroup } from "@nextui-org/react";
+import { steps } from "framer-motion";
 import Head from "next/head";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -25,6 +29,7 @@ export default function index() {
     password: "",
     confirmPassword: "",
   });
+  const [cumulativeData, setCumulativeData] = useState({});
 
   const nextStep = () => {
     switch (step) {
@@ -70,11 +75,43 @@ export default function index() {
   const validationStep1 = {
     full_name: { required: "Full name is required" },
     phone: { required: "Phone is required" },
-    email: { required: "Email is required" },
-    password: { required: "Password is required" },
-    confirmPassword: { required: "Confirm password is required" },
+    email: { required: "Email is required", pattern: {
+      value: emailRegex,
+      // Change this regex pattern as needed
+      message: "Email is invalid",
+    }, },
+    password: { required: "Password is required"  , pattern: {
+      value: passwordRegex,
+      // Change this regex pattern as needed
+      message: "Password is invalid",
+    }},
+    confirmPassword: { required: "Confirm password is required" , pattern: {
+      value: passwordRegex,
+      // Change this regex pattern as needed
+      message: "Confirm password is invalid",
+    } },
     // Add more validation rules for other input fields as needed
   };
+  function submitSteps(data){
+    console.log('=== data steps ===', data)
+    // Merging previous cumulative data with new data
+    const updatedData = { ...cumulativeData, ...data };
+    setCumulativeData(updatedData);
+    console.log('=== cumulativeData ===',updatedData , cumulativeData)
+    if(step === 6){
+      createAccount(cumulativeData)
+    }else if(step > 6){
+      setStep(step + 1);
+    }
+  }
+  async function createAccount(data){
+    try {
+      const accountRes = await AxiosInstance(`post`, `${process.env.NEXT_PUBLIC_API_KEY}/api/create-account`,{}, {},data)
+      console.log('=== response ===', accountRes)
+    } catch (error) {
+      console.log('=== error in creating ===', error)
+    }
+  }
   function onChangeOther(e) {
     console.log("====value====", e);
     if (e.target.defaultValue === "other") {
@@ -84,6 +121,7 @@ export default function index() {
     }
   }
   function renderSteps() {
+
     switch (step) {
       case 1:
         return (
@@ -149,9 +187,11 @@ export default function index() {
               onChange={handleChange}
             />
             <Button
-            disabled={Object.keys(errors).length > 0}
+              // disabled={Object.keys(errors).length > 0}
+              disabled={!isValid}
               className="special_button signup__button"
-              onClick={nextStep}
+              // onClick={nextStep}
+              type="submit"
             >
               Next
             </Button>
@@ -177,7 +217,7 @@ export default function index() {
               text="To proceed with resetting your password, please check your email and enter the code sent"
               logo={false}
             >
-              <form onSubmit={(e) => e.preventDefault()}>
+              {/* <form onSubmit={(e) => e.preventDefault()}> */}
                 <div className="grid grid-cols-5 gap-x-[24px]">
                   <InputField
                     register={register}
@@ -206,7 +246,7 @@ export default function index() {
                   <InputField
                     register={register}
                     errors={errors}
-                    errorMessage={{ required: "Confirm password is required" }}
+                    errorMessage={{ required: true }}
                     className="verify"
                     name="number3"
                     label={""}
@@ -218,7 +258,7 @@ export default function index() {
                   <InputField
                     register={register}
                     errors={errors}
-                    errorMessage={{ required: "Confirm password is required" }}
+                    errorMessage={{ required: true }}
                     className="verify"
                     name="number4"
                     label={""}
@@ -230,7 +270,7 @@ export default function index() {
                   <InputField
                     register={register}
                     errors={errors}
-                    errorMessage={{ required: "Confirm password is required" }}
+                    errorMessage={{ required: true }}
                     className="verify"
                     name="number5"
                     label={""}
@@ -247,10 +287,10 @@ export default function index() {
                     <SiteImage src={"/assets/images/chevron_right.svg"} />
                   </Button>
                 </div>
-                <Button className="special_button w-full" onClick={nextStep}>
+                <Button className="special_button w-full" type="submit">
                   Next
                 </Button>
-              </form>
+              {/* </form> */}
             </AuthCard>
           </>
         );
@@ -276,21 +316,41 @@ export default function index() {
                   <span>Click to browse or drag and drop your files</span>
                 </div>
               </label>
+              <div className="field relative">
+              {errors.image && <div
+                  className="flex items-center justify-start gap-x-[8px] error_message"
+                >
+                  <SiteImage
+                    alt="exclamation mark"
+                    width={16}
+                    height={16}
+                    src="/assets/images/error_icon.svg"
+                  />
+
+                  <p className="text-error">{errors['image'].message}</p>
+                </div>}
+              </div>
               <input
-                register={register}
-                errors={errors}
+                // register={register}
+                // errors={errors}
+                {...register('image', {required: 'Image is required'})}
+
                 name="image"
                 type="file"
                 id="image"
                 hidden
               />
             </div>
-            <InputField
+            <SelectMenuField
               register={register}
               errors={errors}
               type="text"
               name="Gender"
               id={"Gender"}
+              items={[
+                'male',
+                'Female'
+              ]}
               validations={validations}
               placeholder="Gender (Required)"
               onChange={handleChange}
@@ -305,17 +365,19 @@ export default function index() {
               placeholder="Date of Birth (Required)"
               onChange={handleChange}
             />
-            <InputField
+            <SelectMenuField
               register={register}
               errors={errors}
               type="text"
               name="country"
               id={"country"}
               validations={validations}
+              errorMessage={{ required: "Country is required" }}
+              items={["Jordan", "Egypt", "England", "Usa"]}
               placeholder="Country or Residence (Required)"
               onChange={handleChange}
             />
-            <Button className="special_button w-full" onClick={nextStep}>
+            <Button className="special_button w-full" type="submit">
               Next
             </Button>
           </>
@@ -333,44 +395,22 @@ export default function index() {
             </h4>
             <InputField
               type="text"
-              name="q1"
+              name="question_1"
               register={register}
               errors={errors}
+              initialValue=""
               validations={validations}
+              errorMessage={{ required: "You need to answer this" }}
+
               placeholder="Your answer... (Required)"
               onChange={handleChange}
             />
-            <Button className="special_button w-full" onClick={nextStep}>
+            <Button className="special_button w-full" type="submit">
               Next
             </Button>
           </>
         );
       case 5:
-        return (
-          <>
-            <h4 className="signup__header">Get Started!</h4>
-            <p className="signup__paragraph">
-              To help assist you better, we want to ask you a few questions
-            </p>
-
-            <h4 className="signup__content--header">
-              Q1. What is your current year/grade?
-            </h4>
-            <InputField
-              register={register}
-              errors={errors}
-              type="text"
-              name="q1"
-              validations={validations}
-              placeholder="Your answer... (Required)"
-              onChange={handleChange}
-            />
-            <Button className="special_button w-full" onClick={nextStep}>
-              Next
-            </Button>
-          </>
-        );
-      case 6:
         return (
           <>
             <h4 className="signup__content--header mb-[24px]">
@@ -409,19 +449,28 @@ export default function index() {
 
             <Button
               className="special_button w-full mt-[24px]"
-              onClick={nextStep}
+              type="submit"
             >
               Next
             </Button>
           </>
         );
-      case 7:
+      case 6:
         return (
           <>
             <h4 className="signup__content--header mb-[24px]">
               Q3. Your School or University’s Name
             </h4>
-
+            <InputField
+                  register={register}
+                  errors={errors}
+                  name="other"
+                  label={""}
+                  placeholder={"Other concerns..."}
+                  id={"other"}
+                  type={"text"}
+                  maxLength={200}
+            />
             <Button className="special_button w-full mt-[24px]" type="submit">
               Done
             </Button>
@@ -447,7 +496,7 @@ export default function index() {
                   ? { width: "33.3333%" }
                   : step === 3
                   ? { width: "66.6667%" }
-                  : step === 4 || step === 5 || step === 6 || step == 7
+                  : step > 3 
                   ? { width: "100%" }
                   : { width: "0" }
               }
@@ -468,7 +517,9 @@ export default function index() {
             </div>
           </div>
         </div>
-        <form onSubmit={(e) => e.preventDefault()}>{renderSteps()}</form>
+        <form onSubmit={handleSubmit(submitSteps)}>
+          {renderSteps()}
+        </form>
       </section>
     </MainLayout>
   );

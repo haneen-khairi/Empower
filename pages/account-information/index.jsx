@@ -1,6 +1,8 @@
 import AuthCard from "@/Components/UI/AuthCard";
 import SiteImage from "@/Components/UI/SiteImage";
 import InputField from "@/Components/fields/InputField";
+import SelectMenuField from "@/Components/fields/SelectField";
+import { AxiosInstance } from "@/Functions/AxiosInstance";
 import { emailRegex, passwordRegex } from "@/Functions/RegexFunction";
 import MainLayout from "@/Layouts/MainLayout";
 import { Button, Checkbox } from "@nextui-org/react";
@@ -19,8 +21,29 @@ export default function index() {
     mode: "onChange",
   });
   function onSubmitAccountInfo(data) {
+
+
+    const fd = new FormData()
+    fd.append('image', data.image[0])
+    fd.append('name', data.name)
+    fd.append('password', data.password)
+    fd.append('phone', data.phone)
+    fd.append('country', data.country)
+    fd.append('date', data.date)
+    fd.append('gender', data.gender)
+    fd.append('email', data.email)
     console.log("===submit email===", data);
+    submitData(fd)
     // reset()
+  }
+  async function submitData(data){
+    try {
+      const resData = await AxiosInstance('post', `${process.env.NEXT_PUBLIC_API_KEY}/api/account-info`, {} ,{}, data)
+      console.log(resData)
+    } catch (error) {
+      console.log('=== error ===',error)
+
+    }
   }
   return (
     <MainLayout>
@@ -41,17 +64,21 @@ export default function index() {
                 <span>Click to browse or drag and drop your files</span>
               </div>
             </label>
-            <input name="image" type="file" id="image" hidden
-              register={register}
-              errors={errors}
+            <input
+              name="image"
+              type="file"
+              id="image"
+              hidden
+              {...register('image', {required: 'Image is required'})}
+              // register={register}
+              // errors={errors}
             />
           </div>
-          <div className="grid grid-cols-2 gap-x-[24px]">
+          <div className="grid md:grid-cols-2 sm:grid-cols-1 gap-x-[24px]">
             <InputField
               register={register}
               errors={errors}
-              errorMessage={{ required: 'Full name is required'}}
-
+              errorMessage={{ required: "Full name is required" }}
               name="name"
               label={""}
               placeholder={"name"}
@@ -60,24 +87,23 @@ export default function index() {
               initialValue={"Adeeb Shaban"}
               maxLength={200}
             />
-            <InputField
+            <SelectMenuField
               register={register}
               errors={errors}
-              errorMessage={{ required: 'Gender is required'}}
-
+              errorMessage={{ required: "Gender is required" }}
               name="gender"
               label={""}
               placeholder={"gender"}
               id={"gender"}
               type={"text"}
-              initialValue={"Male"}
+              items={["male", "female"]}
+              initialValue={"Select gender"}
               maxLength={200}
             />
             <InputField
               register={register}
               errors={errors}
-              errorMessage={{ required: 'Phone is required'}}
-
+              errorMessage={{ required: "Phone is required" }}
               name="phone"
               label={""}
               placeholder={"phone"}
@@ -89,28 +115,27 @@ export default function index() {
             <InputField
               register={register}
               errors={errors}
-              errorMessage={{ required: 'Date is required'}}
-
+              errorMessage={{ required: "Date is required" }}
               name="date"
               label={""}
               placeholder={"date"}
               id={"date"}
               type={"date"}
-              initialValue={"19 / 04 / 2000"}
+              initialValue={"2022-01-13"}
               maxLength={200}
             />
             <div className="form__group--links text-right">
               <InputField
                 register={register}
                 errors={errors}
-                errorMessage={{ required: 'Email is required', 
-                pattern: {
-                  value: emailRegex,
-                      // Change this regex pattern as needed
-                  message: "Email is invalid",
-                  }
+                errorMessage={{
+                  required: "Email is required",
+                  pattern: {
+                    value: emailRegex,
+                    // Change this regex pattern as needed
+                    message: "Email is invalid",
+                  },
                 }}
-
                 name="email"
                 label={""}
                 placeholder={"email"}
@@ -121,11 +146,11 @@ export default function index() {
               />
               <Link href={"/change-email"}>Change email</Link>
             </div>
-            <InputField
+            <SelectMenuField
               register={register}
               errors={errors}
-              errorMessage={{ required: 'Country is required'}}
-
+              errorMessage={{ required: "Country is required" }}
+              items={["Jordan", "Egypt", "England", "Usa"]}
               name="country"
               label={""}
               placeholder={"country"}
@@ -138,11 +163,12 @@ export default function index() {
               <InputField
                 register={register}
                 errors={errors}
-                errorMessage={{ required: 'Password is required',
-                pattern: {
-                  value: passwordRegex,
-                      // Change this regex pattern as needed
-                  message: "Password is invalid",
+                errorMessage={{
+                  required: "Password is required",
+                  pattern: {
+                    value: passwordRegex,
+                    // Change this regex pattern as needed
+                    message: "Password is invalid",
                   },
                 }}
                 name="password"
@@ -156,7 +182,11 @@ export default function index() {
               <Link href={"/change-password"}>Change Password</Link>
             </div>
           </div>
-          <Button className="special_button manage__account--button" type="submit" disabled={!isValid ? true : false}>
+          <Button
+            className="special_button manage__account--button"
+            type="submit"
+            disabled={!isValid ? true : false}
+          >
             Save
           </Button>
         </form>
