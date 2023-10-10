@@ -3,6 +3,7 @@ import EmptyStateCard from '@/Components/UI/EmptyStateCard'
 import SiteImage from '@/Components/UI/SiteImage'
 import TestsCard from '@/Components/UI/TestsCard'
 import InputField from '@/Components/fields/InputField'
+import { AxiosHeadersInstance } from '@/Functions/AxiosHeadersInstance'
 import MainLayout from '@/Layouts/MainLayout'
 import { Button, Checkbox } from '@nextui-org/react'
 import Head from 'next/head'
@@ -13,13 +14,21 @@ import  { useEffect, useState } from 'react'
 export default function index() {
   const route = useRouter()
   const [tests, setTests] = useState([
-    's'
   ])
+  async function getTests(){
+    try {
+      const testRes =  await AxiosHeadersInstance(`get`, `${process.env.NEXT_PUBLIC_API_KEY}/tests/get-started-test/`) 
+      console.log('=== get tests ===', testRes)
+    } catch (error) {
+      console.log('=== error tests ===', error)
+
+    }
+  }
   useEffect(() => {
     if(!route.isReady){
       return
     }
-  
+    getTests()
     return () => {
       
     }
@@ -49,7 +58,7 @@ export default function index() {
           <TestsCard imageSrc={'/assets/images/test2.svg'} title={'TOEFL Exam'} />
         </div>
       </div>
-    </section> : <section className='section_single'>
+    </section> : <section className='section__single'>
        <EmptyStateCard className='card__test' imageSrc='/assets/images/empty-test.svg' title="You haven’t reached the test yet" text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s." />
     </section>}
   </MainLayout>

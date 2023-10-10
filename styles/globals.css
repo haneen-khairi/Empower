@@ -754,6 +754,7 @@
 }
 .card__empty {
   width: 35vw;
+  margin: 0 auto;
 }
 @media screen and (max-width: 1024px) {
   .card__empty {

@@ -18,7 +18,6 @@ export default function index() {
       return
     }
     getToken()
-    console.log('token',token)
     return () => {
       
     }

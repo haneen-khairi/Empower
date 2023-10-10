@@ -6,6 +6,7 @@ import { useRouter } from 'next/router'
 import { useEffect , useRef, useState } from 'react'
 import {useSnackbar} from '@/custom-hooks/useSnackbar'
 import SiteImage from '@/Components/UI/SiteImage'
+import { AxiosHeadersInstance } from '@/Functions/AxiosHeadersInstance'
 export default function index() {
   const showSnackbar = useSnackbar()
   const route = useRouter()
@@ -16,6 +17,7 @@ export default function index() {
 
     }
   ])
+  const [progress, setProgress] = useState(0)
   // const handleUndo = (id) => {
   //   console.log('=== handleUndo ===', id);
   //   // setUndoClicked(true); // Mark the "Undo" button as clicked
@@ -40,7 +42,17 @@ export default function index() {
   // }
 
   const shouldExecute = useRef(true);
+  async function getPlans(){
+    try {
+      const testRes =  await AxiosHeadersInstance(`get`, `${process.env.NEXT_PUBLIC_API_KEY}/tests/goals/`) 
+      console.log('=== get tests ===', testRes)
+      setPlans(testRes?.data?.goals)
+      setProgress(testRes?.data?.progress)
+    } catch (error) {
+      console.log('=== error tests ===', error)
 
+    }
+  }
   function completePlan() {
     console.log('=== complete plan ===');
     showSnackbar(Undo, 'dark');
@@ -83,7 +95,7 @@ export default function index() {
     if(!route.isReady){
       return
     }
-    
+    getPlans()
     return () => {
       
     }
@@ -94,7 +106,7 @@ export default function index() {
       <title>{`${process.env.NEXT_PUBLIC_TITLE}Plan`}</title>
     </Head>
     <section className={plans.length > 0 ? '' : 'section__single' }>
-      {plans.length > 0 ? <PlansPage plans={plans} onMarkPlansPage={completePlan} /> :<EmptyStateCard className='card__plan' imageSrc='/assets/images/empty-plan.svg' title="You haven’t reached the test yet" text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s." />}
+      {plans.length > 0 ? <PlansPage plans={plans} progress={progress} onMarkPlansPage={completePlan} /> :<EmptyStateCard className='card__plan' imageSrc='/assets/images/empty-plan.svg' title="You haven’t reached the test yet" text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s." />}
     </section>
   </MainLayout>
   

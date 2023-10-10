@@ -2,6 +2,7 @@ import AuthCard from '@/Components/UI/AuthCard'
 import SiteImage from '@/Components/UI/SiteImage'
 import InputField from '@/Components/fields/InputField'
 import { AxiosHeadersInstance } from '@/Functions/AxiosHeadersInstance'
+import { AxiosInstance } from '@/Functions/AxiosInstance'
 import { passwordRegex } from '@/Functions/RegexFunction'
 import MainLayout from '@/Layouts/MainLayout'
 import { useSnackbar } from '@/custom-hooks/useSnackbar'
@@ -14,6 +15,7 @@ import { useForm } from 'react-hook-form'
 
 export default function index() {
   const route = useRouter()
+  const {email} = route.query
   const showSnackbar = useSnackbar()
   const {
     register,
@@ -30,12 +32,16 @@ export default function index() {
   }
   async function resetPasswordApi(data){
     try {
-      const resetPasswordRes = await AxiosHeadersInstance(
+      const resetPasswordRes = await AxiosInstance(
         `post`,
-        `${process.env.NEXT_PUBLIC_API_KEY}/account/update-password/`,
+        `${process.env.NEXT_PUBLIC_API_KEY}/account/password/reset/`,
         {},
         {},
-        data
+        {
+          email,
+          password: data.password,
+          confirm_password: data.confirm_password
+        }
       );
       if(resetPasswordRes.status){
         showSnackbar(`${resetPasswordRes.data}`,`success`)
@@ -48,7 +54,7 @@ export default function index() {
       console.log('=== error ===', error)
     }
   }
-  const password = watch('new_password' , '')
+  const password = watch('password' , '')
   useEffect(() => {
     if(!route.isReady){
       return;
@@ -72,7 +78,7 @@ export default function index() {
               message: "Password is invalid",
               },
               
-            }}  name='new_password' label={''} placeholder={`Password (Required)`} id={'new_password'} type={'password'} maxLength={200} />
+            }}  name='password' label={''} placeholder={`Password (Required)`} id={'password'} type={'password'} maxLength={200} />
             <InputField register={register} errors={errors} errorMessage={{ required: 'Confirm assword is required' , 
               pattern: {
               value: passwordRegex,

@@ -6,6 +6,7 @@ import Logo from "@/Components/UI/Logo";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import SiteImage from "@/Components/UI/SiteImage";
+import { logout } from "@/Functions/GlobalFunctions";
 export default function Header() {
   const route = useRouter()
   const [token, setToken] = useState()
@@ -14,6 +15,11 @@ export default function Header() {
     if(typeof window !== undefined){
       setToken(localStorage.getItem('token'))
     }
+  }
+  function onLogout(){
+    logout()
+    route.push('/')
+    console.log('=== logout ===')
   }
   const menuItems = [
     "Home",
@@ -79,10 +85,10 @@ export default function Header() {
                 disableRipple
                 className="p-0 bg-transparent data-[hover=true]:bg-transparent min-h  "
                 startContent={
-                  <SiteImage src={'assets/images/Profile_photo.svg'} />
+                  <SiteImage src={'/assets/images/Profile_photo.svg'} />
                 }
                 endContent={
-                  <SiteImage src={'assets/images/arrow_drop_down.svg'} />
+                  <SiteImage src={'/assets/images/arrow_drop_down.svg'} />
                 }
                 radius="sm"
                 variant="light"
@@ -99,20 +105,23 @@ export default function Header() {
             }}
           >
             <DropdownItem 
+            as={Link}
+            href="/account-information"
             showDivider
               key="Account Information"
               startContent={
-                <SiteImage src={'assets/images/setting.svg'}/>
+                <SiteImage src={'/assets/images/setting.svg'}/>
               }
             >
-              <Link href="/account-information">
                 Account Information
-              </Link>
+              {/* <Link href="/account-information">
+              </Link> */}
             </DropdownItem>
             <DropdownItem
               key="Logout"
+              onClick={onLogout}
               startContent={
-                <SiteImage  src={'assets/images/logout.svg'}/>
+                <SiteImage  src={'/assets/images/logout.svg'}/>
 
               }
             >

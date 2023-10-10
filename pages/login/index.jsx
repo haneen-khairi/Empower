@@ -1,15 +1,19 @@
 import AuthCard from '@/Components/UI/AuthCard'
 import SiteImage from '@/Components/UI/SiteImage'
 import InputField from '@/Components/fields/InputField'
+import { AxiosInstance } from '@/Functions/AxiosInstance'
 import { emailRegex, passwordRegex } from '@/Functions/RegexFunction'
 import MainLayout from '@/Layouts/MainLayout'
+import { useSnackbar } from '@/custom-hooks/useSnackbar'
 import { Button, Checkbox } from '@nextui-org/react'
 import Head from 'next/head'
 import Link from 'next/link'
-import React, { useRef, useState } from 'react'
+import { useRouter } from 'next/router'
+import React, { useEffect, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 export default function index() {
+  const showSnackbar = useSnackbar()
   const {
     register,
     handleSubmit,
@@ -18,49 +22,75 @@ export default function index() {
   } = useForm({
     mode: 'onChange'
   });
+  const route =  useRouter()
   const [validation, setValidation] = useState([])
   const [disable, setDisable] = useState(true)
   const [userObject , setUserObject] = useState({
     email: "",
     password: ""
   })
-  function onGetUserData(event){
-    const {name , value} = event?.target
-    const userData = {...userObject}
-    let validationArray = [];
-    userData[name] = value.trim()
-    console.log('getting data...' , userData)
-    setUserObject(userData)
-    if(userData.email === ""){
-      validationArray.push({name: 'email', error: 'Email is required'})
-      setDisable(true)
-    }else if(!emailRegex.test(userData.email)){
-      validationArray.push({name: 'email', error: 'Email is invalid'})
-      setDisable(true)
-    }else if(userData.password === ""){
-      validationArray.push({name: 'password', error: 'Password is required'})
-      setDisable(true)
-    }else if(!passwordRegex.test(userData.password)){
-      validationArray.push({name: 'password', error: 'Password is invalid'})
-      setDisable(true)
-    }else{
-      setDisable(false)
-    }
+  // function onGetUserData(event){
+  //   const {name , value} = event?.target
+  //   const userData = {...userObject}
+  //   let validationArray = [];
+  //   userData[name] = value.trim()
+  //   console.log('getting data...' , userData)
+  //   setUserObject(userData)
+  //   if(userData.email === ""){
+  //     validationArray.push({name: 'email', error: 'Email is required'})
+  //     setDisable(true)
+  //   }else if(!emailRegex.test(userData.email)){
+  //     validationArray.push({name: 'email', error: 'Email is invalid'})
+  //     setDisable(true)
+  //   }else if(userData.password === ""){
+  //     validationArray.push({name: 'password', error: 'Password is required'})
+  //     setDisable(true)
+  //   }else if(!passwordRegex.test(userData.password)){
+  //     validationArray.push({name: 'password', error: 'Password is invalid'})
+  //     setDisable(true)
+  //   }else{
+  //     setDisable(false)
+  //   }
 
-    setValidation(validationArray)
-  }
-  function resetForm(){
-    setUserObject({
-      email: "",
-      password: ""
-    })
-    loginForm.current.reset()
-  }
+  //   setValidation(validationArray)
+  // }
+  // function resetForm(){
+  //   setUserObject({
+  //     email: "",
+  //     password: ""
+  //   })
+  //   loginForm.current.reset()
+  // }
   function onLogin(data){
     // event.preventDefault();
     console.log('=== login data ===', data)
-    reset()
+    loginLogic(data)
   }
+  async function loginLogic(data){
+    try {
+      const respLogin = await AxiosInstance(`post`, `${process.env.NEXT_PUBLIC_API_KEY}/account/login/`, {}, {}, data)
+      console.log('=== res login ===' , respLogin)
+      if(respLogin.status){
+        localStorage.setItem('token', respLogin.data.access)
+        localStorage.setItem('refresh_token', respLogin.data.refresh)
+        route.push('/')
+        reset()
+      }else{
+        showSnackbar(respLogin.error, `error`)
+      }
+
+    } catch (error) {
+      
+    }
+  }
+  useEffect(() => {
+    if(!route.isReady){
+      return
+    }
+    
+    
+  }, [route])
+  
   return <MainLayout>
     <Head>
       <title>{`${process.env.NEXT_PUBLIC_TITLE}Login`}</title>

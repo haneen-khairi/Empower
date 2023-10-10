@@ -4,6 +4,7 @@ import PlansCard from './PlansCard'
 
 export default function PlansPage({
     plans,
+    progress,
     onMarkPlansPage = () => {
         console.log('=== onMarkPlansPage ===')
     }
@@ -13,7 +14,7 @@ export default function PlansPage({
             <CircularProgress
                 aria-label="Loading..."
                 size="lg"
-                value={30}
+                value={progress}
                 color="success"
                 showValueLabel={true}
             />

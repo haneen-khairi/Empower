@@ -1,7 +1,7 @@
 import AuthCard from "@/Components/UI/AuthCard";
 import SiteImage from "@/Components/UI/SiteImage";
 import InputField from "@/Components/fields/InputField";
-import { AxiosInstance } from "@/Functions/AxiosInstance";
+import { AxiosHeadersInstance } from "@/Functions/AxiosHeadersInstance";
 import MainLayout from "@/Layouts/MainLayout";
 import { useSnackbar } from "@/custom-hooks/useSnackbar";
 import { Button } from "@nextui-org/react";
@@ -13,8 +13,8 @@ import { useForm } from "react-hook-form";
 
 export default function index() {
   const route = useRouter()
-  const { email } = route.query
   const showSnackbar = useSnackbar()
+  const { email } = route.query
   const {
     register,
     handleSubmit,
@@ -30,7 +30,7 @@ export default function index() {
     .map(key => data[key]) // Map to their corresponding values
     .join(''); // Join the values into a string
 
-    console.log('=== number ===',+verification_code); 
+    console.log('=== number ===', +verification_code); 
     // const verification_code = parseInt(Object.values(data).join(''));
     console.log("===submit===", data);
     verifyEmailApi(verification_code)
@@ -41,9 +41,9 @@ export default function index() {
   }
   async function verifyEmailApi(data){
     try {
-      const verifyRes = await AxiosInstance(
+      const verifyRes = await AxiosHeadersInstance(
         `post`,
-        `${process.env.NEXT_PUBLIC_API_KEY}/account/password/verify/`,
+        `${process.env.NEXT_PUBLIC_API_KEY}/account/verify-email-code/`,
         {},
         {},
         {email , 
@@ -51,11 +51,12 @@ export default function index() {
       );
       if(verifyRes.status){
         showSnackbar(`${verifyRes.data}`,`success`)
+        route.push('/')
         reset()
       }else{
         showSnackbar(`${verifyRes.error}`,`error`)
       }
-      route.push({pathname: '/forget-password/reset-password', query: {email , code:data }})
+      // route.push({pathname: '/verify-email', query: {email , code:verification_code }})
     } catch (error) {
       console.log('=== error ===', error)
     }
@@ -65,7 +66,6 @@ export default function index() {
       return;
     }
   
-    console.log('=== email ===', email)
   }, [route])
   return (
     <MainLayout>

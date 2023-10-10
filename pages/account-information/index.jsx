@@ -8,10 +8,12 @@ import MainLayout from "@/Layouts/MainLayout";
 import { Button, Checkbox } from "@nextui-org/react";
 import Head from "next/head";
 import Link from "next/link";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function index() {
+  const route = useRouter()
   const {
     register,
     handleSubmit,
@@ -20,6 +22,21 @@ export default function index() {
   } = useForm({
     mode: "onChange",
   });
+  const [countries, setCountries] = useState([])
+  async function getCountries(){
+    try {
+      const {data} =  await AxiosHeadersInstance(`get`, `${process.env.NEXT_PUBLIC_API_KEY}/account/countries`) 
+      let countries =  data.map((country) =>{
+        country.value = country.id
+        return country
+      })
+
+      setCountries(countries)
+    } catch (error) {
+      console.log('=== error tests ===', error)
+
+    }
+  }
   function onSubmitAccountInfo(data) {
 
 
@@ -45,6 +62,14 @@ export default function index() {
 
     }
   }
+  useEffect(() => {
+    if(!route.isReady){
+      return
+    }
+  
+    getCountries()
+  }, [route])
+  
   return (
     <MainLayout>
       <Head>
@@ -150,7 +175,7 @@ export default function index() {
               register={register}
               errors={errors}
               errorMessage={{ required: "Country is required" }}
-              items={["Jordan", "Egypt", "England", "Usa"]}
+              items={countries}
               name="country"
               label={""}
               placeholder={"country"}

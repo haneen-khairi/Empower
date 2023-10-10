@@ -1,14 +1,17 @@
 import SiteImage from '@/Components/UI/SiteImage'
 import InputField from '@/Components/fields/InputField'
 import TextareaField from '@/Components/fields/TextareaField'
+import { AxiosInstance } from '@/Functions/AxiosInstance'
 import { emailRegex } from '@/Functions/RegexFunction'
 import MainLayout from '@/Layouts/MainLayout'
+import { useSnackbar } from '@/custom-hooks/useSnackbar'
 import { Button } from '@nextui-org/react'
 import Head from 'next/head'
 import React from 'react'
 import { useForm } from 'react-hook-form'
 
 export default function index() {
+  const showSnackbar = useSnackbar()
   const {
     register,
     handleSubmit,
@@ -19,7 +22,25 @@ export default function index() {
   });
   function onSubmitContactUs(data){
     console.log('===submit contact form===', data)
+    onCallContactUs(data)
     // reset()
+  }
+  async function onCallContactUs(data){
+    try {
+      const contactResponse = await AxiosInstance(`post`,`${process.env.NEXT_PUBLIC_API_KEY}/core/contact-us/`,{} ,{}, data)
+      if(contactResponse.status){
+        showSnackbar(contactResponse.data, 'success')
+        reset()
+
+      }else{
+        showSnackbar(contactResponse.data, 'error')
+
+      }
+      console.log('===== contactResponse =====',contactResponse)
+    } catch (error) {
+      console.log('===== error contactResponse =====',error)
+
+    }
   }
   return <MainLayout>
     <Head>
@@ -36,7 +57,7 @@ export default function index() {
           register={register} 
           errorMessage={{ required: 'Full name is required'}}
           errors={errors}
-          name='full_name' label={''} placeholder={'Full Name'} id={'full_name'} type={'text'} maxLength={200} />
+          name='name' label={''} placeholder={'Full Name'} id={'name'} type={'text'} maxLength={200} />
           <InputField 
           className={'mb-[5px]'}
           register={register} 

@@ -861,6 +861,7 @@ $size40 : 40px;
 
     &__empty {
         width: 35vw;
+        margin: 0 auto;
         @media screen and (max-width: 1024px) {
             width: 55vw;
         }

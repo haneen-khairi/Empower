@@ -3,13 +3,15 @@ import AuthCard from "@/Components/UI/AuthCard";
 import SiteImage from "@/Components/UI/SiteImage";
 import InputField from "@/Components/fields/InputField";
 import SelectMenuField from "@/Components/fields/SelectField";
+import { AxiosHeadersInstance } from "@/Functions/AxiosHeadersInstance";
 import { AxiosInstance } from "@/Functions/AxiosInstance";
 import { emailRegex, passwordRegex } from "@/Functions/RegexFunction";
 import MainLayout from "@/Layouts/MainLayout";
 import { Button, Radio, RadioGroup } from "@nextui-org/react";
 import { steps } from "framer-motion";
 import Head from "next/head";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function index() {
@@ -17,11 +19,19 @@ export default function index() {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isValid },
   } = useForm({
     mode: "onChange",
   });
+  const route = useRouter()
+  const userEmail = useRef('');
+  const [countries, setCountries] = useState([])
   const [step, setStep] = useState(1);
+  const [token, setToken] = useState({
+    access_token: "",
+    refresh_token: ""
+  });
   const [validations, setValidations] = useState([]);
   const [otherQuestion, setOtherQuestion] = useState(false);
   const [formData, setFormData] = useState({
@@ -30,30 +40,30 @@ export default function index() {
     confirmPassword: "",
   });
   const [cumulativeData, setCumulativeData] = useState({});
-
-  const nextStep = () => {
-    switch (step) {
-      case 1:
-        // if (!validateEmail(formData.email)) {
-        //   alert("Please enter a valid email address");
-        //   return;
-        // }
-        break;
-      case 2:
-        // if (formData.password.length < 6) {
-        //   alert("Password should be at least 6 characters long");
-        //   return;
-        // }
-        break;
-      case 3:
-        break;
-      case 4:
-        break;
-      default:
-        break;
-    }
-    setStep(step + 1);
-  };
+  const password = watch("password", "");
+  // const nextStep = () => {
+  //   switch (step) {
+  //     case 1:
+  //       // if (!validateEmail(formData.email)) {
+  //       //   alert("Please enter a valid email address");
+  //       //   return;
+  //       // }
+  //       break;
+  //     case 2:
+  //       // if (formData.password.length < 6) {
+  //       //   alert("Password should be at least 6 characters long");
+  //       //   return;
+  //       // }
+  //       break;
+  //     case 3:
+  //       break;
+  //     case 4:
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  //   setStep(step + 1);
+  // };
 
   const prevStep = () => {
     setStep(step - 1);
@@ -65,6 +75,20 @@ export default function index() {
       [e.target.name]: e.target.value,
     });
   };
+  async function getCountries(){
+    try {
+      const {data} =  await AxiosHeadersInstance(`get`, `${process.env.NEXT_PUBLIC_API_KEY}/account/countries`) 
+      let countries =  data.map((country) =>{
+        country.value = country.id
+        return country
+      })
+
+      setCountries(countries)
+    } catch (error) {
+      console.log('=== error tests ===', error)
+
+    }
+  }
   function resendCode() {
     console.log("===code===");
   }
@@ -75,41 +99,134 @@ export default function index() {
   const validationStep1 = {
     full_name: { required: "Full name is required" },
     phone: { required: "Phone is required" },
-    email: { required: "Email is required", pattern: {
-      value: emailRegex,
-      // Change this regex pattern as needed
-      message: "Email is invalid",
-    }, },
-    password: { required: "Password is required"  , pattern: {
-      value: passwordRegex,
-      // Change this regex pattern as needed
-      message: "Password is invalid",
-    }},
-    confirmPassword: { required: "Confirm password is required" , pattern: {
-      value: passwordRegex,
-      // Change this regex pattern as needed
-      message: "Confirm password is invalid",
-    } },
+    email: {
+      required: "Email is required",
+      pattern: {
+        value: emailRegex,
+        // Change this regex pattern as needed
+        message: "Email is invalid",
+      },
+    },
+    password: {
+      required: "Password is required",
+      pattern: {
+        value: passwordRegex,
+        // Change this regex pattern as needed
+        message: "Password is invalid",
+      },
+    },
+    confirmPassword: {
+      required: "Confirm password is required",
+      pattern: {
+        value: passwordRegex,
+        // Change this regex pattern as needed
+        message: "Confirm password is invalid",
+      },
+      validate: (value) => value === password || "Passwords do not match",
+    },
     // Add more validation rules for other input fields as needed
   };
-  function submitSteps(data){
-    console.log('=== data steps ===', data)
+  function submitSteps(data) {
+    console.log("=== data steps ===", data);
     // Merging previous cumulative data with new data
-    const updatedData = { ...cumulativeData, ...data };
-    setCumulativeData(updatedData);
-    console.log('=== cumulativeData ===',updatedData , cumulativeData)
-    if(step === 6){
-      createAccount(cumulativeData)
-    }else if(step > 6){
+    // const updatedData = { ...cumulativeData, ...data };
+    // setCumulativeData(updatedData);
+    // console.log("=== cumulativeData ===", updatedData, cumulativeData);
+    // if (step === 6) {
+    //   createAccount(cumulativeData);
+    // } else if (step > 6) {
+      // }
+      if(step === 1){
+        console.log('=== step1 ===', data)
+        data.country_code = "+964"
+        userEmail.current = data.email
+        createAccount(data)
+      }else if(step === 2){
+        const verification_code = Object.keys(data)
+        .filter(key => key.startsWith('number')) // Filter keys that start with 'number'
+        .sort() // Optional: Sort the keys if they might not be in order
+        .map(key => data[key]) // Map to their corresponding values
+        .join(''); // Join the values into a string
+
+        console.log('=== number ===',+verification_code); 
+        // const verification_code = parseInt(Object.values(data).join(''));
+        console.log('=== step2 ===', data)
+
+        verifyAccount(verification_code)
+      }else if(step ===3) {
+        console.log('=== step3 ===', data)
+        const fd = new FormData()
+        fd.append('profile_picture', data.image[0])
+        fd.append('gender', data.gender)
+        fd.append('date_of_birth', data.date_of_birth)
+        fd.append('country', data.country)
+        additionalInfoAccount(fd)
+      }
+  }
+  async function createAccount(data) {
+    try {
+      const accountRes = await AxiosInstance(
+        `post`,
+        `${process.env.NEXT_PUBLIC_API_KEY}/account/sign-up/`,
+        {},
+        {},
+        data
+      );
+      console.log("=== createAccount response ===", accountRes);
       setStep(step + 1);
+
+    } catch (error) {
+      console.log("=== error in creating ===", error);
     }
   }
-  async function createAccount(data){
+  async function verifyAccount(data) {
     try {
-      const accountRes = await AxiosInstance(`post`, `${process.env.NEXT_PUBLIC_API_KEY}/api/create-account`,{}, {},data)
-      console.log('=== response ===', accountRes)
+      const accountRes = await AxiosInstance(
+        `post`,
+        `${process.env.NEXT_PUBLIC_API_KEY}/account/verify-sign-up/`,
+        {},
+        {},
+        {
+          email: userEmail.current ,
+          verification_code:data
+        }
+      );
+      if(accountRes.status){
+        const tokenData =  {...token}
+        tokenData.access_token = accountRes.data.access
+        tokenData.refresh_token = accountRes.data.refresh
+        setToken(tokenData)
+        setStep(step + 1);
+      }
+      console.log("=== verifyAccount response ===", accountRes);
+
+      
+
     } catch (error) {
-      console.log('=== error in creating ===', error)
+      console.log("=== error in verifying ===", error);
+    }
+  }
+  async function additionalInfoAccount(data) {
+    try {
+      const accountRes = await AxiosInstance(
+        `put`,
+        `${process.env.NEXT_PUBLIC_API_KEY}/account/info/update/`,
+        {Authorization :`Bearer ${token.access_token}`},
+        {},
+        data
+      );
+      console.log("=== additionalInfoAccount response ===", accountRes);
+      if(accountRes.status){
+        localStorage.setItem('token', token.access_token)
+        localStorage.setItem('refresh_token', token.refresh_token)
+        route.push('/')
+        setStep(step + 1);
+      }
+
+      
+
+    } catch (error) {
+      console.log("=== error in verifying ===", error);
     }
   }
   function onChangeOther(e) {
@@ -121,7 +238,6 @@ export default function index() {
     }
   }
   function renderSteps() {
-
     switch (step) {
       case 1:
         return (
@@ -136,8 +252,8 @@ export default function index() {
               errors={errors}
               errorMessage={validationStep1.full_name}
               type="text"
-              name="full_name"
-              id={"full_name"}
+              name="name"
+              id={"name"}
               validations={validations}
               placeholder="Full Name (Required)"
               onChange={handleChange}
@@ -147,8 +263,8 @@ export default function index() {
               errors={errors}
               errorMessage={validationStep1.phone}
               type="number"
-              name="phone"
-              id={"phone"}
+              name="phone_number"
+              id={"phone_number"}
               validations={validations}
               placeholder="Phone Number (Required)"
               onChange={handleChange}
@@ -180,8 +296,8 @@ export default function index() {
               errors={errors}
               errorMessage={validationStep1.confirmPassword}
               type="password"
-              name="c_password"
-              id={"c_password"}
+              name="confirm_password"
+              id={"confirm_password"}
               validations={validations}
               placeholder="Confirm Password (Required)"
               onChange={handleChange}
@@ -200,96 +316,96 @@ export default function index() {
       case 2:
         return (
           <>
-            {/* <div className="grid grid-cols-5 gap-x-[24px]">
-                <InputField className="verify" name='number1' label={''} placeholder={``} id={'number1'} type={'number'} maxLength={1} />
-                <InputField className="verify" name='number2' label={''} placeholder={``} id={'number2'} type={'number'} maxLength={1} />
-                <InputField className="verify" name='number3' label={''} placeholder={``} id={'number3'} type={'number'} maxLength={1} />
-                <InputField className="verify" name='number4' label={''} placeholder={``} id={'number4'} type={'number'} maxLength={1} />
-                <InputField className="verify" name='number5' label={''} placeholder={``} id={'number5'} type={'number'} maxLength={1} />
-                
-            </div>
-            <div className="dont_have_acoount flex justify-center">
-                <p>Haven’t received a code?</p>
-                <Button onClick={resendCode}>Resend Code <SiteImage src={'/assets/images/chevron_right.svg'} /></Button>
-            </div> */}
             <AuthCard
               title="Verify your email"
               text="To proceed with resetting your password, please check your email and enter the code sent"
               logo={false}
             >
               {/* <form onSubmit={(e) => e.preventDefault()}> */}
-                <div className="grid grid-cols-5 gap-x-[24px]">
-                  <InputField
-                    register={register}
-                    errors={errors}
-                    errorMessage={{ required: "Confirm password is required" }}
-                    className="verify"
-                    name="number1"
-                    label={""}
-                    placeholder={``}
-                    id={"number1"}
-                    type={"number"}
-                    maxLength={1}
-                  />
-                  <InputField
-                    register={register}
-                    errors={errors}
-                    errorMessage={{ required: "Confirm password is required" }}
-                    className="verify"
-                    name="number2"
-                    label={""}
-                    placeholder={``}
-                    id={"number2"}
-                    type={"number"}
-                    maxLength={1}
-                  />
-                  <InputField
-                    register={register}
-                    errors={errors}
-                    errorMessage={{ required: true }}
-                    className="verify"
-                    name="number3"
-                    label={""}
-                    placeholder={``}
-                    id={"number3"}
-                    type={"number"}
-                    maxLength={1}
-                  />
-                  <InputField
-                    register={register}
-                    errors={errors}
-                    errorMessage={{ required: true }}
-                    className="verify"
-                    name="number4"
-                    label={""}
-                    placeholder={``}
-                    id={"number4"}
-                    type={"number"}
-                    maxLength={1}
-                  />
-                  <InputField
-                    register={register}
-                    errors={errors}
-                    errorMessage={{ required: true }}
-                    className="verify"
-                    name="number5"
-                    label={""}
-                    placeholder={``}
-                    id={"number5"}
-                    type={"number"}
-                    maxLength={1}
-                  />
-                </div>
-                <div className="dont_have_acoount flex justify-center">
-                  <p>Haven’t received a code?</p>
-                  <Button onClick={resendCode}>
-                    Resend Code{" "}
-                    <SiteImage src={"/assets/images/chevron_right.svg"} />
-                  </Button>
-                </div>
-                <Button className="special_button w-full" type="submit">
-                  Next
+              <div className="grid grid-cols-6 gap-x-[24px]">
+                <InputField
+                  register={register}
+                  errors={errors}
+                  errorMessage={{ required: true }}
+                  className="verify"
+                  name="number1"
+                  label={""}
+                  placeholder={``}
+                  id={"number1"}
+                  type={"number"}
+                  maxLength={1}
+                />
+                <InputField
+                  register={register}
+                  errors={errors}
+                  errorMessage={{ required: true }}
+                  className="verify"
+                  name="number2"
+                  label={""}
+                  placeholder={``}
+                  id={"number2"}
+                  type={"number"}
+                  maxLength={1}
+                />
+                <InputField
+                  register={register}
+                  errors={errors}
+                  errorMessage={{ required: true }}
+                  className="verify"
+                  name="number3"
+                  label={""}
+                  placeholder={``}
+                  id={"number3"}
+                  type={"number"}
+                  maxLength={1}
+                />
+                <InputField
+                  register={register}
+                  errors={errors}
+                  errorMessage={{ required: true }}
+                  className="verify"
+                  name="number4"
+                  label={""}
+                  placeholder={``}
+                  id={"number4"}
+                  type={"number"}
+                  maxLength={1}
+                />
+                <InputField
+                  register={register}
+                  errors={errors}
+                  errorMessage={{ required: true }}
+                  className="verify"
+                  name="number5"
+                  label={""}
+                  placeholder={``}
+                  id={"number5"}
+                  type={"number"}
+                  maxLength={1}
+                />
+                <InputField
+                  register={register}
+                  errors={errors}
+                  errorMessage={{ required: true }}
+                  className="verify"
+                  name="number6"
+                  label={""}
+                  placeholder={``}
+                  id={"number6"}
+                  type={"number"}
+                  maxLength={1}
+                />
+              </div>
+              <div className="dont_have_acoount flex justify-center">
+                <p>Haven’t received a code?</p>
+                <Button onClick={resendCode}>
+                  Resend Code{" "}
+                  <SiteImage src={"/assets/images/chevron_right.svg"} />
                 </Button>
+              </div>
+              <Button disabled={!isValid ? true : false} className="special_button w-full" type="submit">
+                Next
+              </Button>
               {/* </form> */}
             </AuthCard>
           </>
@@ -317,24 +433,23 @@ export default function index() {
                 </div>
               </label>
               <div className="field relative">
-              {errors.image && <div
-                  className="flex items-center justify-start gap-x-[8px] error_message"
-                >
-                  <SiteImage
-                    alt="exclamation mark"
-                    width={16}
-                    height={16}
-                    src="/assets/images/error_icon.svg"
-                  />
+                {errors.image && (
+                  <div className="flex items-center justify-start gap-x-[8px] error_message">
+                    <SiteImage
+                      alt="exclamation mark"
+                      width={16}
+                      height={16}
+                      src="/assets/images/error_icon.svg"
+                    />
 
-                  <p className="text-error">{errors['image'].message}</p>
-                </div>}
+                    <p className="text-error">{errors["image"].message}</p>
+                  </div>
+                )}
               </div>
               <input
                 // register={register}
                 // errors={errors}
-                {...register('image', {required: 'Image is required'})}
-
+                {...register("image", { required: "Image is required" })}
                 name="image"
                 type="file"
                 id="image"
@@ -345,12 +460,15 @@ export default function index() {
               register={register}
               errors={errors}
               type="text"
-              name="Gender"
-              id={"Gender"}
-              items={[
-                'male',
-                'Female'
-              ]}
+              name="gender"
+              id={"gender"}
+              items={[{
+                value: "M",
+                name: 'Male'
+              }, {
+                value:"F",
+                name: 'Female'
+              }]}
               validations={validations}
               placeholder="Gender (Required)"
               onChange={handleChange}
@@ -373,11 +491,11 @@ export default function index() {
               id={"country"}
               validations={validations}
               errorMessage={{ required: "Country is required" }}
-              items={["Jordan", "Egypt", "England", "Usa"]}
+              items={countries}
               placeholder="Country or Residence (Required)"
               onChange={handleChange}
             />
-            <Button className="special_button w-full" type="submit">
+            <Button disabled={!isValid ? true : false} className="special_button w-full" type="submit">
               Next
             </Button>
           </>
@@ -401,7 +519,6 @@ export default function index() {
               initialValue=""
               validations={validations}
               errorMessage={{ required: "You need to answer this" }}
-
               placeholder="Your answer... (Required)"
               onChange={handleChange}
             />
@@ -447,10 +564,7 @@ export default function index() {
               </>
             )}
 
-            <Button
-              className="special_button w-full mt-[24px]"
-              type="submit"
-            >
+            <Button className="special_button w-full mt-[24px]" type="submit">
               Next
             </Button>
           </>
@@ -462,14 +576,14 @@ export default function index() {
               Q3. Your School or University’s Name
             </h4>
             <InputField
-                  register={register}
-                  errors={errors}
-                  name="other"
-                  label={""}
-                  placeholder={"Other concerns..."}
-                  id={"other"}
-                  type={"text"}
-                  maxLength={200}
+              register={register}
+              errors={errors}
+              name="other"
+              label={""}
+              placeholder={"Other concerns..."}
+              id={"other"}
+              type={"text"}
+              maxLength={200}
             />
             <Button className="special_button w-full mt-[24px]" type="submit">
               Done
@@ -480,6 +594,16 @@ export default function index() {
         return null;
     }
   }
+  useEffect(() => {
+    if(!route.isReady){
+      return
+    }
+    getCountries()
+    return () => {
+      
+    }
+  }, [route])
+  
   return (
     <MainLayout hideNavbar={true}>
       <Head>
@@ -496,30 +620,38 @@ export default function index() {
                   ? { width: "33.3333%" }
                   : step === 3
                   ? { width: "66.6667%" }
-                  : step > 3 
+                  : step > 3
                   ? { width: "100%" }
                   : { width: "0" }
               }
             ></div>
-            <div className={`circle ${step >= 1   ? "icon-active" : ''} ${step <= 1 ? 'icon-last' : ''} ${step === 1 ? 'current' : ''}`}>
+            <div
+              className={`circle ${step >= 1 ? "icon-active" : ""} ${
+                step <= 1 ? "icon-last" : ""
+              } ${step === 1 ? "current" : ""}`}
+            >
               <div className="caption">Personal Info</div>
             </div>
-            <div className={`circle ${step >= 2   ? "icon-active" : ''} ${step <= 2 ? 'icon-last' : ''} ${step === 2 ? 'current' : ''}`}>
+            <div
+              className={`circle ${step >= 2 ? "icon-active" : ""} ${
+                step <= 2 ? "icon-last" : ""
+              } ${step === 2 ? "current" : ""}`}
+            >
               <div className="caption">Verification</div>
             </div>
-            <div className={`circle ${step >= 3  ? "icon-active" : ''} ${step <= 3 ? 'icon-last' : ''} ${step === 3 ? 'current' : ''}`}>
+            <div
+              className={`circle ${step >= 3 ? "icon-active" : ""} ${
+                step <= 3 ? "icon-last" : ""
+              } ${step === 3 ? "current" : ""}`}
+            >
               <div className="caption">Additional Info</div>
             </div>
-            <div
-              className={`circle ${ step >= 4 ? "current" : '' }`}
-            >
+            <div className={`circle ${step >= 4 ? "current" : ""}`}>
               <div className="caption">Get Started</div>
             </div>
           </div>
         </div>
-        <form onSubmit={handleSubmit(submitSteps)}>
-          {renderSteps()}
-        </form>
+        <form onSubmit={handleSubmit(submitSteps)}>{renderSteps()}</form>
       </section>
     </MainLayout>
   );

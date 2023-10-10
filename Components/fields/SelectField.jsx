@@ -34,7 +34,7 @@ export default function SelectMenuField({
         {...register(name, errorMessage )}
       >
     {/* <option value="">{initialValue}</option> */}
-    {items.map((item, index) => <option key={index} value={item}>{item}</option> )}
+    {items.map((item, index) => <option key={index} value={item.value}>{item.name}</option> )}
       </select>
       {errors[name] && <div
           className="flex items-center justify-start gap-x-[8px] error_message"
