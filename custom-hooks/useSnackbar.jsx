@@ -11,7 +11,6 @@ export function useSnackbar(){
             draggable: true,
             progress: undefined,
             theme: "colored",
-            toastId: "custom-id-yes"
         })
     }
     return showSnackbar

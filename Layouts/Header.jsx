@@ -7,9 +7,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import SiteImage from "@/Components/UI/SiteImage";
 import { logout } from "@/Functions/GlobalFunctions";
+import { AxiosHeadersInstance } from "@/Functions/AxiosHeadersInstance";
 export default function Header() {
   const route = useRouter()
   const [token, setToken] = useState()
+  const [userInfo, setUserInfo] = useState()
   // const {}
   function getToken(){
     if(typeof window !== undefined){
@@ -20,6 +22,15 @@ export default function Header() {
     logout()
     route.push('/')
     console.log('=== logout ===')
+  }
+  async function getUserInfo(){
+    try {
+      const {data} =  await AxiosHeadersInstance(`get`, `${process.env.NEXT_PUBLIC_API_KEY}/account/user/info`) 
+      setUserInfo(data)
+    } catch (error) {
+      console.log('=== error tests ===', error)
+
+    }
   }
   const menuItems = [
     "Home",
@@ -37,6 +48,7 @@ export default function Header() {
     if(!route.isReady){
       return
     }
+    getUserInfo()
     getToken()
 
   }, [route, token])
@@ -57,20 +69,16 @@ export default function Header() {
         <Link href={'/'} className="mr-[56px]">
           <Logo />
         </Link>
-        <NavbarItem isActive={route.pathname === '/' ? true : false} className="navbar__menu--link">
-          <Link className="" href="/">
+        <NavbarItem as={Link} href="/" isActive={route.pathname === '/' ? true : false} className="navbar__menu--link">
+          {/* <Link className="" href="/"> */}
             Home
-          </Link>
+          {/* </Link> */}
         </NavbarItem>
-        <NavbarItem isActive={route.pathname === '/tests' ? true : false} className="navbar__menu--link">
-          <Link className="" href="/tests">
+        <NavbarItem as={Link} href="/tests" isActive={route.pathname === '/tests' ? true : false} className="navbar__menu--link">
           Tests
-          </Link>
         </NavbarItem>
-        <NavbarItem isActive={route.pathname === '/plan' ? true : false} className="navbar__menu--link">
-          <Link className="" href="/plan">
+        <NavbarItem as={Link} href="/plan" isActive={route.pathname === '/plan' ? true : false} className="navbar__menu--link">
           Plan
-          </Link>
         </NavbarItem>
       </NavbarContent>
 
@@ -93,7 +101,7 @@ export default function Header() {
                 radius="sm"
                 variant="light"
               >
-                <p className="hidden sm:flex">Adeeb Shaban</p>
+                <p className="hidden sm:flex">{userInfo?.name}</p>
               </Button>
               
             </DropdownTrigger>

@@ -10,13 +10,7 @@ import { AxiosHeadersInstance } from '@/Functions/AxiosHeadersInstance'
 export default function index() {
   const showSnackbar = useSnackbar()
   const route = useRouter()
-  const [plans, setPlans] = useState([
-    {
-      eventName: 'Event Name',
-      eventParagraph: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s",
-
-    }
-  ])
+  const [plans, setPlans] = useState([])
   const [progress, setProgress] = useState(0)
   // const handleUndo = (id) => {
   //   console.log('=== handleUndo ===', id);
@@ -53,21 +47,22 @@ export default function index() {
 
     }
   }
-  function completePlan() {
-    console.log('=== complete plan ===');
+  function completePlan(id) {
+    console.log('=== complete plan ===', id);
     showSnackbar(Undo, 'dark');
 
     if (shouldExecute.current) {
       setTimeout(() => {
         if (shouldExecute.current) {
-          callCompletedDone();
+          callCompletedDone(id);
         }
       }, 2500);
     }
   }
 
-  function callCompletedDone() {
+  function callCompletedDone(planId) {
     if (shouldExecute.current) {
+      completePlanApi(planId)
       console.log('=== mission done ===');
     }
   }
@@ -91,6 +86,23 @@ export default function index() {
       </h3>
     );
   };
+  async function completePlanApi(id){
+    try {
+      const completeResponse = await AxiosHeadersInstance(`put`,`${process.env.NEXT_PUBLIC_API_KEY}/tests/goals/${id}/`,{},{},{
+        status: 3
+      })
+      console.log('=== res ===' , completeResponse)
+      if(completeResponse.status){
+        getPlans()
+        showSnackbar(`${completeResponse.data}`, `success`)
+      }else{
+        showSnackbar(`${completeResponse.error}`, `error`, 'top-center', 2500)
+
+      }
+    } catch (error) {
+      console.log('error' , error)
+    }
+  }
   useEffect(() => {
     if(!route.isReady){
       return
@@ -105,8 +117,8 @@ export default function index() {
     <Head>
       <title>{`${process.env.NEXT_PUBLIC_TITLE}Plan`}</title>
     </Head>
-    <section className={plans.length > 0 ? '' : 'section__single' }>
-      {plans.length > 0 ? <PlansPage plans={plans} progress={progress} onMarkPlansPage={completePlan} /> :<EmptyStateCard className='card__plan' imageSrc='/assets/images/empty-plan.svg' title="You haven’t reached the test yet" text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s." />}
+    <section className={plans.length > 0 ? 'plans' : 'section__single' }>
+      {plans.length > 0 ? <PlansPage plans={plans} progress={progress} onMarkPlansPage={(e)=> completePlan(e)} /> :<EmptyStateCard className='card__plan' imageSrc='/assets/images/empty-plan.svg' title="You haven’t reached the test yet" text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s." />}
     </section>
   </MainLayout>
   

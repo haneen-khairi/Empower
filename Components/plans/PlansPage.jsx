@@ -1,13 +1,11 @@
 import { CircularProgress } from '@nextui-org/react'
-import React from 'react'
+import React, { useState } from 'react'
 import PlansCard from './PlansCard'
 
 export default function PlansPage({
     plans,
     progress,
-    onMarkPlansPage = () => {
-        console.log('=== onMarkPlansPage ===')
-    }
+    onMarkPlansPage = () => { }
 }) {
     return <div className='plans'>
         <div className="plans__progress">
@@ -23,23 +21,21 @@ export default function PlansPage({
         <div className="plans__cards">
             <div className="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1" style={{gap: '64px'}}>
                 <div className="plans__cards_section">
-                    <h4 className='plans__cards_section--header'>Past Due <div className="badge past">5</div></h4>
+                    <h4 className='plans__cards_section--header'>Past Due <div className="badge past">{plans.filter((plan) => plan.status === '1')?.length}</div></h4>
                     <div className="grid grid-cols-1 gap-[16px]">
-                        <PlansCard onMarkComplete={onMarkPlansPage} title={'Event Name'} text={"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"}  type={'past'} date={'12, July, 2023'}  />
+                    {plans.filter((plan) => plan.status === '1').map((plan)=> <PlansCard id={plan.id} key={plan.id} onMarkComplete={onMarkPlansPage} title={plan.name} text={plan.description}  type={'past'} date={plan.deadline}  /> )}
                     </div>
                 </div>
                 <div className="plans__cards_section">
-                    <h4 className='plans__cards_section--header'>To Do <div className="badge to_do">5</div></h4>
+                    <h4 className='plans__cards_section--header'>To Do <div className="badge to_do">{plans.filter((plan) => plan.status === '2')?.length}</div></h4>
                     <div className="grid grid-cols-1 gap-[16px]">
-                    <PlansCard onMarkComplete={onMarkPlansPage} title={'Event Name'} text={"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"}  type={'to_do'} date={'12, July, 2023'}  />
-                    <PlansCard onMarkComplete={onMarkPlansPage} title={'Event Name'} text={"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"}  type={'to_do'} date={'12, July, 2023'}  />
-                    <PlansCard onMarkComplete={onMarkPlansPage} title={'Event Name'} text={"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"}  type={'to_do'} date={'12, July, 2023'}  />
+                    {plans.filter((plan) => plan.status === '2').map((plan)=> <PlansCard id={plan.id} key={plan.id} onMarkComplete={onMarkPlansPage} title={plan.name} text={plan.description}  type={'to_do'} date={plan.deadline}  /> )}
                     </div>
                 </div>
                 <div className="plans__cards_section">
-                    <h4 className='plans__cards_section--header'>Done <div className="badge done">5</div></h4>
+                    <h4 className='plans__cards_section--header'>Done <div className="badge done">{plans.filter((plan) => plan.status === '3')?.length}</div></h4>
                     <div className="grid grid-cols-1 gap-[16px]">
-                    <PlansCard onMarkComplete={onMarkPlansPage} title={'Event Name'} text={"Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s"}  type={'done'} date={'12, July, 2023'}  />
+                    {plans.filter((plan) => plan.status === '3').map((plan)=> <PlansCard key={plan.id} onMarkComplete={onMarkPlansPage} title={plan.name} text={plan.description}  type={'done'} date={plan.deadline}  /> )}
                     </div>
                 </div>
             </div>

@@ -466,6 +466,12 @@
   padding: 0 16px;
   margin-bottom: 16px;
 }
+@media screen and (max-width: 660px) {
+  .form__group--verify {
+    width: 50px;
+    height: 50px;
+  }
+}
 .form__group--verify input {
   text-align: center;
   font-family: League Spartan;
@@ -534,6 +540,7 @@
 
 .plans {
   padding: 60px 0;
+  min-height: 90vh;
 }
 .plans__progress {
   display: flex;
@@ -728,7 +735,7 @@
 }
 @media screen and (max-width: 660px) {
   .card__auth {
-    width: 100vw;
+    width: 100%;
   }
 }
 .card__auth--header {
@@ -1066,4 +1073,9 @@ select {
   .circle.current .caption {
     font-size: 12px;
   }
+}
+
+button:disabled {
+  opacity: 50%;
+  cursor: no-drop;
 }/*# sourceMappingURL=globals.css.map */

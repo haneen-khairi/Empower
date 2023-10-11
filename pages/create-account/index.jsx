@@ -27,7 +27,7 @@ export default function index() {
   const route = useRouter()
   const userEmail = useRef('');
   const [countries, setCountries] = useState([])
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(2);
   const [token, setToken] = useState({
     access_token: "",
     refresh_token: ""
@@ -322,7 +322,7 @@ export default function index() {
               logo={false}
             >
               {/* <form onSubmit={(e) => e.preventDefault()}> */}
-              <div className="grid grid-cols-6 gap-x-[24px]">
+              <div className="grid grid-cols-6 md:gap-x-[24px] md:gap-x-[16px]">
                 <InputField
                   register={register}
                   errors={errors}
@@ -332,7 +332,7 @@ export default function index() {
                   label={""}
                   placeholder={``}
                   id={"number1"}
-                  type={"number"}
+                  type={"text"}
                   maxLength={1}
                 />
                 <InputField
@@ -344,7 +344,7 @@ export default function index() {
                   label={""}
                   placeholder={``}
                   id={"number2"}
-                  type={"number"}
+                  type={"text"}
                   maxLength={1}
                 />
                 <InputField
@@ -356,7 +356,7 @@ export default function index() {
                   label={""}
                   placeholder={``}
                   id={"number3"}
-                  type={"number"}
+                  type={"text"}
                   maxLength={1}
                 />
                 <InputField
@@ -368,7 +368,7 @@ export default function index() {
                   label={""}
                   placeholder={``}
                   id={"number4"}
-                  type={"number"}
+                  type={"text"}
                   maxLength={1}
                 />
                 <InputField
@@ -380,7 +380,7 @@ export default function index() {
                   label={""}
                   placeholder={``}
                   id={"number5"}
-                  type={"number"}
+                  type={"text"}
                   maxLength={1}
                 />
                 <InputField
@@ -392,7 +392,7 @@ export default function index() {
                   label={""}
                   placeholder={``}
                   id={"number6"}
-                  type={"number"}
+                  type={"text"}
                   maxLength={1}
                 />
               </div>

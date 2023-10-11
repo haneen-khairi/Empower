@@ -524,7 +524,10 @@ $size40 : 40px;
 
             height: 80px;
             width: 80px;
-
+            @media screen and (max-width: 660px) {
+                width: 50px;
+                height: 50px;
+            }
             input {
                 text-align: center;
                 font-family: League Spartan;
@@ -609,7 +612,7 @@ $size40 : 40px;
 
 .plans {
     padding: 60px 0;
-
+    min-height: 90vh;
     &__progress {
         display: flex;
         align-items: center;
@@ -831,7 +834,7 @@ $size40 : 40px;
             width: 55vw;
         }
         @media screen and (max-width: 660px) {
-            width: 100vw;
+            width: 100%;
         }
         &--logo {}
 
@@ -1226,5 +1229,12 @@ select {
             }
         
         }
+    }
+}
+
+button{
+    &:disabled{
+        opacity: 50%;
+        cursor: no-drop;
     }
 }

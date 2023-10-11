@@ -41,7 +41,7 @@ export default function InputField({
             }}
             id={id}
             type={type}
-            defaultValue={initialValue}
+            defaultValue={initialValue }
             style={style}
             readOnly={readonly}
             // onChange={onValueChange}
@@ -101,16 +101,18 @@ export default function InputField({
             {...register(name, errorMessage )}
           />
         ) : (
-          <Input
+          <input
             maxLength={maxLength}
             name={name}
             placeholder={placeholder}
             id={id}
-            classNames={{
-              input: ["form__group--input--main"],
-              inputWrapper: ["form__group--input" , className],
-            }}
+            className="form__group--input w-full"
+            // classNames={{
+            //   input: ["form__group--input--main"],
+            //   inputWrapper: ["form__group--input" , className],
+            // }}
             type={type}
+            
             defaultValue={initialValue}
             style={style}
             // onChange={onValueChange}
@@ -120,27 +122,6 @@ export default function InputField({
         )}
 
 
-        {/* {validations.length > 0 &&
-          validations.map(
-            (validate, index) =>
-              validate.name == name && (
-                <div
-                  className="flex gap-x-[8px] mb-[24px]"
-                  key={index}
-                  justify="flex-end"
-                  alignItems="center"
-                >
-                  <SiteImage
-                    alt="exclamation mark"
-                    width={16}
-                    height={16}
-                    src="/assets/images/error_icon.svg"
-                  />
-
-                  <p className="text-error">{validate.error}</p>
-                </div>
-              )
-          )} */}
         {errors[name] && <div
           className="flex items-center justify-start gap-x-[8px] error_message"
         >

@@ -1,16 +1,17 @@
 import React from 'react'
 import SiteImage from './SiteImage'
+import Link from 'next/link'
 
 export default function TestsCard({
     imageSrc,
     title,
-    link
+    link = ""
 }) {
   return <div className="card card__tests">
     <SiteImage className='w-full' src={imageSrc} />
-    <div className="card__tests--body flex items-center">
+    <a href={link} className="card__tests--body flex items-center">
         <SiteImage src={'/assets/images/link.svg'} />
         <h4 className='card__tests--body-title'>{title}</h4>
-    </div>
+    </a>
   </div>
 }
