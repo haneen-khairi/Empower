@@ -7,30 +7,38 @@ import { AxiosHeadersInstance } from "@/Functions/AxiosHeadersInstance";
 import { AxiosInstance } from "@/Functions/AxiosInstance";
 import { emailRegex, passwordRegex } from "@/Functions/RegexFunction";
 import MainLayout from "@/Layouts/MainLayout";
+import { useSnackbar } from "@/custom-hooks/useSnackbar";
 import { Button, Radio, RadioGroup } from "@nextui-org/react";
 import { steps } from "framer-motion";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 export default function index() {
+  const showSnackbar = useSnackbar()
   const {
     register,
     handleSubmit,
     reset,
+    setError,
+    control,
     watch,
     formState: { errors, isValid },
   } = useForm({
     mode: "onChange",
   });
-  const route = useRouter()
-  const userEmail = useRef('');
-  const [countries, setCountries] = useState([])
-  const [step, setStep] = useState(2);
+  const selectedUniversity = watch('university_id');
+  const otherInput = watch('other');
+  const route = useRouter();
+  const userEmail = useRef("");
+  const [countries, setCountries] = useState([]);
+  const [universities, setUniversities] = useState([]);
+  const [educationConcerns, setEducationConcerns] = useState([]);
+  const [step, setStep] = useState(1);
   const [token, setToken] = useState({
     access_token: "",
-    refresh_token: ""
+    refresh_token: "",
   });
   const [validations, setValidations] = useState([]);
   const [otherQuestion, setOtherQuestion] = useState(false);
@@ -75,18 +83,52 @@ export default function index() {
       [e.target.name]: e.target.value,
     });
   };
-  async function getCountries(){
+  async function getCountries() {
     try {
-      const {data} =  await AxiosHeadersInstance(`get`, `${process.env.NEXT_PUBLIC_API_KEY}/account/countries`) 
-      let countries =  data.map((country) =>{
-        country.value = country.id
-        return country
-      })
+      const { data } = await AxiosHeadersInstance(
+        `get`,
+        `${process.env.NEXT_PUBLIC_API_KEY}/account/countries`
+      );
+      let countries = data.map((country) => {
+        country.value = country.id;
+        return country;
+      });
 
-      setCountries(countries)
+      setCountries(countries);
     } catch (error) {
-      console.log('=== error tests ===', error)
-
+      console.log("=== error tests ===", error);
+    }
+  }
+  async function getUniversities() {
+    try {
+      const { data } = await AxiosHeadersInstance(
+        `get`,
+        `${process.env.NEXT_PUBLIC_API_KEY}/tests/universities/`
+      );
+      let universitys = data.map((university) => {
+        university.value = university.id;
+        return university;
+      });
+      console.log('=== universitys ===', universitys)
+      setUniversities(universitys);
+    } catch (error) {
+      console.log("=== error tests ===", error);
+    }
+  }
+  async function getEducationalConcerns() {
+    try {
+      const { data } = await AxiosHeadersInstance(
+        `get`,
+        `${process.env.NEXT_PUBLIC_API_KEY}/tests/educational-concerns`
+      );
+      let concerns = data.map((concern) => {
+        concern.value = concern.id;
+        return concern;
+      });
+      console.log('=== universitys ===', concerns)
+      setEducationConcerns(concerns);
+    } catch (error) {
+      console.log("=== error tests ===", error);
     }
   }
   function resendCode() {
@@ -135,33 +177,53 @@ export default function index() {
     // if (step === 6) {
     //   createAccount(cumulativeData);
     // } else if (step > 6) {
-      // }
-      if(step === 1){
-        console.log('=== step1 ===', data)
-        data.country_code = "+964"
-        userEmail.current = data.email
-        createAccount(data)
-      }else if(step === 2){
-        const verification_code = Object.keys(data)
-        .filter(key => key.startsWith('number')) // Filter keys that start with 'number'
+    // }
+    if (step === 1) {
+      console.log("=== step1 ===", data);
+      data.country_code = "+964";
+      userEmail.current = data.email;
+      createAccount(data);
+    } else if (step === 2) {
+      const verification_code = Object.keys(data)
+        .filter((key) => key.startsWith("number")) // Filter keys that start with 'number'
         .sort() // Optional: Sort the keys if they might not be in order
-        .map(key => data[key]) // Map to their corresponding values
-        .join(''); // Join the values into a string
+        .map((key) => data[key]) // Map to their corresponding values
+        .join(""); // Join the values into a string
 
-        console.log('=== number ===',+verification_code); 
-        // const verification_code = parseInt(Object.values(data).join(''));
-        console.log('=== step2 ===', data)
+      console.log("=== number ===", +verification_code);
+      // const verification_code = parseInt(Object.values(data).join(''));
+      console.log("=== step2 ===", data);
 
-        verifyAccount(verification_code)
-      }else if(step ===3) {
-        console.log('=== step3 ===', data)
-        const fd = new FormData()
-        fd.append('profile_picture', data.image[0])
-        fd.append('gender', data.gender)
-        fd.append('date_of_birth', data.date_of_birth)
-        fd.append('country', data.country)
-        additionalInfoAccount(fd)
+      verifyAccount(verification_code);
+    } else if (step === 3) {
+      console.log("=== step3 ===", data);
+      const fd = new FormData();
+      fd.append("profile_picture", data.image[0]);
+      fd.append("gender", data.gender);
+      fd.append("date_of_birth", data.date_of_birth);
+      fd.append("country", data.country);
+      additionalInfoAccount(fd);
+      setStep(step + 1);
+    } else if (step === 6) {
+      if (!selectedUniversity && !otherInput) {
+        setError('university_id', { type: 'manual', message: 'Please select a university or specify "other".' });
+        setError('other', { type: 'manual', message: 'Please specify or select a university.' });
+        return;
       }
+      submitQuestions(data)
+      console.log("=== data ===", data);
+    } else {
+      setStep(step + 1);
+    }
+  }
+  function onChangeConcernEducation(event) {
+    const { name, value } = event.target;
+    if (value === "other") {
+      setOtherQuestion(true);
+    } else {
+      setOtherQuestion(false);
+    }
+    console.log("=== onChangeConcernEducation ===", value);
   }
   async function createAccount(data) {
     try {
@@ -174,7 +236,6 @@ export default function index() {
       );
       console.log("=== createAccount response ===", accountRes);
       setStep(step + 1);
-
     } catch (error) {
       console.log("=== error in creating ===", error);
     }
@@ -187,21 +248,18 @@ export default function index() {
         {},
         {},
         {
-          email: userEmail.current ,
-          verification_code:data
+          email: userEmail.current,
+          verification_code: data,
         }
       );
-      if(accountRes.status){
-        const tokenData =  {...token}
-        tokenData.access_token = accountRes.data.access
-        tokenData.refresh_token = accountRes.data.refresh
-        setToken(tokenData)
+      if (accountRes.status) {
+        const tokenData = { ...token };
+        tokenData.access_token = accountRes.data.access;
+        tokenData.refresh_token = accountRes.data.refresh;
+        setToken(tokenData);
         setStep(step + 1);
       }
       console.log("=== verifyAccount response ===", accountRes);
-
-      
-
     } catch (error) {
       console.log("=== error in verifying ===", error);
     }
@@ -211,23 +269,59 @@ export default function index() {
       const accountRes = await AxiosInstance(
         `put`,
         `${process.env.NEXT_PUBLIC_API_KEY}/account/info/update/`,
-        {Authorization :`Bearer ${token.access_token}`},
+        { Authorization: `Bearer ${token.access_token}` },
         {},
         data
       );
       console.log("=== additionalInfoAccount response ===", accountRes);
-      if(accountRes.status){
-        localStorage.setItem('token', token.access_token)
-        localStorage.setItem('refresh_token', token.refresh_token)
-        route.push('/')
+      if (accountRes.status) {
+        localStorage.setItem("token", token.access_token);
+        localStorage.setItem("refresh_token", token.refresh_token);
+        // route.push('/')
+        reset()
         setStep(step + 1);
+        showSnackbar('User created successfully now answer questions', 'success')
+      }else{
+        showSnackbar(accountRes.error, 'error')
+
       }
-
-      
-
     } catch (error) {
       console.log("=== error in verifying ===", error);
     }
+  }
+  async function submitQuestions(data){
+    let answers = {
+      educational_concerns_ids: [data.educational_concerns_ids],
+      university_id: data.university_id,
+      year_or_grade: questionResponse.year_or_grade,
+      custom_university: data.other,
+    }
+    if( data.other !== "") {
+      answers.other = data.other
+    }
+    try {
+      const questionResponse = await AxiosHeadersInstance(
+        `post`,
+        `${process.env.NEXT_PUBLIC_API_KEY}/tests/get-started-test/`,
+        {},
+        {},
+        answers
+      );
+      if (questionResponse.status) {
+        route.push('/')
+        reset()
+        setStep(step + 1);
+        showSnackbar('Questions submitted successfully', 'success')
+      }else{
+        showSnackbar(questionResponse.error, 'success')
+
+      }
+      console.log("=== additionalInfoAccount response ===", questionResponse);
+    } catch (error) {
+      console.log("=== error in verifying ===", error);
+    }
+    console.log('=== submitQuestions ===', data)
+    console.log('=== object ===', answers)
   }
   function onChangeOther(e) {
     console.log("====value====", e);
@@ -403,7 +497,11 @@ export default function index() {
                   <SiteImage src={"/assets/images/chevron_right.svg"} />
                 </Button>
               </div>
-              <Button disabled={!isValid ? true : false} className="special_button w-full" type="submit">
+              <Button
+                disabled={!isValid ? true : false}
+                className="special_button w-full"
+                type="submit"
+              >
                 Next
               </Button>
               {/* </form> */}
@@ -462,13 +560,16 @@ export default function index() {
               type="text"
               name="gender"
               id={"gender"}
-              items={[{
-                value: "M",
-                name: 'Male'
-              }, {
-                value:"F",
-                name: 'Female'
-              }]}
+              items={[
+                {
+                  value: "M",
+                  name: "Male",
+                },
+                {
+                  value: "F",
+                  name: "Female",
+                },
+              ]}
               validations={validations}
               placeholder="Gender (Required)"
               onChange={handleChange}
@@ -495,7 +596,11 @@ export default function index() {
               placeholder="Country or Residence (Required)"
               onChange={handleChange}
             />
-            <Button disabled={!isValid ? true : false} className="special_button w-full" type="submit">
+            <Button
+              disabled={!isValid ? true : false}
+              className="special_button w-full"
+              type="submit"
+            >
               Next
             </Button>
           </>
@@ -513,16 +618,19 @@ export default function index() {
             </h4>
             <InputField
               type="text"
-              name="question_1"
+              name="year_or_grade"
               register={register}
               errors={errors}
-              initialValue=""
               validations={validations}
               errorMessage={{ required: "You need to answer this" }}
               placeholder="Your answer... (Required)"
               onChange={handleChange}
             />
-            <Button className="special_button w-full" type="submit">
+            <Button
+              disabled={!isValid ? true : false}
+              className="special_button w-full"
+              type="submit"
+            >
               Next
             </Button>
           </>
@@ -533,23 +641,139 @@ export default function index() {
             <h4 className="signup__content--header mb-[24px]">
               Q2. What is your main educational concern
             </h4>
-            <RadioGroup
-              className="mb-[24px]"
-              classNames={{
-                wrapper: "justify-center",
-              }}
-              orientation="horizontal"
-              onChange={onChangeOther}
-            >
-              <Radio value="Studying Habits" defaultChecked>
-                Studying Habits
-              </Radio>
-              <Radio value="Career Choices">Career Choices</Radio>
-              <Radio value="Social/Emotional">Social/Emotional</Radio>
-              <Radio value="other">Other</Radio>
-            </RadioGroup>
+            {/* <Controller
+            control={control}
+            name="educational_concerns_ids"
+            {...register('educational_concerns_ids', {
+              required: 'Educational concern required'
+            })}
+              render={
+              ()=> {
+                <RadioGroup
+                className="mb-[24px]"
+                classNames={{
+                  wrapper: "justify-center",
+                }}
+                orientation="horizontal"
+                
+                onChange={onChangeOther}
+              >
+                <Radio value="Studying Habits" defaultChecked>
+                  Studying Habits
+                </Radio>
+                <Radio value="Career Choices">Career Choices</Radio>
+                <Radio value="Social/Emotional">Social/Emotional</Radio>
+                <Radio value="other">Other</Radio>
+              </RadioGroup>
+              }
+            }>
+
+            </Controller> */}
+            <Controller
+              control={control}
+              name="educational_concerns_ids"
+              defaultValue={educationConcerns[0].id}
+              render={({ field: { onChange } }) => (
+                <div className="grid grid-cols-3 gap-[24px]">
+                  {educationConcerns.map((concern , index) => <p key={concern.id} className="text-left">
+                    <input
+                      type="radio"
+                      id={`educational_concerns_${concern.id}`}
+                      value={concern.id}
+                      required
+                      // checked={value === 'Studying-Habits'}
+                      onChange={(e) => {
+                        onChangeConcernEducation(e);
+                        onChange(e.target.value);
+                      }}
+                      name="radio-group"
+                      // defaultChecked
+                    />
+                    <label htmlFor={`educational_concerns_${concern.id}`}>{concern.concern}</label>
+                  </p>)}
+                  {/* <p className="text-left">
+                    <input
+                      type="radio"
+                      id="test2"
+                      value="Career-Choices"
+                      // checked={value === 'Career-Choices'}
+                      onChange={(e) => {
+                        onChangeConcernEducation(e);
+                        onChange(e.target.value);
+                      }}
+                      name="radio-group"
+                    />
+                    <label htmlFor="test2">Career Choices</label>
+                  </p>
+                  <p className="text-left">
+                    <input
+                      type="radio"
+                      id="test3"
+                      value="Social-Emotional"
+                      // checked={value === 'Social-Emotional'}
+                      onChange={(e) => {
+                        onChangeConcernEducation(e);
+                        onChange(e.target.value);
+                      }}
+                      name="radio-group"
+                    />
+                    <label htmlFor="test3">Social/Emotional</label>
+                  </p> */}
+                  <p className="text-left">
+                    <input
+                      type="radio"
+                      id="test4"
+                      value="other"
+                      // checked={value === 'other'}
+                      onChange={(e) => {
+                        onChangeConcernEducation(e);
+                        onChange(e.target.value);
+                      }}
+                      required
+                      name="radio-group"
+                    />
+                    <label htmlFor="test4">Other</label>
+                  </p>
+                </div>
+              )}
+            />
+            {/* <div className="grid grid-cols-3 gap-[24px]">
+              <p className="text-left">
+                <input type="radio" id="test1" onChange={onChangeConcernEducation} value={'Studying-Habits'} 
+                {...register('educational_concerns_ids', {
+                  required: 'Required'
+                })}
+                name="radio-group" defaultChecked />
+                <label htmlFor="test1">Studying Habits</label>
+              </p>
+              <p className="text-left">
+                <input type="radio" id="test2" onChange={onChangeConcernEducation} value={'Career-Choices'} 
+                {...register('educational_concerns_ids', {
+                  required: 'Required'
+                })}
+                name="radio-group" />
+                <label htmlFor="test2">Career Choices</label>
+              </p>
+              <p className="text-left">
+                <input type="radio" id="test3" onChange={onChangeConcernEducation} value={'Social-Emotional'} 
+                {...register('educational_concerns_ids', {
+                  required: 'Required'
+                })}
+                name="radio-group" />
+                <label htmlFor="test3">Social/Emotional</label>
+              </p>
+              <p className="text-left">
+                <input type="radio" id="test4" onChange={onChangeConcernEducation} value={'other'} 
+                {...register('educational_concerns_ids', {
+                  required: 'Required'
+                })}
+                name="radio-group" />
+                <label htmlFor="test4">Other</label>
+              </p>
+
+            </div> */}
             {otherQuestion && (
-              <>
+              <div className="mt-[16px]">
                 <InputField
                   register={register}
                   errors={errors}
@@ -561,10 +785,14 @@ export default function index() {
                   maxLength={200}
                 />
                 <p className="text-left">If your answer is not listed above</p>
-              </>
+              </div>
             )}
 
-            <Button className="special_button w-full mt-[24px]" type="submit">
+            <Button
+              disabled={!isValid ? true : false}
+              className="special_button w-full mt-[24px]"
+              type="submit"
+            >
               Next
             </Button>
           </>
@@ -575,17 +803,23 @@ export default function index() {
             <h4 className="signup__content--header mb-[24px]">
               Q3. Your School or University’s Name
             </h4>
+
+            <SelectMenuField
+              register={register}
+              errors={errors}
+              // errorMessage={{ required: "Gender is required" }}
+              name="university_id"
+              id={"university_id"}
+              items={universities}
+            />
+            <h6 className="or">Or</h6>
             <InputField
               register={register}
               errors={errors}
               name="other"
-              label={""}
-              placeholder={"Other concerns..."}
               id={"other"}
-              type={"text"}
-              maxLength={200}
             />
-            <Button className="special_button w-full mt-[24px]" type="submit">
+            <Button disabled={!isValid ? true : false} className="special_button w-full mt-[24px]" type="submit">
               Done
             </Button>
           </>
@@ -595,15 +829,15 @@ export default function index() {
     }
   }
   useEffect(() => {
-    if(!route.isReady){
-      return
+    if (!route.isReady) {
+      return;
     }
-    getCountries()
-    return () => {
-      
-    }
-  }, [route])
-  
+    getEducationalConcerns()
+    getUniversities()
+    getCountries();
+    return () => {};
+  }, [route]);
+
   return (
     <MainLayout hideNavbar={true}>
       <Head>

@@ -20,8 +20,7 @@ export default function Header() {
   }
   function onLogout(){
     logout()
-    route.push('/')
-    console.log('=== logout ===')
+    window.location.href = '/'
   }
   async function getUserInfo(){
     try {
@@ -48,8 +47,10 @@ export default function Header() {
     if(!route.isReady){
       return
     }
-    getUserInfo()
     getToken()
+    if(token){
+      getUserInfo()
+    }
 
   }, [route, token])
   return (
@@ -167,7 +168,34 @@ export default function Header() {
       }
 
       <NavbarMenu>
-        {menuItems.map((item, index) => (
+        { !token ?<> <NavbarMenuItem isActive={route.pathname === '/' ? true : false} className="navbar__menu--link">
+          <Link className="" href="/">
+            Home
+          </Link>
+        </NavbarMenuItem>
+        <NavbarMenuItem isActive={route.pathname === '/contact-us' ? true : false} className="navbar__menu--link">
+          <Link className="" href="/contact-us">
+          Contact Us
+          </Link>
+        </NavbarMenuItem></> : <>
+        <NavbarMenuItem  isActive={route.pathname === '/' ? true : false} className="navbar__menu--link">
+        <Link className="" href="/">
+          Home
+        </Link>
+      </NavbarMenuItem>
+      <NavbarMenuItem isActive={route.pathname === '/tests' ? true : false} className="navbar__menu--link">
+        <Link className="" href="/tests">
+
+        Tests
+        </Link>
+      </NavbarMenuItem>
+      <NavbarMenuItem  isActive={route.pathname === '/plan' ? true : false} className="navbar__menu--link">
+        <Link className="" href="/plan">
+
+        Plan
+        </Link>
+      </NavbarMenuItem></> }
+        {/* {menuItems.map((item, index) => (
           <NavbarMenuItem key={`${item}-${index}`}>
             <Link
               className="w-full"
@@ -180,7 +208,7 @@ export default function Header() {
               {item}
             </Link>
           </NavbarMenuItem>
-        ))}
+        ))} */}
       </NavbarMenu>
     </Navbar>
   );

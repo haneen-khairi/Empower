@@ -423,9 +423,65 @@
 .signup .form__group--input {
   margin-bottom: 5px;
 }
+.signup [type=radio]:checked,
+.signup [type=radio]:not(:checked) {
+  position: absolute;
+  left: -9999px;
+}
+.signup [type=radio]:checked + label,
+.signup [type=radio]:not(:checked) + label {
+  position: relative;
+  padding-left: 28px;
+  cursor: pointer;
+  line-height: 20px;
+  display: inline-block;
+  color: #666;
+}
+.signup [type=radio]:checked + label:before,
+.signup [type=radio]:not(:checked) + label:before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 18px;
+  height: 18px;
+  border: 1px solid #ddd;
+  border-radius: 100%;
+  background: #fff;
+}
+.signup [type=radio]:checked + label:after,
+.signup [type=radio]:not(:checked) + label:after {
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: #48016D;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  border-radius: 100%;
+  transition: all 0.2s ease;
+}
+.signup [type=radio]:not(:checked) + label:after {
+  opacity: 0;
+  transform: scale(0);
+}
+.signup [type=radio]:checked + label:after {
+  opacity: 1;
+  transform: scale(1);
+}
+.signup .or {
+  color: #000;
+  text-align: center;
+  font-family: League Spartan;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 22px; /* 91.667% */
+  margin-bottom: 24px;
+}
 
-.field > .group {
-  padding-bottom: 24px;
+.field {
+  padding-bottom: 30px;
 }
 
 .form__group--input {
@@ -442,7 +498,6 @@
   line-height: normal;
   height: 48px;
   padding: 0 16px;
-  margin-bottom: 16px;
 }
 .form__group--input::-moz-placeholder {
   color: #A0AEC0;
