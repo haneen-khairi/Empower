@@ -47,35 +47,9 @@ export default function index() {
     password: "",
     confirmPassword: "",
   });
-  const [cumulativeData, setCumulativeData] = useState({});
   const password = watch("password", "");
-  // const nextStep = () => {
-  //   switch (step) {
-  //     case 1:
-  //       // if (!validateEmail(formData.email)) {
-  //       //   alert("Please enter a valid email address");
-  //       //   return;
-  //       // }
-  //       break;
-  //     case 2:
-  //       // if (formData.password.length < 6) {
-  //       //   alert("Password should be at least 6 characters long");
-  //       //   return;
-  //       // }
-  //       break;
-  //     case 3:
-  //       break;
-  //     case 4:
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  //   setStep(step + 1);
-  // };
 
-  const prevStep = () => {
-    setStep(step - 1);
-  };
+
 
   const handleChange = (e) => {
     setFormData({
@@ -134,10 +108,6 @@ export default function index() {
   function resendCode() {
     console.log("===code===");
   }
-  const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
-  };
   const validationStep1 = {
     full_name: { required: "Full name is required" },
     phone: { required: "Phone is required" },
@@ -170,14 +140,7 @@ export default function index() {
   };
   function submitSteps(data) {
     console.log("=== data steps ===", data);
-    // Merging previous cumulative data with new data
-    // const updatedData = { ...cumulativeData, ...data };
-    // setCumulativeData(updatedData);
-    // console.log("=== cumulativeData ===", updatedData, cumulativeData);
-    // if (step === 6) {
-    //   createAccount(cumulativeData);
-    // } else if (step > 6) {
-    // }
+    localStorage.setItem('step', step)
     if (step === 1) {
       console.log("=== step1 ===", data);
       data.country_code = "+964";
@@ -212,18 +175,20 @@ export default function index() {
       }
       submitQuestions(data)
       console.log("=== data ===", data);
-    } else {
+    } else{
       setStep(step + 1);
     }
   }
   function onChangeConcernEducation(event) {
-    const { name, value } = event.target;
-    if (value === "other") {
+    const { value } = event.target;
+    console.log('=== value ===', value)
+    if (value == 4) {
       setOtherQuestion(true);
+      console.log('=== true ===')
+
     } else {
       setOtherQuestion(false);
     }
-    console.log("=== onChangeConcernEducation ===", value);
   }
   async function createAccount(data) {
     try {
@@ -293,11 +258,9 @@ export default function index() {
     let answers = {
       educational_concerns_ids: [data.educational_concerns_ids],
       university_id: data.university_id,
-      year_or_grade: questionResponse.year_or_grade,
+      year_or_grade: data.year_or_grade,
+      custom_concern: data.custom_concern || "",
       custom_university: data.other,
-    }
-    if( data.other !== "") {
-      answers.other = data.other
     }
     try {
       const questionResponse = await AxiosHeadersInstance(
@@ -322,14 +285,6 @@ export default function index() {
     }
     console.log('=== submitQuestions ===', data)
     console.log('=== object ===', answers)
-  }
-  function onChangeOther(e) {
-    console.log("====value====", e);
-    if (e.target.defaultValue === "other") {
-      setOtherQuestion(true);
-    } else {
-      setOtherQuestion(false);
-    }
   }
   function renderSteps() {
     switch (step) {
@@ -675,7 +630,7 @@ export default function index() {
               defaultValue={educationConcerns[0].id}
               render={({ field: { onChange } }) => (
                 <div className="grid grid-cols-3 gap-[24px]">
-                  {educationConcerns.map((concern , index) => <p key={concern.id} className="text-left">
+                  {educationConcerns.map((concern) => <p key={concern.id} className="text-left">
                     <input
                       type="radio"
                       id={`educational_concerns_${concern.id}`}
@@ -691,96 +646,18 @@ export default function index() {
                     />
                     <label htmlFor={`educational_concerns_${concern.id}`}>{concern.concern}</label>
                   </p>)}
-                  {/* <p className="text-left">
-                    <input
-                      type="radio"
-                      id="test2"
-                      value="Career-Choices"
-                      // checked={value === 'Career-Choices'}
-                      onChange={(e) => {
-                        onChangeConcernEducation(e);
-                        onChange(e.target.value);
-                      }}
-                      name="radio-group"
-                    />
-                    <label htmlFor="test2">Career Choices</label>
-                  </p>
-                  <p className="text-left">
-                    <input
-                      type="radio"
-                      id="test3"
-                      value="Social-Emotional"
-                      // checked={value === 'Social-Emotional'}
-                      onChange={(e) => {
-                        onChangeConcernEducation(e);
-                        onChange(e.target.value);
-                      }}
-                      name="radio-group"
-                    />
-                    <label htmlFor="test3">Social/Emotional</label>
-                  </p> */}
-                  <p className="text-left">
-                    <input
-                      type="radio"
-                      id="test4"
-                      value="other"
-                      // checked={value === 'other'}
-                      onChange={(e) => {
-                        onChangeConcernEducation(e);
-                        onChange(e.target.value);
-                      }}
-                      required
-                      name="radio-group"
-                    />
-                    <label htmlFor="test4">Other</label>
-                  </p>
                 </div>
               )}
             />
-            {/* <div className="grid grid-cols-3 gap-[24px]">
-              <p className="text-left">
-                <input type="radio" id="test1" onChange={onChangeConcernEducation} value={'Studying-Habits'} 
-                {...register('educational_concerns_ids', {
-                  required: 'Required'
-                })}
-                name="radio-group" defaultChecked />
-                <label htmlFor="test1">Studying Habits</label>
-              </p>
-              <p className="text-left">
-                <input type="radio" id="test2" onChange={onChangeConcernEducation} value={'Career-Choices'} 
-                {...register('educational_concerns_ids', {
-                  required: 'Required'
-                })}
-                name="radio-group" />
-                <label htmlFor="test2">Career Choices</label>
-              </p>
-              <p className="text-left">
-                <input type="radio" id="test3" onChange={onChangeConcernEducation} value={'Social-Emotional'} 
-                {...register('educational_concerns_ids', {
-                  required: 'Required'
-                })}
-                name="radio-group" />
-                <label htmlFor="test3">Social/Emotional</label>
-              </p>
-              <p className="text-left">
-                <input type="radio" id="test4" onChange={onChangeConcernEducation} value={'other'} 
-                {...register('educational_concerns_ids', {
-                  required: 'Required'
-                })}
-                name="radio-group" />
-                <label htmlFor="test4">Other</label>
-              </p>
-
-            </div> */}
             {otherQuestion && (
               <div className="mt-[16px]">
                 <InputField
                   register={register}
                   errors={errors}
-                  name="other"
+                  name="custom_concern"
                   label={""}
                   placeholder={"Other concerns..."}
-                  id={"other"}
+                  id={"custom_concern"}
                   type={"text"}
                   maxLength={200}
                 />
