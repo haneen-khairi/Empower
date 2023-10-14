@@ -11,6 +11,7 @@ import { useSnackbar } from "@/custom-hooks/useSnackbar";
 import { Button, Radio, RadioGroup } from "@nextui-org/react";
 import { steps } from "framer-motion";
 import Head from "next/head";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
@@ -124,7 +125,7 @@ export default function index() {
       pattern: {
         value: passwordRegex,
         // Change this regex pattern as needed
-        message: "Password is invalid",
+        message: "Minimum 6 characters, at least one number, and special character",
       },
     },
     confirmPassword: {
@@ -132,7 +133,7 @@ export default function index() {
       pattern: {
         value: passwordRegex,
         // Change this regex pattern as needed
-        message: "Confirm password is invalid",
+        message: "Minimum 6 characters, at least one number, and special character",
       },
       validate: (value) => value === password || "Passwords do not match",
     },
@@ -255,34 +256,44 @@ export default function index() {
     }
   }
   async function submitQuestions(data){
-    let answers = {
-      educational_concerns_ids: [data.educational_concerns_ids],
-      university_id: data.university_id,
-      year_or_grade: data.year_or_grade,
-      custom_concern: data.custom_concern || "",
-      custom_university: data.other,
-    }
-    try {
-      const questionResponse = await AxiosHeadersInstance(
-        `post`,
-        `${process.env.NEXT_PUBLIC_API_KEY}/tests/get-started-test/`,
-        {},
-        {},
-        answers
-      );
-      if (questionResponse.status) {
-        route.push('/')
-        reset()
-        setStep(step + 1);
-        showSnackbar('Questions submitted successfully', 'success')
-      }else{
-        showSnackbar(questionResponse.error, 'success')
-
+    let answers;
+    if(data.other === ""){
+      answers = {
+        educational_concerns_ids: [data.educational_concerns_ids],
+        university_id: data.university_id,
+        year_or_grade: data.year_or_grade,
+        custom_concern: data.custom_concern || "",
       }
-      console.log("=== additionalInfoAccount response ===", questionResponse);
-    } catch (error) {
-      console.log("=== error in verifying ===", error);
+
+    }else{
+      answers = {
+        educational_concerns_ids: [data.educational_concerns_ids],
+        year_or_grade: data.year_or_grade,
+        custom_concern: data.custom_concern || "",
+        custom_university: data.other,
+      }
     }
+    // try {
+    //   const questionResponse = await AxiosHeadersInstance(
+    //     `post`,
+    //     `${process.env.NEXT_PUBLIC_API_KEY}/tests/get-started-test/`,
+    //     {},
+    //     {},
+    //     answers
+    //   );
+    //   if (questionResponse.status) {
+    //     route.push('/')
+    //     reset()
+    //     setStep(step + 1);
+    //     showSnackbar('Questions submitted successfully', 'success')
+    //   }else{
+    //     showSnackbar(questionResponse.error, 'success')
+
+    //   }
+    //   console.log("=== additionalInfoAccount response ===", questionResponse);
+    // } catch (error) {
+    //   console.log("=== error in verifying ===", error);
+    // }
     console.log('=== submitQuestions ===', data)
     console.log('=== object ===', answers)
   }
@@ -340,6 +351,18 @@ export default function index() {
               placeholder="Password (Required)"
               onChange={handleChange}
             />
+        <div
+          className="password__message flex items-center justify-start gap-[8px] mb-[24px]"
+        >
+          <SiteImage
+            alt="exclamation mark"
+            width={16}
+            height={16}
+            src="/assets/images/info_icon.svg"
+          />
+
+          <p className="">Minimum 6 characters, at least one number, and special chareacter</p>
+        </div>
             <InputField
               register={register}
               errors={errors}
@@ -351,6 +374,10 @@ export default function index() {
               placeholder="Confirm Password (Required)"
               onChange={handleChange}
             />
+            <div className="signup__info">
+              <p>By creating an account, you agree to our <Link href={'/terms-conditions'}>terms and conditions</Link></p>
+               {/* and our private policy</p> */}
+            </div>
             <Button
               // disabled={Object.keys(errors).length > 0}
               disabled={!isValid}
