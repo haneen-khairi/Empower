@@ -39,7 +39,6 @@ export default function index() {
   const [step, setStep] = useState(1);
   const [token, setToken] = useState({
     access_token: "",
-    refresh_token: "",
   });
   const [validations, setValidations] = useState([]);
   const [otherQuestion, setOtherQuestion] = useState(false);
@@ -221,7 +220,6 @@ export default function index() {
       if (accountRes.status) {
         const tokenData = { ...token };
         tokenData.access_token = accountRes.data.access;
-        tokenData.refresh_token = accountRes.data.refresh;
         setToken(tokenData);
         setStep(step + 1);
       }
@@ -242,7 +240,6 @@ export default function index() {
       console.log("=== additionalInfoAccount response ===", accountRes);
       if (accountRes.status) {
         localStorage.setItem("token", token.access_token);
-        localStorage.setItem("refresh_token", token.refresh_token);
         // route.push('/')
         reset()
         setStep(step + 1);
@@ -297,6 +294,23 @@ export default function index() {
     console.log('=== submitQuestions ===', data)
     console.log('=== object ===', answers)
   }
+
+  function handleKeyUp(e, fieldName) {
+    if (e.target.value.length === 1) {
+      const fieldIndex = Number(fieldName.split('number')[1]);
+      const nextFieldIndex = fieldIndex + 1;
+
+      if (nextFieldIndex <= 6) {
+        const nextFieldName = `number${nextFieldIndex}`;
+        const nextInput = document.querySelector(`input[name="${nextFieldName}"]`);
+
+        if (nextInput) {
+          nextInput.focus();
+        }
+      }
+    }
+  };
+
   function renderSteps() {
     switch (step) {
       case 1:
@@ -399,7 +413,53 @@ export default function index() {
             >
               {/* <form onSubmit={(e) => e.preventDefault()}> */}
               <div className="grid grid-cols-6 md:gap-x-[24px] md:gap-x-[16px]">
-                <InputField
+              {Array(6)
+          .fill(null)
+          .map((_, index) => (
+            <Controller
+            key={index}
+            name={`number${index + 1}`}
+            control={control}
+            defaultValue=""
+            rules={{ required: true, maxLength: 1 }}
+            render={({ field }) => (
+              <Input
+                {...field}
+                type="text"
+                classNames={{
+                  input: ["form__group--input--main"],
+                  inputWrapper: ["form__group--verify"],
+                }}
+                placeholder=""
+                onKeyUp={(e) => handleKeyUp(e, field.name)}
+              />
+            )}
+          />
+          ))} {Array(6)
+          .fill(null)
+          .map((_, index) => (
+            <Controller
+            key={index}
+            name={`number${index + 1}`}
+            control={control}
+            defaultValue=""
+            rules={{ required: true, maxLength: 1 }}
+            render={({ field }) => (
+              <Input
+                {...field}
+                type="text"
+                classNames={{
+                  input: ["form__group--input--main"],
+                  inputWrapper: ["form__group--verify"],
+                }}
+                placeholder=""
+                onKeyUp={(e) => handleKeyUp(e, field.name)}
+              />
+            )}
+          />
+          ))}
+
+                {/* <InputField
                   register={register}
                   errors={errors}
                   errorMessage={{ required: true }}
@@ -470,7 +530,7 @@ export default function index() {
                   id={"number6"}
                   type={"text"}
                   maxLength={1}
-                />
+                /> */}
               </div>
               <div className="dont_have_acoount flex justify-center">
                 <p>Haven’t received a code?</p>
