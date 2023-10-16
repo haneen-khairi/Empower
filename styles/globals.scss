@@ -67,7 +67,9 @@ $size40 : 40px;
 
 .navbar {
     padding: 16px 0;
-
+    @media screen and (max-width: 660px) {
+        --navbar-height: 3rem !important
+    }
     header {
         max-width: 100%;
         gap: 0;

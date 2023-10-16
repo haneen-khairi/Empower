@@ -10,7 +10,7 @@ import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 
 export default function index() {
   const route = useRouter()
@@ -18,10 +18,26 @@ export default function index() {
     register,
     handleSubmit,
     reset,
+    control,
     formState: { errors, isValid },
   } = useForm({
     mode: "onChange"
   });
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFileSrc, setSelectedFileSrc] = useState(null);
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setSelectedFile(file)
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const fileURL = e.target.result;
+        setSelectedFileSrc(fileURL);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
   const showSnackbar = useSnackbar()
   const [countries, setCountries] = useState([])
   const [userInfo, setUserInfo] = useState()
@@ -50,17 +66,15 @@ export default function index() {
   }
   function onSubmitAccountInfo(data) {
 
-
     const fd = new FormData()
-    if(data.image.length !== 0){
-      fd.append('image', data.image[0])
+    if(selectedFile !== null){
+      fd.append('image', selectedFile)
     }
     fd.append('name', data.name === "" ? userInfo?.name : data.name)
-    fd.append('phone', data.phone === "" ? userInfo?.phone_number : data.phone )
-    fd.append('country', data.country  === "" ? userInfo?.country.id : data.date)
-    fd.append('date', data.date === "" ? userInfo?.date_of_birth : data.date)
-    fd.append('gender', data.gender)
-    console.log("===submit email===", data);
+    fd.append('phone_number', data.phone === "" ? userInfo?.phone_number : data.phone )
+    fd.append('country_id', data.country  === "" ? userInfo?.country.id : data.country)
+    fd.append('date_of_birth', data.date === "" ? userInfo?.date_of_birth : data.date)
+    fd.append('gender', data.gender === "" ? userInfo?.gender : data.gender)
     submitData(fd)
     // reset()
   }
@@ -100,21 +114,30 @@ export default function index() {
         </p>
         <form onSubmit={handleSubmit(onSubmitAccountInfo)}>
           <div className="flex gap-[16px] items-center mb-[24px]">
-            <SiteImage src={userInfo?.profile_picture} className="manage__account--image" />
+            <SiteImage src={selectedFileSrc === null ? userInfo?.profile_picture : selectedFileSrc} className="manage__account--image" />
             <label htmlFor="image" className="manage__account--dropimage">
               <div className="content">
                 <h5>Profile Picture</h5>
                 <span>Click to browse or drag and drop your files</span>
               </div>
             </label>
-            <input
-              name="image"
-              type="file"
-              id="image"
-              hidden
-              {...register('image')}
-              // register={register}
-              // errors={errors}
+            <Controller
+            name="image"
+            control={control}
+            defaultValue=""
+            render={({ field }) => (
+
+              <input
+                {...field}
+                type="file"
+                id="image"
+                hidden
+                onChange={handleFileChange}
+                // {...register('image')}
+                // register={register}
+                // errors={errors}
+              />
+              )}
             />
           </div>
           {console.log('errors', errors)}
@@ -141,8 +164,8 @@ export default function index() {
               placeholder={"gender"}
               id={"gender"}
               type={"text"}
-              items={[{value:"M", name:"Male"}, {value:"F", name:"female"}]}
-              initialValue={userInfo?.gender}
+              items={[{value:"M", name:"Male"}, {value:"F", name:"Female"}]}
+              initialValue={userInfo?.gender === "M" ? "Male" : "Female"}
               maxLength={200}
             />
             <InputField
@@ -199,7 +222,7 @@ export default function index() {
               items={countries}
               name="country"
               id={"country"}
-              initialValue={userInfo?.country?.id}
+              initialValue={userInfo?.country?.name}
               maxLength={200}
             />
             <div className="form__group--links flex justify-between">

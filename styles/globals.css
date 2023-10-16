@@ -54,6 +54,11 @@
 .navbar {
   padding: 16px 0;
 }
+@media screen and (max-width: 660px) {
+  .navbar {
+    --navbar-height: 3rem !important ;
+  }
+}
 .navbar header {
   max-width: 100%;
   gap: 0;

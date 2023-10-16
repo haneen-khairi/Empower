@@ -215,6 +215,7 @@ export default function index() {
         {
           email: userEmail.current,
           verification_code: data,
+          remember_me: false
         }
       );
       if (accountRes.status) {
@@ -414,28 +415,6 @@ export default function index() {
               {/* <form onSubmit={(e) => e.preventDefault()}> */}
               <div className="grid grid-cols-6 md:gap-x-[24px] md:gap-x-[16px]">
               {Array(6)
-          .fill(null)
-          .map((_, index) => (
-            <Controller
-            key={index}
-            name={`number${index + 1}`}
-            control={control}
-            defaultValue=""
-            rules={{ required: true, maxLength: 1 }}
-            render={({ field }) => (
-              <Input
-                {...field}
-                type="text"
-                classNames={{
-                  input: ["form__group--input--main"],
-                  inputWrapper: ["form__group--verify"],
-                }}
-                placeholder=""
-                onKeyUp={(e) => handleKeyUp(e, field.name)}
-              />
-            )}
-          />
-          ))} {Array(6)
           .fill(null)
           .map((_, index) => (
             <Controller
