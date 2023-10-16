@@ -8,7 +8,7 @@ import { AxiosInstance } from "@/Functions/AxiosInstance";
 import { emailRegex, passwordRegex } from "@/Functions/RegexFunction";
 import MainLayout from "@/Layouts/MainLayout";
 import { useSnackbar } from "@/custom-hooks/useSnackbar";
-import { Button, Radio, RadioGroup } from "@nextui-org/react";
+import { Button, Radio, RadioGroup , Input } from "@nextui-org/react";
 import { steps } from "framer-motion";
 import Head from "next/head";
 import Link from "next/link";
