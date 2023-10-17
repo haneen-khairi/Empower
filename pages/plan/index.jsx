@@ -7,10 +7,12 @@ import { useEffect , useRef, useState } from 'react'
 import {useSnackbar} from '@/custom-hooks/useSnackbar'
 import SiteImage from '@/Components/UI/SiteImage'
 import { AxiosHeadersInstance } from '@/Functions/AxiosHeadersInstance'
+import Loaders from '@/Components/UI/Loaders'
 export default function index() {
   const showSnackbar = useSnackbar()
   const route = useRouter()
   const [plans, setPlans] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
   const [progress, setProgress] = useState(0)
   // const handleUndo = (id) => {
   //   console.log('=== handleUndo ===', id);
@@ -45,6 +47,11 @@ export default function index() {
     } catch (error) {
       console.log('=== error tests ===', error)
 
+    } finally {
+      // Set isLoading to false whether the token check succeeds or fails
+      setTimeout(() => {
+        setIsLoading(false);
+      }, 1000);
     }
   }
   function completePlan(id) {
@@ -101,12 +108,14 @@ export default function index() {
       }
     } catch (error) {
       console.log('error' , error)
-    }
+    } 
   }
   useEffect(() => {
     if(!route.isReady){
       return
     }
+    setIsLoading(true);
+
     getPlans()
     return () => {
       
@@ -118,7 +127,7 @@ export default function index() {
       <title>{`${process.env.NEXT_PUBLIC_TITLE}Plan`}</title>
     </Head>
     <section className={plans.length > 0 ? 'plans' : 'section__single' }>
-      {plans.length > 0 ? <PlansPage plans={plans} progress={progress} onMarkPlansPage={(e)=> completePlan(e)} /> :<EmptyStateCard className='card__plan' imageSrc='/assets/images/empty-plan.svg' title="You haven’t reached the test yet" text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s." />}
+      {isLoading ? <Loaders /> : plans.length > 0 ? <PlansPage plans={plans} progress={progress} onMarkPlansPage={(e)=> completePlan(e)} /> :<EmptyStateCard className='card__plan' imageSrc='/assets/images/empty-plan.svg' title="You haven’t reached the test yet" text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s." />}
     </section>
   </MainLayout>
   

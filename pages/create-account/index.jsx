@@ -271,27 +271,27 @@ export default function index() {
         custom_university: data.other,
       }
     }
-    // try {
-    //   const questionResponse = await AxiosHeadersInstance(
-    //     `post`,
-    //     `${process.env.NEXT_PUBLIC_API_KEY}/tests/get-started-test/`,
-    //     {},
-    //     {},
-    //     answers
-    //   );
-    //   if (questionResponse.status) {
-    //     route.push('/')
-    //     reset()
-    //     setStep(step + 1);
-    //     showSnackbar('Questions submitted successfully', 'success')
-    //   }else{
-    //     showSnackbar(questionResponse.error, 'success')
+    try {
+      const questionResponse = await AxiosHeadersInstance(
+        `post`,
+        `${process.env.NEXT_PUBLIC_API_KEY}/tests/get-started-test/`,
+        {},
+        {},
+        answers
+      );
+      if (questionResponse.status) {
+        route.push('/')
+        reset()
+        setStep(step + 1);
+        showSnackbar('Questions submitted successfully', 'success')
+      }else{
+        showSnackbar(questionResponse.error, 'success')
 
-    //   }
-    //   console.log("=== additionalInfoAccount response ===", questionResponse);
-    // } catch (error) {
-    //   console.log("=== error in verifying ===", error);
-    // }
+      }
+      console.log("=== additionalInfoAccount response ===", questionResponse);
+    } catch (error) {
+      console.log("=== error in verifying ===", error);
+    }
     console.log('=== submitQuestions ===', data)
     console.log('=== object ===', answers)
   }

@@ -38,32 +38,24 @@ export default function index() {
     }
   }
   function formatDate(inputDate) {
-    const months = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
-    ];
-
-    const day = inputDate?.getDate();
-    const month = months[inputDate?.getMonth()];
-    const hours = inputDate?.getHours();
-    const minutes = inputDate?.getMinutes();
-    const ampm = hours >= 12 ? "PM" : "AM";
-
-    const formattedDate = `${day}th ${month} - ${hours}:${minutes
-      ?.toString()
-      .padStart(2, "0")} ${ampm}`;
-
-    return inputDate;
+    const options = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    
+    const date = new Date(inputDate);
+    const formattedDate = date.toLocaleDateString('en-US', options);
+    
+    const timeOptions = {
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    };
+    
+    const formattedTime = date.toLocaleTimeString('en-US', timeOptions);
+    
+    return `${formattedDate} - ${formattedTime}`;
   }
   useEffect(() => {
     if (!route.isReady) {

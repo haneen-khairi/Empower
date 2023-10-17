@@ -23,19 +23,19 @@ export default function PlansPage({
                 <div className="plans__cards_section">
                     <h4 className='plans__cards_section--header'>Past Due <div className="badge past">{plans.filter((plan) => plan.status === '1')?.length}</div></h4>
                     <div className="grid grid-cols-1 gap-[16px]">
-                    {plans.filter((plan) => plan.status === '1').map((plan)=> <PlansCard id={plan.id} key={plan.id} onMarkComplete={onMarkPlansPage} title={plan.name} text={plan.description}  type={'past'} date={plan.deadline}  /> )}
+                    {plans.filter((plan) => plan.status === 'Post due').map((plan)=> <PlansCard id={plan.id} key={plan.id} onMarkComplete={onMarkPlansPage} title={plan.name} text={plan.description}  type={'past'} date={plan.deadline}  /> )}
                     </div>
                 </div>
                 <div className="plans__cards_section">
                     <h4 className='plans__cards_section--header'>To Do <div className="badge to_do">{plans.filter((plan) => plan.status === '2')?.length}</div></h4>
                     <div className="grid grid-cols-1 gap-[16px]">
-                    {plans.filter((plan) => plan.status === '2').map((plan)=> <PlansCard id={plan.id} key={plan.id} onMarkComplete={onMarkPlansPage} title={plan.name} text={plan.description}  type={'to_do'} date={plan.deadline}  /> )}
+                    {plans.filter((plan) => plan.status === 'To DO').map((plan)=> <PlansCard id={plan.id} key={plan.id} onMarkComplete={onMarkPlansPage} title={plan.name} text={plan.description}  type={'to_do'} date={plan.deadline}  /> )}
                     </div>
                 </div>
                 <div className="plans__cards_section">
                     <h4 className='plans__cards_section--header'>Done <div className="badge done">{plans.filter((plan) => plan.status === '3')?.length}</div></h4>
                     <div className="grid grid-cols-1 gap-[16px]">
-                    {plans.filter((plan) => plan.status === '3').map((plan)=> <PlansCard key={plan.id} onMarkComplete={onMarkPlansPage} title={plan.name} text={plan.description}  type={'done'} date={plan.deadline}  /> )}
+                    {plans.filter((plan) => plan.status === 'Done').map((plan)=> <PlansCard key={plan.id} onMarkComplete={onMarkPlansPage} title={plan.name} text={plan.description}  type={'done'} date={plan.deadline}  /> )}
                     </div>
                 </div>
             </div>
