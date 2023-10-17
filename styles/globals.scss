@@ -70,6 +70,14 @@ $size40 : 40px;
     @media screen and (max-width: 660px) {
         --navbar-height: 3rem !important
     }
+    &__profile{
+        &--pic{
+            width: 33px;
+            height: 33px;
+            object-fit: cover;
+            border-radius: 50%;
+        }
+    }
     header {
         max-width: 100%;
         gap: 0;

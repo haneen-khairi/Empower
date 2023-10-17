@@ -59,6 +59,13 @@
     --navbar-height: 3rem !important ;
   }
 }
+.navbar__profile--pic {
+  width: 33px;
+  height: 33px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  border-radius: 50%;
+}
 .navbar header {
   max-width: 100%;
   gap: 0;

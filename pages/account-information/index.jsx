@@ -102,7 +102,7 @@ export default function index() {
   }, [route])
   
   return (
-    <MainLayout>
+    <MainLayout image={selectedFileSrc}>
       <Head>
         <title>{`${process.env.NEXT_PUBLIC_TITLE}Account information`}</title>
       </Head>
