@@ -68,7 +68,7 @@ export default function index() {
 
     const fd = new FormData()
     if(selectedFile !== null){
-      fd.append('image', selectedFile)
+      fd.append('profile_picture', selectedFile)
     }
     fd.append('name', data.name === "" ? userInfo?.name : data.name)
     fd.append('phone_number', data.phone === "" ? userInfo?.phone_number : data.phone )
