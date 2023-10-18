@@ -19,7 +19,7 @@ export default function PlansPage({
             <h4 className='plans__progress--text'>Status of plan completion</h4>
         </div>
         <div className="plans__cards">
-            <div className="grid xl:grid-cols-3 lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1" style={{gap: '64px'}}>
+            <div className="grid xl:grid-cols-3 lg:grid-cols-3 md:grid-cols-1 sm:grid-cols-1" style={{gap: '64px'}}>
                 <div className="plans__cards_section">
                     <h4 className='plans__cards_section--header'>Past Due <div className="badge past">{plans.filter((plan) => plan.status === "Post Due")?.length}</div></h4>
                     <div className="grid grid-cols-1 gap-[16px]">

@@ -14,6 +14,9 @@ import { Controller, useForm } from "react-hook-form";
 
 export default function index() {
   const route = useRouter()
+  const showSnackbar = useSnackbar()
+  const [countries, setCountries] = useState([])
+  const [userInfo, setUserInfo] = useState()
   const {
     register,
     handleSubmit,
@@ -28,19 +31,28 @@ export default function index() {
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
-    setSelectedFile(file)
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        const fileURL = e.target.result;
-        setSelectedFileSrc(fileURL);
-      };
-      reader.readAsDataURL(file);
+    let fileType = file.name?.split(".")[file.name.split(".").length - 1].toLowerCase();
+
+    const imageTypes = ['web','png','jpg','jpeg']
+    console.log('=== file ===', fileType , imageTypes.includes(fileType))
+    if(!imageTypes.includes(fileType)){
+      showSnackbar('This file is not supported' , 'error')
+      setSelectedFile(null)
+      setSelectedFileSrc(null)
+    }else{
+      setSelectedFile(file)
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          const fileURL = e.target.result;
+          setSelectedFileSrc(fileURL);
+        };
+        reader.readAsDataURL(file);
+      }
+
     }
   };
-  const showSnackbar = useSnackbar()
-  const [countries, setCountries] = useState([])
-  const [userInfo, setUserInfo] = useState()
+
   async function getCountries(){
     try {
       const {data} =  await AxiosHeadersInstance(`get`, `${process.env.NEXT_PUBLIC_API_KEY}/account/countries`) 
@@ -132,6 +144,7 @@ export default function index() {
                 type="file"
                 id="image"
                 hidden
+                accept="image/x-png,image/png, image/jpeg, image/jpg , image/png, image/svg,  image/webp"
                 onChange={handleFileChange}
                 // {...register('image')}
                 // register={register}
