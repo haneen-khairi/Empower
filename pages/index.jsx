@@ -158,7 +158,7 @@ export default function index() {
           </section>
           <section className="what mb-[160px]">
             <div className="grid lg:grid-cols-2 md:grid-cols-1 justify-center gap-[120px] items-center">
-              <SiteImage src="/assets/images/what-are-we.svg" />
+              <SiteImage src="/assets/images/picture2.svg" className="w-full" />
               <div className="what__content ">
                 <SiteImage
                   className="what__content--shape"
