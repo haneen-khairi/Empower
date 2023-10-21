@@ -35,7 +35,7 @@ export default function SelectMenuField({
         onChange={handleChange}
         {...register(name, errorMessage )}
       >
-    {initialValue !== "" ? <option value="" style={{display: 'none'}}>{initialValue}</option> : ""}
+    {initialValue !== "" ? <option value="" style={{display: 'none'}}>{initialValue}</option> : <option value="">{"Select on option"}</option> }
     {items.map((item, index) => <option key={index} value={item.value}>{item.name}</option> )}
       </select>
       {errors[name] && <div

@@ -166,7 +166,6 @@ export default function index() {
       fd.append("date_of_birth", data.date_of_birth);
       fd.append("country", data.country);
       additionalInfoAccount(fd);
-      setStep(step + 1);
     } else if (step === 6) {
       if (!selectedUniversity && !otherInput) {
         setError('university_id', { type: 'manual', message: 'Please select a university or specify "other".' });
@@ -175,7 +174,7 @@ export default function index() {
       }
       submitQuestions(data)
       console.log("=== data ===", data);
-    } else{
+    } else if(step === 4 || step === 5 || step === 6){
       setStep(step + 1);
     }
   }
@@ -200,7 +199,12 @@ export default function index() {
         data
       );
       console.log("=== createAccount response ===", accountRes);
-      setStep(step + 1);
+      if(!accountRes.status){
+        showSnackbar(accountRes.error.email[0] , 'error')
+        return;
+      }else{
+        setStep(step + 1);
+      }
     } catch (error) {
       console.log("=== error in creating ===", error);
     }
@@ -223,6 +227,9 @@ export default function index() {
         tokenData.access_token = accountRes.data.access;
         setToken(tokenData);
         setStep(step + 1);
+      }else{
+          showSnackbar(accountRes.errors , 'error')
+        
       }
       console.log("=== verifyAccount response ===", accountRes);
     } catch (error) {
@@ -568,7 +575,7 @@ export default function index() {
               <input
                 // register={register}
                 // errors={errors}
-                {...register("image", { required: "Image is required" })}
+                {...register("image")}
                 name="image"
                 type="file"
                 id="image"

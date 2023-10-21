@@ -1,3 +1,4 @@
+import Loaders from "@/Components/UI/Loaders";
 import SiteImage from "@/Components/UI/SiteImage";
 import InputField from "@/Components/fields/InputField";
 import SelectMenuField from "@/Components/fields/SelectField";
@@ -22,10 +23,11 @@ export default function index() {
     handleSubmit,
     reset,
     control,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty },
   } = useForm({
     mode: "onChange"
   });
+  const [isLoading, setIsLoading] = useState(true);
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFileSrc, setSelectedFileSrc] = useState(null);
 
@@ -67,17 +69,28 @@ export default function index() {
     }
   }
   async function getUserInfo(){
+
     try {
       const {data} =  await AxiosHeadersInstance(`get`, `${process.env.NEXT_PUBLIC_API_KEY}/account/user/info`) 
       console.log('== user ===', data)
       setUserInfo(data)
+      let user = {
+        name: data.name,
+        date: data.date_of_birth,
+        gender: data.gender,
+        phone_number: data.phone_number,
+        country: data.country.id
+      }
+      console.log('=== user ===', user)
+      reset({...user})
     } catch (error) {
       console.log('=== error tests ===', error)
 
+    } finally {
+      setIsLoading(false)
     }
   }
   function onSubmitAccountInfo(data) {
-
     const fd = new FormData()
     if(selectedFile !== null){
       fd.append('profile_picture', selectedFile)
@@ -88,7 +101,6 @@ export default function index() {
     fd.append('date_of_birth', data.date === "" ? userInfo?.date_of_birth : data.date)
     fd.append('gender', data.gender === "" ? userInfo?.gender : data.gender)
     submitData(fd)
-    // reset()
   }
   async function submitData(data){
     try {
@@ -96,6 +108,7 @@ export default function index() {
       console.log(resData)
       if(resData.status){
         showSnackbar(resData.data, `success`)
+        getUserInfo()
       }else{
         showSnackbar(resData.error, `error`)
 
@@ -109,6 +122,7 @@ export default function index() {
     if(!route.isReady){
       return
     }
+    setIsLoading(true)
     getUserInfo()
     getCountries()
   }, [route])
@@ -124,7 +138,9 @@ export default function index() {
         <p className="manage__account--paragraph">
           You can update your data here
         </p>
-        <form onSubmit={handleSubmit(onSubmitAccountInfo)}>
+        {isLoading ? 
+          <Loaders />
+        : <form onSubmit={handleSubmit(onSubmitAccountInfo)}>
           <div className="flex gap-[16px] items-center mb-[24px]">
             <SiteImage src={selectedFileSrc === null ? userInfo?.profile_picture : selectedFileSrc} className="manage__account--image" />
             <label htmlFor="image" className="manage__account--dropimage">
@@ -153,12 +169,11 @@ export default function index() {
               )}
             />
           </div>
-          {console.log('errors', errors)}
           <div className="grid md:grid-cols-2 sm:grid-cols-1 gap-x-[24px]">
             <InputField
               register={register}
               errors={errors}
-              // errorMessage={{ required: "Full name is required" }}
+              errorMessage={{ required: "Full name is required" }}
               name="name"
               label={""}
               placeholder={"name"}
@@ -184,7 +199,7 @@ export default function index() {
             <InputField
               register={register}
               errors={errors}
-              // errorMessage={{ required: "Phone is required" }}
+              errorMessage={{ required: "Phone is required" }}
               name="phone"
               label={""}
               placeholder={"phone"}
@@ -266,11 +281,11 @@ export default function index() {
           <Button
             className="special_button manage__account--button"
             type="submit"
-            disabled={!isValid ? true : false}
+            disabled={!(isValid && isDirty || selectedFileSrc !== null) ? true : false}
           >
             Save
           </Button>
-        </form>
+        </form>}
       </section>
     </MainLayout>
   );

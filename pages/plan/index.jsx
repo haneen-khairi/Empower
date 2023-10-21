@@ -128,7 +128,7 @@ export default function index() {
       <title>{`${process.env.NEXT_PUBLIC_TITLE}Plan`}</title>
     </Head>
     <section className={plans.length > 0 ? 'plans' : 'section__single' }>
-      {isLoading ? <Loaders /> : plans.length > 0 ? <PlansPage plans={plans} progress={progress} onMarkPlansPage={(id , name)=> completePlan(id, name)} /> :<EmptyStateCard className='card__plan' imageSrc='/assets/images/empty-plan.svg' title="You haven’t reached the test yet" text="Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s." />}
+      {isLoading ? <Loaders /> : plans.length > 0 ? <PlansPage plans={plans} progress={progress} onMarkPlansPage={(id , name)=> completePlan(id, name)} /> :<EmptyStateCard className='card__plan' imageSrc='/assets/images/empty-plan.svg' title="You haven’t reached the plan yet" text="Our experts are building your empowerment plan. We will contact you soon!" />}
     </section>
   </MainLayout>
   
