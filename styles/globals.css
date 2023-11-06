@@ -72,6 +72,16 @@
   gap: 0;
   padding: 0 24px;
 }
+@media screen and (max-width: 660px) {
+  .navbar header {
+    gap: 25px;
+  }
+}
+@media screen and (max-width: 660px) {
+  .navbar.authorized header {
+    gap: 0;
+  }
+}
 .navbar .dropdown .min-h {
   height: auto;
 }
@@ -122,6 +132,11 @@
   line-height: 24px;
   border-radius: 28px;
   border: 1px solid #48016D;
+}
+@media screen and (max-width: 660px) {
+  .navbar__signup {
+    display: none;
+  }
 }
 .navbar__signup:hover {
   border: 1px solid #fff;

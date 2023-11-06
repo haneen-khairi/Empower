@@ -57,7 +57,7 @@ export default function Header({
 
   }, [route, token])
   return (
-    <Navbar className="navbar"  isBordered>
+    <Navbar className={`navbar ${token ? 'authorized' : ''}`}  isBordered>
       <NavbarContent className="sm:hidden" justify="start">
         <NavbarMenuToggle />
       </NavbarContent>
@@ -144,8 +144,8 @@ export default function Header({
       </NavbarContent>
       </>:<>
       <NavbarContent className="navbar__menu hidden sm:flex gap-4" justify="center">
-        <Link href={'/'} className="mr-[56px]">
-          <Logo />
+        <Link href={'/'}>
+          <Logo className="w-full" />
         </Link>
         <NavbarItem isActive={route.pathname === '/' ? true : false} className="navbar__menu--link">
           <Link className="" href="/">
@@ -185,7 +185,13 @@ export default function Header({
           <Link className="" href="/contact-us">
           Contact Us
           </Link>
-        </NavbarMenuItem></> : <>
+        </NavbarMenuItem>
+        <NavbarMenuItem isActive={route.pathname === '/contact-us' ? true : false} className="navbar__menu--link">
+          <Link className="" href="/create-account">
+          Sign up
+          </Link>
+        </NavbarMenuItem>
+      </> : <>
         <NavbarMenuItem  isActive={route.pathname === '/' ? true : false} className="navbar__menu--link">
         <Link className="" href="/">
           Home
