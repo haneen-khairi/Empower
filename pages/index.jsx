@@ -147,7 +147,7 @@ export default function index() {
                   potential, providing science-based guidance for confident,
                   informed career decisions.
                 </p>
-                {/* <Button as={Link} href='' className="homecover__content--button special_button">Start Now</Button> */}
+                <Button as={Link} href='/create-account' className="homecover__content--button special_button">Sign up</Button>
               </div>
               <Image
                 className="lg:w-4/12 md:w-12/12 w-full"

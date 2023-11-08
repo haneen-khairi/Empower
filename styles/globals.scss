@@ -124,6 +124,24 @@ $size40 : 40px;
             font-weight: 500;
             line-height: 32px;
             transition: all .5s;
+
+            @media screen and (max-width: 768px) {
+                margin-right: 10px;
+            }
+            @media screen and (max-width: 660px) {
+                display: none;
+            }
+        }
+        &--mobile{
+            padding: 4px 8px;
+            margin-right: 56px;
+            color: #000;
+            font-family: League Spartan;
+            font-size: 24px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 32px;
+            transition: all .5s;
         }
     }
 
@@ -204,7 +222,7 @@ $size40 : 40px;
         }
 
         &--button {
-            width: 50%;
+            width: 200px;
         }
     }
 }

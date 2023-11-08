@@ -50,7 +50,7 @@ export default function index() {
       <div className="grid lg:grid-cols-2 md:grid-cols-1 lg:gap-[120px] md:gap-4 items-center">
         <div className="contact__content">
           <h1 className="contact__content--header">Get In Touch</h1>
-          <p className='contact__content--paragraph'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500st has survived not only five centuries.</p>
+          {/* <p className='contact__content--paragraph'>Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500st has survived not only five centuries.</p> */}
           <form onSubmit={handleSubmit(onSubmitContactUs)}>
           <InputField 
           className={'mb-[5px]'}

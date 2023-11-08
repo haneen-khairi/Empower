@@ -73,6 +73,9 @@ export default function Header({
         <Link href={'/'} >
           <Logo className="w-full" />
         </Link>
+      </NavbarContent>
+
+      <NavbarContent className="dropdown" justify="end">
         <NavbarItem as={Link} href="/" isActive={route.pathname === '/' ? true : false} className="navbar__menu--link">
           {/* <Link className="" href="/"> */}
             Home
@@ -84,9 +87,6 @@ export default function Header({
         <NavbarItem as={Link} href="/plan" isActive={route.pathname === '/plan' ? true : false} className="navbar__menu--link">
           Plan
         </NavbarItem>
-      </NavbarContent>
-
-      <NavbarContent className="dropdown" justify="end">
         
         <Dropdown>
           <NavbarItem>
@@ -147,6 +147,10 @@ export default function Header({
         <Link href={'/'}>
           <Logo className="w-full" />
         </Link>
+      </NavbarContent>
+
+      <NavbarContent justify="end">
+        
         <NavbarItem isActive={route.pathname === '/' ? true : false} className="navbar__menu--link">
           <Link className="" href="/">
             Home
@@ -157,15 +161,11 @@ export default function Header({
           Contact Us
           </Link>
         </NavbarItem>
-      </NavbarContent>
-
-      <NavbarContent justify="end">
-        
-        <NavbarItem>
+        {/* <NavbarItem>
           <Button as={Link} className="navbar__signup" href="/create-account" variant="flat">
             sign up
           </Button>
-        </NavbarItem>
+        </NavbarItem> */}
         <NavbarItem>
           <Button as={Link} className="navbar__login" href="/login" variant="flat">
             Login
@@ -176,34 +176,34 @@ export default function Header({
       }
 
       <NavbarMenu>
-        { !token ?<> <NavbarMenuItem isActive={route.pathname === '/' ? true : false} className="navbar__menu--link">
+        { !token ?<> <NavbarMenuItem isActive={route.pathname === '/' ? true : false} className="navbar__menu--mobile">
           <Link className="" href="/">
             Home
           </Link>
         </NavbarMenuItem>
-        <NavbarMenuItem isActive={route.pathname === '/contact-us' ? true : false} className="navbar__menu--link">
+        <NavbarMenuItem isActive={route.pathname === '/contact-us' ? true : false} className="navbar__menu--mobile">
           <Link className="" href="/contact-us">
           Contact Us
           </Link>
         </NavbarMenuItem>
-        <NavbarMenuItem isActive={route.pathname === '/contact-us' ? true : false} className="navbar__menu--link">
+        <NavbarMenuItem isActive={route.pathname === '/contact-us' ? true : false} className="navbar__menu--mobile">
           <Link className="" href="/create-account">
           Sign up
           </Link>
         </NavbarMenuItem>
       </> : <>
-        <NavbarMenuItem  isActive={route.pathname === '/' ? true : false} className="navbar__menu--link">
+        <NavbarMenuItem  isActive={route.pathname === '/' ? true : false} className="navbar__menu--mobile">
         <Link className="" href="/">
           Home
         </Link>
       </NavbarMenuItem>
-      <NavbarMenuItem isActive={route.pathname === '/tests' ? true : false} className="navbar__menu--link">
+      <NavbarMenuItem isActive={route.pathname === '/tests' ? true : false} className="navbar__menu--mobile">
         <Link className="" href="/tests">
 
         Tests
         </Link>
       </NavbarMenuItem>
-      <NavbarMenuItem  isActive={route.pathname === '/plan' ? true : false} className="navbar__menu--link">
+      <NavbarMenuItem  isActive={route.pathname === '/plan' ? true : false} className="navbar__menu--mobile">
         <Link className="" href="/plan">
 
         Plan
