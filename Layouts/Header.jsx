@@ -9,9 +9,12 @@ import SiteImage from "@/Components/UI/SiteImage";
 import { logout } from "@/Functions/GlobalFunctions";
 import { AxiosHeadersInstance } from "@/Functions/AxiosHeadersInstance";
 export default function Header({
-  image = null
+  image = null,
+  aboutUsStatus = false,
+  isLoading
 }) {
   const route = useRouter()
+  console.log('=== is Loading ===', isLoading)
   const [token, setToken] = useState()
   const [userInfo, setUserInfo] = useState()
   // const {}
@@ -46,6 +49,18 @@ export default function Header({
     // "Help & Feedback",
     // "Log Out",
   ];
+  function scrollToAboutSection() {
+    route.push('/#about')
+    // if(!isLoading) return;
+    setTimeout(() => {
+      const aboutSection = document.getElementById("about");
+      if (aboutSection) {
+        aboutSection.scrollIntoView({ behavior: "smooth" });
+      }
+      console.log('=== called ===')
+    }, 2000);
+    
+  }
   useEffect(()=> {
     if(!route.isReady){
       return
@@ -151,9 +166,20 @@ export default function Header({
 
       <NavbarContent justify="end">
         
-        <NavbarItem isActive={route.pathname === '/' ? true : false} className="navbar__menu--link">
+        <NavbarItem isActive={route.pathname === '/' && !aboutUsStatus ? true : false} className="navbar__menu--link">
           <Link className="" href="/">
             Home
+          </Link>
+        </NavbarItem>
+        <NavbarItem isActive={route.pathname === '/' && aboutUsStatus ? true : false} className="navbar__menu--link">
+          <Link className=""
+            href="/#about"
+          
+            onClick={(e) => {
+              e.preventDefault();
+              scrollToAboutSection();
+            }}>
+            About us
           </Link>
         </NavbarItem>
         <NavbarItem isActive={route.pathname === '/contact-us' ? true : false} className="navbar__menu--link">
@@ -176,9 +202,21 @@ export default function Header({
       }
 
       <NavbarMenu>
-        { !token ?<> <NavbarMenuItem isActive={route.pathname === '/' ? true : false} className="navbar__menu--mobile">
+        { !token ?<> <NavbarMenuItem isActive={route.pathname === '/' && !aboutUsStatus ? true : false} className="navbar__menu--mobile">
           <Link className="" href="/">
             Home
+          </Link>
+        </NavbarMenuItem>
+        <NavbarMenuItem isActive={route.pathname === '/' && aboutUsStatus ? true : false} className="navbar__menu--mobile">
+          <Link 
+          className="" 
+          href="/#about"
+          onClick={(e) => {
+            e.preventDefault();
+            scrollToAboutSection();
+          }}
+          >
+          About us
           </Link>
         </NavbarMenuItem>
         <NavbarMenuItem isActive={route.pathname === '/contact-us' ? true : false} className="navbar__menu--mobile">

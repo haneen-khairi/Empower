@@ -8,12 +8,14 @@ import { Button, Image } from "@nextui-org/react";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 
 export default function index() {
   const route = useRouter();
   const [meeting, setMeeting] = useState();
   const [isLoading, setIsLoading] = useState(true); // Initially set to true
+  const aboutUsRef = useRef(null); // Ref to the "About Us" section
+  const [aboutUsActive, setAboutUsActive] = useState(false); // State variable for the "About Us" section
 
   const { token, getToken } = useContext(UserContext);
   function onNavigateMeeting() {
@@ -57,6 +59,19 @@ export default function index() {
     
     return `${formattedDate} - ${formattedTime}`;
   }
+    // Function to check if the "About Us" section is in the scroll view
+    function checkAboutUsInView() {
+      if (aboutUsRef.current) {
+        const rect = aboutUsRef.current.getBoundingClientRect();
+        const isInView = rect.top >= 0 && rect.bottom <= window.innerHeight;
+        setAboutUsActive(isInView);
+      }
+    }
+  
+    // Event listener to check the "About Us" section's visibility on scroll
+    function handleScroll() {
+      checkAboutUsInView();
+    }
   useEffect(() => {
     if (!route.isReady) {
       return;
@@ -79,13 +94,18 @@ export default function index() {
     };
 
     checkToken();
-
+    // Add scroll event listener when the component mounts
+    window.addEventListener("scroll", handleScroll);
+    // Remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
     // getToken()
     return () => {};
   }, [route, token]);
 
   return (
-    <MainLayout>
+    <MainLayout aboutUsStatus={aboutUsActive}>
       <Head>
         <title>{`${process.env.NEXT_PUBLIC_TITLE}Home`}</title>
       </Head>
@@ -156,7 +176,7 @@ export default function index() {
               />
             </div>
           </section>
-          <section className="what mb-[160px]">
+          <section id="about" ref={aboutUsRef}  className="what">
             <div className="grid lg:grid-cols-2 md:grid-cols-1 justify-center gap-[120px] items-center">
               <SiteImage src="/assets/images/Picture2.svg" className="w-full" />
               <div className="what__content ">
@@ -164,7 +184,6 @@ export default function index() {
                   className="what__content--shape"
                   src="/assets/images/what-are-we-shape.svg"
                 />
-
                 <h3 className="what__content--header mb-[16px]">Who Are We?</h3>
                 <p className="what__content--paragraph mb-[16px]">
                 "EMPWR360 was born out of a shared passion for empowering students to achieve their full potential. The founders, a group of graduates in UAE, witnessed firsthand the struggles students faced in making career decisions. Determined to make a difference, EMPWR360 combines science-based assessments with personalized guidance, envisioning a future where every student could confidently navigate their career path and find fulfillment in the ever-changing job market."
@@ -173,7 +192,7 @@ export default function index() {
             </div>
           </section>
 
-          <section className="our_keys">
+          <section className="our_keys pt-[80px]">
             <div className="our_keys__content">
               <h3 className="our_keys__content--header">Our Key Features</h3>
               {/* <p className="our_keys__content--paragraph">

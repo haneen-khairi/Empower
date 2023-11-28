@@ -5,10 +5,12 @@ import Footer from './Footer'
 export default function MainLayout({
     children,
     hideNavbar = false,
-    image = null
+    image = null,
+    aboutUsStatus = false,
+    
 }) {
   return <>
-    {!hideNavbar && <Header image={image} />}
+    {!hideNavbar && <Header aboutUsStatus={aboutUsStatus} image={image} />}
     <div className="main__container">
       {children}
     </div>
