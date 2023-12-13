@@ -63,8 +63,8 @@ export default function index() {
       <div className="tests__cards">
       {pdfLink !== "null" && <div className="grid grid-col-1">
           <div className="tests__cards--full">
-            <h4 className="tests__cards--full-header">Your Brain Profile Assessment Results</h4>
-            <p className="tests__cards--full-paragraph">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s.</p>
+            <h4 className="tests__cards--full-header">Download your results by clicking on the box bellow</h4>
+  
             <Button as={Link} href={pdfLink} target="_blank"  color='white' className="tests__cards--full-button">
             Download PDF <SiteImage src={'/assets/images/download_icon.svg'} />
             </Button>
