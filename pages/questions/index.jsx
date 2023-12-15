@@ -16,37 +16,23 @@ import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 
 export default function index() {
+  const route = useRouter()
   const showSnackbar = useSnackbar()
   const {
     register,
     handleSubmit,
     reset,
     control,
-    watch,
     formState: { errors, isValid },
   } = useForm({
     mode: "onChange",
   });
-  const selectedUniversity = watch('university_id');
-  const otherInput = watch('other');
   const [questions, setQuestions] = useState([])
-  const route = useRouter();
-  const userEmail = useRef("");
-  const [countries, setCountries] = useState([]);
-  const [universities, setUniversities] = useState([]);
-  const [educationConcerns, setEducationConcerns] = useState([]);
-  const [step, setStep] = useState(1);
-  const [token, setToken] = useState({
-    access_token: "",
-  });
-  const [validations, setValidations] = useState([]);
-  const [otherQuestion, setOtherQuestion] = useState(false);
   const [formData, setFormData] = useState({
     email: "",
     password: "",
     confirmPassword: "",
   });
-  const password = watch("password", "");
   const [mc, setMc] = useState({})
 
 
@@ -70,36 +56,6 @@ export default function index() {
   }
 
 
-  const validationStep1 = {
-    full_name: { required: "Full name is required" },
-    phone: { required: "Phone is required" },
-    email: {
-      required: "Email is required",
-      pattern: {
-        value: emailRegex,
-        // Change this regex pattern as needed
-        message: "Email is invalid",
-      },
-    },
-    password: {
-      required: "Password is required",
-      pattern: {
-        value: passwordRegex,
-        // Change this regex pattern as needed
-        message: "Minimum 6 characters, at least one number, and special character",
-      },
-    },
-    confirmPassword: {
-      required: "Confirm password is required",
-      pattern: {
-        value: passwordRegex,
-        // Change this regex pattern as needed
-        message: "Minimum 6 characters, at least one number, and special character",
-      },
-      validate: (value) => value === password || "Passwords do not match",
-    },
-    // Add more validation rules for other input fields as needed
-  };
   function submitSteps(data) {
     console.log("=== originals ====", data)
     // Create an empty array to store selected IDs
@@ -229,11 +185,16 @@ export default function index() {
         data
       );
       if (questionResponse.status) {
-        route.push('/')
         reset()
         showSnackbar('Questions submitted successfully', 'success')
+        setTimeout(() => {
+          route.push("/")
+        }, 1500);
       }else{
-        showSnackbar(questionResponse.error, 'success')
+        showSnackbar(questionResponse.error, 'error')
+        if(questionResponse.error === "You have already answered questions"){
+          route.push("/")
+        }
       }
       console.log("=== qauestions response ===", questionResponse);
     } catch (error) {
@@ -243,154 +204,6 @@ export default function index() {
   }
 
 
-  function renderSteps(questions) {
-    switch (step) {
-      case 1:
-        return (
-          <>
-            <h4 className="signup__header">Get Started!</h4>
-            <p className="signup__paragraph">
-              To help assist you better, we want to ask you a few questions
-            </p>
-
-            <h4 className="signup__content--header">
-              Q1. What is your current year/grade?
-            </h4>
-            <InputField
-              type="text"
-              name="year_or_grade"
-              register={register}
-              errors={errors}
-              validations={validations}
-              errorMessage={{ required: "You need to answer this" }}
-              placeholder="Your answer... (Required)"
-              onChange={handleChange}
-            />
-            <Button
-              disabled={!isValid ? true : false}
-              className="special_button w-full"
-              type="submit"
-            >
-              Next
-            </Button>
-          </>
-        );
-      case 2:
-        return (
-          <>
-            <h4 className="signup__content--header mb-[24px]">
-              Q2. What is your main educational concern
-            </h4>
-            {/* <Controller
-            control={control}
-            name="educational_concerns_ids"
-            {...register('educational_concerns_ids', {
-              required: 'Educational concern required'
-            })}
-              render={
-              ()=> {
-                <RadioGroup
-                className="mb-[24px]"
-                classNames={{
-                  wrapper: "justify-center",
-                }}
-                orientation="horizontal"
-                
-                onChange={onChangeOther}
-              >
-                <Radio value="Studying Habits" defaultChecked>
-                  Studying Habits
-                </Radio>
-                <Radio value="Career Choices">Career Choices</Radio>
-                <Radio value="Social/Emotional">Social/Emotional</Radio>
-                <Radio value="other">Other</Radio>
-              </RadioGroup>
-              }
-            }>
-
-            </Controller> */}
-            <Controller
-              control={control}
-              name="educational_concerns_ids"
-              defaultValue={educationConcerns[0].id}
-              render={({ field: { onChange } }) => (
-                <div className="grid grid-cols-3 gap-[24px]">
-                  {educationConcerns.map((concern) => <p key={concern.id} className="text-left">
-                    <input
-                      type="radio"
-                      id={`educational_concerns_${concern.id}`}
-                      value={concern.id}
-                      required
-                      // checked={value === 'Studying-Habits'}
-                      onChange={(e) => {
-                        onChange(e);
-                        onChange(e.target.value);
-                      }}
-                      className="form__group--input"
-                      name="radio-group"
-                      // defaultChecked
-                    />
-                    <label htmlFor={`educational_concerns_${concern.id}`}>{concern.concern}</label>
-                  </p>)}
-                </div>
-              )}
-            />
-            {otherQuestion && (
-              <div className="mt-[16px]">
-                <InputField
-                  register={register}
-                  errors={errors}
-                  name="custom_concern"
-                  label={""}
-                  placeholder={"Other concerns..."}
-                  id={"custom_concern"}
-                  type={"text"}
-                  maxLength={200}
-                />
-                <p className="text-left">If your answer is not listed above</p>
-              </div>
-            )}
-
-            <Button
-              disabled={!isValid ? true : false}
-              className="special_button w-full mt-[24px]"
-              type="submit"
-            >
-              Next
-            </Button>
-          </>
-        );
-      case 3:
-        return (
-          <>
-            <h4 className="signup__content--header mb-[24px]">
-              Q3. Your School or University’s Name
-            </h4>
-
-            <SelectMenuField
-              register={register}
-              errors={errors}
-              // errorMessage={{ required: "Gender is required" }}
-              name="university_id"
-              id={"university_id"}
-              items={universities}
-            />
-            <h6 className="or">Or</h6>
-            <InputField
-              register={register}
-              errors={errors}
-              name="other"
-              id={"other"}
-            />
-            <Button disabled={!isValid ? true : false} className="special_button w-full mt-[24px]" type="submit">
-              Done
-            </Button>
-          </>
-        );
-      default:
-        return null;
-    }
-  }
   useEffect(() => {
     if (!route.isReady) {
       return;
@@ -401,7 +214,7 @@ export default function index() {
   }, [route]);
 
   return (
-    <MainLayout hideNavbar={true}>
+    <MainLayout>
       <Head>
         <title>{`${process.env.NEXT_PUBLIC_TITLE}Create Account`}</title>
       </Head>

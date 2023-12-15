@@ -126,6 +126,10 @@
   line-height: 32px;
   transition: all 0.5s;
 }
+.navbar__menu--mobile.active {
+  background-color: #48016D;
+  color: #fff;
+}
 .navbar__login {
   color: #48016D;
   padding: 8px 48px;

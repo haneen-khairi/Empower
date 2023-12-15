@@ -202,12 +202,12 @@ export default function Header({
       }
 
       <NavbarMenu>
-        { !token ?<> <NavbarMenuItem isActive={route.pathname === '/' && !aboutUsStatus ? true : false} className="navbar__menu--mobile">
+        { !token ?<> <NavbarMenuItem isActive={route.pathname === '/' && !aboutUsStatus ? true : false} className={`navbar__menu--mobile ${route.pathname === '/' && !aboutUsStatus ? 'active' : ""}`}>
           <Link className="" href="/">
             Home
           </Link>
         </NavbarMenuItem>
-        <NavbarMenuItem isActive={route.pathname === '/' && aboutUsStatus ? true : false} className="navbar__menu--mobile">
+        <NavbarMenuItem isActive={route.pathname === '/' && aboutUsStatus ? true : false} className={`navbar__menu--mobile ${route.pathname === '/' && aboutUsStatus ? 'active' : ""}`}>
           <Link 
           className="" 
           href="/#about"
@@ -219,29 +219,29 @@ export default function Header({
           About us
           </Link>
         </NavbarMenuItem>
-        <NavbarMenuItem isActive={route.pathname === '/contact-us' ? true : false} className="navbar__menu--mobile">
+        <NavbarMenuItem isActive={route.pathname === '/contact-us' ? true : false} className={`navbar__menu--mobile ${route.pathname === '/contact-us' ? 'active' : ""}`}>
           <Link className="" href="/contact-us">
           Contact Us
           </Link>
         </NavbarMenuItem>
-        <NavbarMenuItem isActive={route.pathname === '/contact-us' ? true : false} className="navbar__menu--mobile">
+        <NavbarMenuItem  className={`navbar__menu--mobile ${route.pathname === '/create-account'  ? 'active' : ""}`}>
           <Link className="" href="/create-account">
           Sign up
           </Link>
         </NavbarMenuItem>
       </> : <>
-        <NavbarMenuItem  isActive={route.pathname === '/' ? true : false} className="navbar__menu--mobile">
+        <NavbarMenuItem  isActive={route.pathname === '/' ? true : false} className={`navbar__menu--mobile ${route.pathname === '/' ? 'active' : ""}`}>
         <Link className="" href="/">
           Home
         </Link>
       </NavbarMenuItem>
-      <NavbarMenuItem isActive={route.pathname === '/tests' ? true : false} className="navbar__menu--mobile">
+      <NavbarMenuItem isActive={route.pathname === '/tests' ? true : false} className={`navbar__menu--mobile ${route.pathname === '/tests' ? 'active' : ""}`}>
         <Link className="" href="/tests">
 
         Tests
         </Link>
       </NavbarMenuItem>
-      <NavbarMenuItem  isActive={route.pathname === '/plan' ? true : false} className="navbar__menu--mobile">
+      <NavbarMenuItem  isActive={route.pathname === '/plan' ? true : false} className={`navbar__menu--mobile ${route.pathname === '/plan' ? 'active' : ""}`}>
         <Link className="" href="/plan">
 
         Plan

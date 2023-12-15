@@ -142,6 +142,10 @@ $size40 : 40px;
             font-weight: 500;
             line-height: 32px;
             transition: all .5s;
+            &.active {
+                background-color: $primaryColor;
+                color: #fff;
+            }
         }
     }
 
