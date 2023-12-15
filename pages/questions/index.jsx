@@ -134,7 +134,7 @@ export default function index() {
     });
     console.log("=== selectedIds ====", mc)
 
-    // console.log("=== questions ====", outputArray)
+    console.log("=== questions ====", outputArray)
     // Object.keys(data).map(())
   
 // Iterate through each key in updatedObject
@@ -145,14 +145,60 @@ export default function index() {
       // Find the corresponding question in the array
       let questionToUpdate = outputArray.find(q => q.question_id === questionId);
 
+      console.log("===== questionToUpdate ======",questionToUpdate, questionId)
       // Update the text field if the question is found
       if (questionToUpdate) {
         questionToUpdate.selected_answers = mc[key];
-        delete questionToUpdate.text
       }
     });
-    console.log("==== final one array ====" ,outputArray);
-    submitQuestions(outputArray)
+    const transformedArray = outputArray.map(item => {
+      let newItem = { question_id: item.question_id };
+    
+      // Check if text is a JSON string
+      if (typeof item.text === 'string' && item.text.startsWith('{') && item.text.endsWith('}')) {
+        try {
+          const parsedText = JSON.parse(item.text);
+          newItem.value = parsedText.id;
+          newItem.text = parsedText.text;
+        } catch (error) {
+          console.error('Error parsing text JSON', error);
+        }
+      } else {
+        newItem.text = item.text;
+      }
+    
+      // Check for selected_answers and modify structure accordingly
+      if (Array.isArray(item.selected_answers) && item.selected_answers.length > 0) {
+        newItem.selected_answers = item.selected_answers;
+
+        delete newItem.text;
+      }
+    
+      return newItem;
+    });
+    const mergedArray = Object.values(transformedArray.reduce((acc, item) => {
+      const existingItem = acc[item.question_id];
+
+      if (!existingItem) {
+        acc[item.question_id] = { ...item };
+      } else {
+        // Handle text and custom_entry
+        if (item.text && item.text.trim() !== '') {
+          if (!existingItem.custom_entry) {
+            existingItem.custom_entry = item.text;
+          }
+        }
+    
+        // Merge selected_answers if they exist
+        if (item.selected_answers) {
+          existingItem.selected_answers = item.selected_answers;
+        }
+      }
+      return acc;
+    }, {}));
+    console.log("==== final one array ====" ,transformedArray);
+    console.log("==== final one array mergedArray ====" ,mergedArray);
+    submitQuestions(mergedArray)
     // Object.keys(data).map(())
   }
   function onChangeQuestionData(event) {
@@ -404,8 +450,9 @@ export default function index() {
                     required
                     // checked={value === 'Studying-Habits'}
                     onChange={(e) => {
-                      onGetMCData([parseInt(e.target.value)], `question_${question.id}`)
-                      onChange(e.target.value);
+                      console.log("=e=", JSON.parse(e.target.value))
+                      onGetMCData(JSON.parse(e.target.value), `question_${question.id}`)
+                      onChange(e);
                     }}
                     className="form__group--input w-full"
                     placeholder="Answer the question"
@@ -413,7 +460,7 @@ export default function index() {
                     // defaultChecked
                   >
                     <option value="">Select option</option>
-                    {question.answers.length > 0 && question.answers.map((answer) => <option key={answer.id} value={answer.id}>{answer.text}</option>)}
+                    {question.answers.length > 0 && question.answers.map((answer) => <option key={answer.id} value={JSON.stringify(answer)}>{answer.text}</option>)}
                   </select>
                 )}
                 />: question.question_type === "SM" ?  <Controller
@@ -458,14 +505,15 @@ export default function index() {
                   )}
                 />
               }
-              {/* {question.allow_custom_entry && <Controller
+              {question.allow_custom_entry && <Controller
                   control={control}
                   name={`other_question_${question.id}`}
                   defaultValue={""}
                   render={({ field: { onChange } }) => (
                     <input
                       type="text"
-                      id={`other_question_${question.id}`}
+                      id={`custom_entry_${question.id}`}
+                      name={`other_question_${question.id}`}
                       // value={concern.id}
                       // checked={value === 'Studying-Habits'}
                       onChange={(e) => {
@@ -478,7 +526,7 @@ export default function index() {
                       // defaultChecked
                     />
                   )}
-                />} */}
+                />}
             </div>
             
             
