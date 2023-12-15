@@ -14,7 +14,6 @@ export default function Header({
   isLoading
 }) {
   const route = useRouter()
-  console.log('=== is Loading ===', isLoading)
   const [token, setToken] = useState()
   const [userInfo, setUserInfo] = useState()
   // const {}
