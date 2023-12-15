@@ -248,16 +248,18 @@ export default function index() {
         {},
         data
       );
-      console.log("=== additionalInfoAccount response ===", accountRes);
+      // console.log("=== additionalInfoAccount response ===", accountRes);
       if (accountRes.status) {
         localStorage.setItem("token", token.access_token);
         // route.push('/')
         reset()
-        setStep(step + 1);
+        // setStep(step + 1);
         showSnackbar('User created successfully now answer questions', 'success')
+        setTimeout(() => {
+          route.push("/questions")
+        }, 1500);
       }else{
         showSnackbar(accountRes.error, 'error')
-
       }
     } catch (error) {
       console.log("=== error in verifying ===", error);
