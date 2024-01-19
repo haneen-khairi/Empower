@@ -1179,11 +1179,6 @@
   font-weight: 500;
   line-height: normal;
 }
-.partners__content--image {
-  padding: 20px;
-  background-color: #e59722;
-  border-radius: 50%;
-}
 .partners__content--image img {
   max-width: 80%;
   margin: 0 auto;
@@ -1212,6 +1207,32 @@
 .satisfied__content--card-name {
   margin-top: 12px;
   font-size: 14px;
+  font-weight: 600;
+  color: #48016D;
+}
+
+.platform {
+  padding-top: 24px;
+}
+.platform__content--title {
+  color: #48016D;
+  text-align: center;
+  font-family: League Spartan;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
+.platform__content--card {
+  text-align: center;
+}
+.platform__content--card-text {
+  font-size: 18px;
+  color: #2483CE;
+}
+.platform__content--card-name {
+  margin-bottom: 12px;
+  font-size: 24px;
   font-weight: 600;
   color: #48016D;
 }
