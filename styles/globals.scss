@@ -19,7 +19,9 @@ $size40 : 40px;
     --accent-color: #b036e0;
     --toastify-toast-width: auto !important;
 }
-
+.mh-100vh{
+    min-height: 100vh;
+}
 .special_button {
     border-radius: 28px;
     background: linear-gradient(90deg, #48016D 0%, #2483CE 149.29%);
@@ -233,6 +235,11 @@ $size40 : 40px;
 
 .what {
     padding: 120px 0;
+    &__image{
+        width: 100%;
+        height: 140px;
+        object-fit: contain;
+    }
     &__content {
         position: relative;
 
@@ -243,18 +250,56 @@ $size40 : 40px;
         }
 
         &--header {
-            color: #000;
+            color: $primaryColor;
             font-family: League Spartan;
             font-size: 40px;
+            margin-bottom: 12px;
             font-style: normal;
             font-weight: 500;
             line-height: normal;
         }
 
-        &--paragraph {
-            color: #000;
+        &--text {
+            color: #3498db;
             font-family: Arapey;
-            font-size: 18px;
+            font-size: 22px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 22px;
+            /* 122.222% */
+        }
+    }
+}
+.vision {
+    padding: 120px 0;
+    &__image{
+        width: 100%;
+        height: 140px;
+        object-fit: contain;
+    }
+    &__content {
+        position: relative;
+
+        &--shape {
+            position: absolute;
+            left: -24px;
+            top: -60px;
+        }
+
+        &--header {
+            color: $primaryColor;
+            font-family: League Spartan;
+            font-size: 40px;
+            margin-bottom: 12px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+
+        &--text {
+            color: #3498db;
+            font-family: Arapey;
+            font-size: 20px;
             font-style: normal;
             font-weight: 400;
             line-height: 22px;
@@ -794,7 +839,11 @@ margin-bottom: 24px;
     &__cards {
         &_section {
             &--header {
-                color: #000;
+                color: #fff;
+                padding: 10px 20px;
+                border-radius: 22px;
+                background: linear-gradient(90deg, #48016D 0%, #2483CE 149.29%);
+
                 leading-trim: both;
                 text-edge: cap;
                 font-feature-settings: 'clig' off, 'liga' off;
@@ -805,7 +854,7 @@ margin-bottom: 24px;
                 line-height: 20px;
                 /* 111.111% */
                 display: flex;
-                justify-content: space-between;
+                justify-content: center;
                 align-items: center;
                 margin-bottom: 28px;
 
@@ -1240,7 +1289,104 @@ margin-bottom: 24px;
     //     }
     // }
 }
-
+.signup_alert{
+    margin-top: 10px;
+    text-align: center;
+    p{
+        margin-bottom: 12px;
+        color: $primaryColor;
+        font-weight: 600;
+    }
+}
+.partners{
+    padding: 24px 0;
+    &__content{
+        max-width: 80%;
+        margin: 0 auto;
+        &--title{
+            color: $primaryColor;
+            margin-bottom: 24px;
+            text-align: center;
+            font-family: League Spartan;
+            font-size: 40px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+        &--image{
+            padding: 20px;
+            background-color: #e59722;
+            border-radius: 50%;
+            img{
+    
+                max-width: 80%;
+                margin: 0 auto;
+            }
+        }
+    }
+}
+.satisfied{
+    padding-top: 24px;
+    &__content{
+        &--title{
+            color: $primaryColor;
+            text-align: center;
+            font-family: League Spartan;
+            font-size: 40px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
+        }
+        &--card{    
+            text-align: center;
+            margin-top: 12px;
+            &-text{
+                font-size: 12px;
+                color: #2483CE;
+            }
+            &-name{
+                margin-top: 12px;
+                font-size: 14px;
+                font-weight: 600;
+                color: $primaryColor;
+            }
+        }
+    }
+}
+.meeting{
+    &__empty{
+        &--header{
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 22px;
+            background: linear-gradient(90deg, #48016D 0%, #2483CE 149.29%);
+            font-feature-settings: 'clig' off, 'liga' off;
+            font-family: League Spartan;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 20px;
+            margin-bottom: 28px;
+            width: fit-content;
+        }
+        &--status{
+            text-align: center;
+            @media screen and (min-width: 1025px) {
+                width: 50%;
+            }
+            &-image{
+                width: 100px;
+                margin: 0 auto;
+            }
+            &-text{
+                margin-top: 8px;
+                color: $primaryColor;
+                font-weight: 600;
+                font-size: 24px;
+            }
+        }
+    }
+}
 .Toastify__toast {
     border-radius: 50px !important;
     border: 1px solid rgba(0, 0, 0, 0.12);
