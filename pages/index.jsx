@@ -215,7 +215,7 @@ export default function index() {
               </div>
               <div className="flex  justify-center gap-[12px]">
 
-                <div className="w-1/2  platform__content--card mt-[0px]">
+                <div className="lg:w-1/2 md:w-12/12  platform__content--card mt-[0px]">
                   <h4 className="platform__content--card-name mt-[0px]">
                     Personalized Career Recommendations
                   </h4>
@@ -403,7 +403,7 @@ export default function index() {
             </div>
           </section>
           <section className="vision">
-            <div className="grid grid-cols-2">
+            <div className="grid lg:grid-cols-2 md:grid-cols-1 sm:grid-cols-1">
               <div className="grid grid-cols-6 gap-[8px]">
                 <div className="col-span-1">
                   <SiteImage
